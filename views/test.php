@@ -47,7 +47,7 @@
   }
 }
 .post-container .post-main {
-  display: -webkit-flex;
+  display: flex;
   flex-direction: row;  
 
   border-radius: 8px;
@@ -96,7 +96,7 @@
 
 
 .post-container .left {
-  flex: 0;
+  flex: 0 auto; /* this needs to be "0 auto" for Safari, but works as "0" for everything else */
   padding-right: 12px;
 }
 .post-container .right {

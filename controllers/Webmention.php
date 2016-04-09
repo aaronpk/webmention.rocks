@@ -6,12 +6,39 @@ use Rocks\HTTP;
 
 class Webmention {
 
-  private function _error(ResponseInterface $response, $error, $description=false) {
-    $content = $error."\n";
-    if($description)
-      $content .= "\n".$description."\n";
-    $response->getBody()->write($content);
-    return $response->withHeader('Content-Type', 'text/plain')->withStatus(400);
+  private function _error(ServerRequestInterface $request, ResponseInterface $response, $error, $description=false) {
+
+    $post = $request->getParsedBody();
+    if(@$post['via'] == 'browser') {
+      $response->getBody()->write(view('webmention-error', [
+        'title' => 'Webmention Rocks!',
+        'error' => $error,
+        'description' => $description
+      ]));
+      return $response->withStatus(400);
+    } else {
+      $content = $error."\n";
+      if($description)
+        $content .= "\n".$description."\n";
+      $response->getBody()->write($content);
+      return $response->withHeader('Content-Type', 'text/plain')->withStatus(400);
+    }
+  }
+
+  public function get(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $num = $args['num'];
+
+    if(!TestData::exists($num)) {
+      $response->getBody()->write('Test not found');
+      return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
+    }
+
+    $response->getBody()->write(view('webmention', [
+      'title' => 'Webmention Rocks!',
+      'num' => $args['num']
+    ]));
+
+    return $response;    
   }
 
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
@@ -25,40 +52,48 @@ class Webmention {
     // Check the content type of the request
     $contentType = $request->getHeaderLine('Content-type');
     if($contentType != 'application/x-www-form-urlencoded') {
-      return $this->_error($response, 
+      return $this->_error($request, $response, 
         'invalid_content_type', 
         'Content type must be set to application/x-www-form-urlencoded');
     }
 
     $post = $request->getParsedBody();
 
+    // Validate the syntax of the source URL
     $sourceURL = @$post['source'];
-    $response = $this->_validateSourceURL($response, $sourceURL);
+    $response = $this->_validateSourceURL($request, $response, $sourceURL);
     if($response->getStatusCode() == 400)
       return $response;
 
+    // Validate the syntax of the target URL
     $targetURL = @$post['target'];
-    $response = $this->_validateTargetURL($response, $targetURL, $num);
+    $response = $this->_validateTargetURL($request, $response, $targetURL, $num);
     if($response->getStatusCode() == 400)
       return $response;
 
-    $result = $this->_fetchSourceURL($response, $sourceURL);
+    // Fetch the source URL, reporting any errors that occurred
+    $result = $this->_fetchSourceURL($request, $response, $sourceURL);
     if(!is_array($result) && $result->getStatusCode() == 400)
       return $result;
     $source = $result;
 
-    $response = $this->_verifySourceLinksToTarget($response, $source, $targetURL);
-    if($response->getStatusCode() == 400)
+    // Parse the source HTML and check for a link to target
+    $response = $this->_verifySourceLinksToTarget($request, $response, $source, $targetURL);
+    if($response->getStatusCode() == 400) {
+      // TODO Check if the source URL returned 410 or 200, and delete any existing comment if we have one
       return $response;
+    }
+
+    // Parse the Microformats on the source URL to extract post/author information
 
 
 
     return $response;
   }
 
-  private function _validateSourceURL($response, $sourceURL) {
+  private function _validateSourceURL($request, $response, $sourceURL) {
     if(!$sourceURL) {
-      return $this->_error($response, 
+      return $this->_error($request, $response, 
         'missing_source', 
         'No source parameter was specified. Provide the source URL in a POST parameter named "source".');
     }
@@ -66,28 +101,28 @@ class Webmention {
     $source = parse_url($sourceURL);
 
     if(!$source) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'There was an error parsing the source URL.'
         );
     }
 
     if(!isset($source['scheme'])) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'The source URL was missing a scheme.'
         );
     }
 
     if(!in_array($source['scheme'], ['http','https'])) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'The source URL must have a scheme of either http or https.'
         );
     }
 
     if(!isset($source['host'])) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'The source URL was missing a hostname.'
         );
@@ -95,14 +130,14 @@ class Webmention {
 
     $ip=gethostbyname($source['host']);
     if(!$ip || $source['host']==$ip) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'No DNS entry was found for the source hostname.'
         );
     }
 
     if(!isPublicAddress($ip)) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'The source hostname resolved to a private IP address: '.$ip
         );
@@ -113,9 +148,9 @@ class Webmention {
     return $response;
   }
 
-  private function _validateTargetURL($response, $targetURL, $num) {
+  private function _validateTargetURL($request, $response, $targetURL, $num) {
     if(!$targetURL) {
-      return $this->_error($response, 
+      return $this->_error($request, $response, 
         'missing_target', 
         'No target parameter was specified. Provide the target URL in a POST parameter named "target".');
     }
@@ -123,14 +158,14 @@ class Webmention {
     $target = parse_url($targetURL);
 
     if(!$target) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_target',
         'There was an error parsing the target URL.'
         );
     }
 
     if(!isset($target['scheme'])) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_target',
         'The target URL was missing a scheme.'
         );
@@ -139,23 +174,23 @@ class Webmention {
     $host = @$target['host'];
     $thisHost = parse_url(Config::$base, PHP_URL_HOST);
     if($host != $thisHost) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_target',
-        'This webmention endpoint does not handle webmentions for the host specified by the target parameter.'
+        'This webmention endpoint only handles webmentions for '.$thisHost.'.'
         );
     }
 
     // Check that the path of the target parameter is one that accepts webmentions
     $path = @$target['path'];
     if(!$path || $path == '/') {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_target',
         'Webmentions to the home page are not accepted.'
         );
     }
 
     if(!preg_match('/^\/test\/\d+$/', $path)) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_target',
         'The target provided does not accept webmentions.'
         );
@@ -165,7 +200,7 @@ class Webmention {
     $path = parse_url($targetURL, PHP_URL_PATH);
     preg_match('/^\/test\/(\d+)$/', $path, $match);
     if($match[1] != $num) {
-      return $this->_error($response, 
+      return $this->_error($request, $response, 
         'invalid_target', 
         'This webmention endpoint ('.$num.') does not handle webmentions for the provided target.');
     }
@@ -173,12 +208,12 @@ class Webmention {
     return $response;
   }
 
-  private function _fetchSourceURL($response, $sourceURL) {
+  private function _fetchSourceURL($request, $response, $sourceURL) {
     $http = new HTTP();
     $result = $http->get($sourceURL);
 
     if($result['error_code'] != 0) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         $result['error'],
         'There was an error fetching the source URL:' ."\n" . $result['error_description']);
     }
@@ -186,7 +221,7 @@ class Webmention {
     return $result;
   }
 
-  private function _verifySourceLinksToTarget($response, $source, $targetURL) {
+  private function _verifySourceLinksToTarget($request, $response, $source, $targetURL) {
 
     // Parse the source body as HTML
     $doc = new DOMDocument();
@@ -196,7 +231,7 @@ class Webmention {
     libxml_clear_errors();
 
     if(!$doc) {
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'invalid_source',
         'The source document could not be parsed as HTML.');
     }
@@ -227,7 +262,7 @@ class Webmention {
         $description .= "\n";
       }
 
-      return $this->_error($response,
+      return $this->_error($request, $response,
         'no_link_found',
         $description);
     }

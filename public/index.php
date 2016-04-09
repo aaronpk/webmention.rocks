@@ -18,6 +18,7 @@ $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'Controller::index');
 $route->map('GET', '/test/{num}', 'Controller::test');
+$route->map('GET', '/test/{num}/webmention', 'Webmention::get');
 $route->map('POST', '/test/{num}/webmention', 'Webmention::handle');
 
 $templates = new League\Plates\Engine(dirname(__FILE__).'/../views');

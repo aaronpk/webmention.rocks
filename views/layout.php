@@ -6,10 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <title><?= $this->e($title) ?></title>
-  <link href="/semantic-ui/semantic.min.css" rel="stylesheet">
-  <link href="/assets/styles.css" rel="stylesheet">
-  <script src="/assets/jquery-1.11.3.min.js"></script>
-  <script src="/semantic-ui/semantic.js"></script>
+  <link href="/assets/semantic.min.css" rel="stylesheet">
+  <link href="/assets/style.css" rel="stylesheet">
 
   <?= isset($link_tag) ? $link_tag : '' ?>
 

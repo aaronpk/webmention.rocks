@@ -26,11 +26,16 @@ class Controller {
     if($header=TestData::link_header($num, $head))
       $response = $response->withHeader('Link', $header);
 
+    $date = new DateTime();
+    $date->sub(new DateInterval('PT3H'));
+    $date->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+
     $response->getBody()->write(view('test', [
       'title' => 'Webmention Rocks!',
       'num' => $args['num'],
-      'link_tag' => TestData::link_tag($num, $head),
-      'a_tag' => TestData::a_tag($num, $head)
+      'test' => TestData::data($num, $head),
+      'date' => $date,
+      'responses' => [1,2,3]
     ]));
     return $response;
   }  

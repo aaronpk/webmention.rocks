@@ -1,0 +1,31 @@
+
+body {
+  background: #fffcdf;
+}
+
+#header-graphic {
+  max-width: 600px;
+  margin-top: -60px;
+  margin-bottom: -80px;
+  z-index: -1000;
+  position: relative;
+}
+#header-graphic img {
+  max-width: 600px;
+  width: 100%;
+}
+
+section.content {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px #fbf6bd solid;
+  background: #fff;
+  margin-bottom: 12px;
+}
+
+@media(max-width: 616px) {
+  section.content {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}

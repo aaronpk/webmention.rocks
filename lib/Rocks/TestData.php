@@ -22,13 +22,13 @@ class TestData {
       ],
       // Link tag with relative URL
       3 => [
-        'link_tag' => '<link rel="webmention" href="/test/1/webmention'.$params.'">',
+        'link_tag' => '<link rel="webmention" href="/test/3/webmention'.$params.'">',
         'link_header' => '',
         'description' => 'This post advertises its Webmention endpoint with an HTML <code>&lt;link&gt;</code> tag in the document. The URL is relative, so this will also test whether your discovery code properly resolves the relative URL.',
       ],
       // Link tag with absolute URL
       4 => [
-        'link_tag' => '<link rel="webmention" href="'.Config::$base.'test/1/webmention'.$params.'">',
+        'link_tag' => '<link rel="webmention" href="'.Config::$base.'test/4/webmention'.$params.'">',
         'link_header' => '',
         'description' => 'This post advertises its Webmention endpoint with an HTML <code>&lt;link&gt;</code> tag in the document. The Webmention endpoint is listed as an absolute URL.',
       ],
@@ -36,13 +36,13 @@ class TestData {
       5 => [
         'link_tag' => '',
         'link_header' => '',
-        'description' => 'This post advertises its <a rel="webmention" href="/test/1/webmention'.$params.'">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The URL is relative, so this will also test whether your discovery code properly resolves the relative URL.',
+        'description' => 'This post advertises its <a rel="webmention" href="/test/5/webmention'.$params.'">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The URL is relative, so this will also test whether your discovery code properly resolves the relative URL.',
       ],
       // <a> tag with absolute URL
       6 => [
         'link_tag' => '',
         'link_header' => '',
-        'description' => 'This post advertises its <a rel="webmention" href="'.Config::$base.'test/1/webmention">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The Webmention endpoint is listed as an absolute URL.',
+        'description' => 'This post advertises its <a rel="webmention" href="'.Config::$base.'test/6/webmention">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The Webmention endpoint is listed as an absolute URL.',
       ],
     ];
     if($num) {

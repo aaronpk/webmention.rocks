@@ -80,13 +80,34 @@ class Webmention {
     // Parse the source HTML and check for a link to target
     $response = $this->_verifySourceLinksToTarget($request, $response, $source, $targetURL);
     if($response->getStatusCode() == 400) {
-      // TODO Check if the source URL returned 410 or 200, and delete any existing comment if we have one
+      if($source['code'] == 410 || $source['code'] == 200) {
+        // TODO If the source URL returned 410 or 200, and delete any existing comment if we have one
+
+      }
       return $response;
     }
 
     // Parse the Microformats on the source URL to extract post/author information
+    $mf2 = mf2\Parse($source['body'], $source['url']);
 
+    $comment = false;
+    if($mf2 && count($mf2['items']) > 0) {
+      $http = new HTTP();
+      $comment = Rocks\Formats\Mf2::parse($mf2, $source['url'], $http);
+    }
 
+    // Store the source URL and comment data in Redis
+
+    $data = [
+      'source' => $sourceURL,
+      'target' => $targetURL,
+      'date' => date('c'),
+      'comment' => $comment,
+    ];
+
+    // TODO: If there is an existing webmention with this source URL, remove it first
+
+    redis()->zadd('webmention.rocks:test:'.$num.':responses', time(), json_encode($data));
 
     return $response;
   }
@@ -254,8 +275,16 @@ class Webmention {
     }
 
     if(!$found) {
-      $description = 'The source document does not contain a link to the target URL.';
+      $description = '';
+
+      $description .= 'The source document does not contain a link to the target URL.';
+
+      if($source['code'] != 200) {
+        $description .= "\n\n".'The source URL returned an HTTP '.$source['code'].' response.';
+      }
+
       $description .= "\n\nThe source document must contain an <a> tag with an href attribute matching the target URL specified.";
+
       if(count($matchingDomain)) {
         $description .= "\n\nThe following links to this website were found. Keep in mind that the source document must contain an exact match for the target URL you are specifying, even if the target page is a redirect.\n\n";
         $description .= implode("\n", array_map(function($item){ return '* '.$item; }, $matchingDomain));

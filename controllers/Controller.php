@@ -30,12 +30,20 @@ class Controller {
     $date->sub(new DateInterval('PT3H'));
     $date->setTimeZone(new DateTimeZone('America/Los_Angeles'));
 
+    $comments = redis()->zrevrangebyscore('webmention.rocks:test:'.$num.':responses', 
+      time()+300, time()-3600*48); // load the past 48 hours of mentions
+    if($comments) {
+      $comments = array_map(function($item){
+        return new Rocks\Response($item);
+      }, $comments);
+    }
+
     $response->getBody()->write(view('test', [
       'title' => 'Webmention Rocks!',
       'num' => $args['num'],
       'test' => TestData::data($num, $head),
       'date' => $date,
-      'responses' => [1,2,3]
+      'comments' => $comments
     ]));
     return $response;
   }  

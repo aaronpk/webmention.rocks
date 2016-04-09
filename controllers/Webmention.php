@@ -2,6 +2,7 @@
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rocks\TestData;
+use Rocks\HTTP;
 
 class Webmention {
 
@@ -41,9 +42,15 @@ class Webmention {
     if($response->getStatusCode() == 400)
       return $response;
 
-    $sourceBody = $this->_fetchSourceURL($response, $sourceURL);
+    $result = $this->_fetchSourceURL($response, $sourceURL);
+    if(!is_array($result) && $result->getStatusCode() == 400)
+      return $result;
+    $source = $result;
+
+    $response = $this->_verifySourceLinksToTarget($response, $source, $targetURL);
     if($response->getStatusCode() == 400)
       return $response;
+
 
 
     return $response;
@@ -167,9 +174,65 @@ class Webmention {
   }
 
   private function _fetchSourceURL($response, $sourceURL) {
+    $http = new HTTP();
+    $result = $http->get($sourceURL);
 
+    if($result['error_code'] != 0) {
+      return $this->_error($response,
+        $result['error'],
+        'There was an error fetching the source URL:' ."\n" . $result['error_description']);
+    }
 
+    return $result;
+  }
 
+  private function _verifySourceLinksToTarget($response, $source, $targetURL) {
+
+    // Parse the source body as HTML
+    $doc = new DOMDocument();
+    libxml_use_internal_errors(true); # suppress parse errors and warnings
+    $body = mb_convert_encoding($source['body'], 'HTML-ENTITIES', mb_detect_encoding($source['body']));
+    @$doc->loadHTML($body, LIBXML_NOWARNING|LIBXML_NOERROR);
+    libxml_clear_errors();
+
+    if(!$doc) {
+      return $this->_error($response,
+        'invalid_source',
+        'The source document could not be parsed as HTML.');
+    }
+
+    $xpath = new DOMXPath($doc);
+
+    $found = false;
+    $matchingDomain = [];
+
+    // Check all the <a> tags on the page
+    foreach($xpath->query('//a[@href]') as $href) {
+      $url = $href->getAttribute('href');
+      if($url == $targetURL) {
+        $found = true;
+        break;
+      }
+      if(parse_url($url, PHP_URL_HOST) == parse_url($targetURL, PHP_URL_HOST)) {
+        $matchingDomain[] = $url;
+      }
+    }
+
+    if(!$found) {
+      $description = 'The source document does not contain a link to the target URL.';
+      $description .= "\n\nThe source document must contain an <a> tag with an href attribute matching the target URL specified.";
+      if(count($matchingDomain)) {
+        $description .= "\n\nThe following links to this website were found. Keep in mind that the source document must contain an exact match for the target URL you are specifying, even if the target page is a redirect.\n\n";
+        $description .= implode("\n", array_map(function($item){ return '* '.$item; }, $matchingDomain));
+        $description .= "\n";
+      }
+
+      return $this->_error($response,
+        'no_link_found',
+        $description);
+    }
+
+    return $response;
   }
 
 }

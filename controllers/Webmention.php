@@ -51,7 +51,7 @@ class Webmention {
 
     // Check the content type of the request
     $contentType = $request->getHeaderLine('Content-type');
-    if($contentType != 'application/x-www-form-urlencoded') {
+    if(strpos($contentType, 'application/x-www-form-urlencoded') === false) {
       return $this->_error($request, $response, 
         'invalid_content_type', 
         'Content type must be set to application/x-www-form-urlencoded');
@@ -59,14 +59,17 @@ class Webmention {
 
     $post = $request->getParsedBody();
 
-    // Validate the syntax of the source URL
     $sourceURL = @$post['source'];
+    $targetURL = @$post['target'];
+
+    redis()->publish('incoming', json_encode(['source'=>$sourceURL, 'target'=>$targetURL]));
+
+    // Validate the syntax of the source URL
     $response = $this->_validateSourceURL($request, $response, $sourceURL);
     if($response->getStatusCode() == 400)
       return $response;
 
     // Validate the syntax of the target URL
-    $targetURL = @$post['target'];
     $response = $this->_validateTargetURL($request, $response, $targetURL, $num);
     if($response->getStatusCode() == 400)
       return $response;

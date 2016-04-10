@@ -25,42 +25,47 @@
   <div class="post-responses">
     <ul>
       <?php foreach($comments as $comment): ?>
-      <li class="p-comment h-cite comment">
-        <div class="p-author h-card author">
-          <img class="u-photo" src="<?= $comment->author_photo ?: '/assets/no-photo.png' ?>" width="48">
-          <?php if($comment->author_url): ?>
-            <a class="p-name u-url" href="<?= $comment->author_url ?>">
-              <?= htmlspecialchars($comment->author_name ?: 'No Name') ?>
-            </a>
-            <a class="author-url" href="<?= $comment->author_url ?>">
-              <?= parse_url($comment->author_url, PHP_URL_HOST) ?>
-            </a>
-          <?php else: ?>
-            <span class="p-name"><?= htmlspecialchars($comment->author_name ?: 'No Name') ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="e-content comment-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= 
-          $comment->content ?: '<span class="missing">Comment text not found</span>' 
-        ?></div>
-        <div class="meta">
-          <a class="u-url" href="<?= $comment->url ?: $comment->source ?>">
-            <?php if($comment->published): ?>
-              <time class="dt-published" datetime="<?= $comment->published->format('c') ?>">
-                <?= $comment->published->format('l, F j, Y g:ia P') ?>
-              </time>
+      <li class="p-comment h-cite">
+        <div class="comment">
+          <div class="p-author h-card author">
+            <img class="u-photo" src="<?= $comment->author_photo ?: '/assets/no-photo.png' ?>" width="48">
+            <?php if($comment->author_url): ?>
+              <a class="p-name u-url" href="<?= $comment->author_url ?>">
+                <?= htmlspecialchars($comment->author_name ?: 'No Name') ?>
+              </a>
+              <a class="author-url" href="<?= $comment->author_url ?>">
+                <?= parse_url($comment->author_url, PHP_URL_HOST) ?>
+              </a>
             <?php else: ?>
-              <?= $comment->url ?: $comment->source ?>
+              <span class="p-name"><?= htmlspecialchars($comment->author_name ?: 'No Name') ?></span>
             <?php endif; ?>
-          </a>
-          <?php if($comment->url == null): ?>
-            <p>The post did not provide a URL, using source instead</p>
-          <?php elseif($comment->url_host != $comment->source_host): ?>
-            <a href="<?= $comment->source ?>">via <?= $comment->source_host ?></a>
-          <?php endif; ?>
+          </div>
+          <div class="e-content comment-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= 
+            $comment->content ?: '<span class="missing">Comment text not found</span>' 
+          ?></div>
+          <div class="meta">
+            <a class="u-url" href="<?= $comment->url ?: $comment->source ?>">
+              <?php if($comment->published): ?>
+                <time class="dt-published" datetime="<?= $comment->published->format('c') ?>">
+                  <?= $comment->published->format('l, F j, Y g:ia P') ?>
+                </time>
+              <?php else: ?>
+                <?= $comment->url ?: $comment->source ?>
+              <?php endif; ?>
+            </a>
+            <?php if($comment->url == null): ?>
+              <p>The post did not provide a URL, using source instead</p>
+            <?php elseif($comment->url_host != $comment->source_host): ?>
+              <a href="<?= $comment->source ?>">via <?= $comment->source_host ?></a>
+            <?php endif; ?>
+          </div>
         </div>
       </li>
       <?php endforeach; ?>
     </ul>
+  </div>
+  <div class="post-footer">
+    <p>Responses are stored for 48 hours and may be deleted after that time.</p>
   </div>
 </div>
 
@@ -112,6 +117,7 @@
 .post-container .post-main.has-responses {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
+  border-bottom: 0;
 }
 
 .post-container .post-responses {
@@ -144,52 +150,61 @@
 
 .post-container .post-responses ul {
   margin: 0;
-  margin-left: 12px;
   padding: 0;
   list-style-type: none;
 }
-.post-responses li.comment {
+.post-responses li {
   padding: 0;
   margin: 0;
-  margin-left: 54px;
-  margin-bottom: 6px;
   padding-top: 6px;
   padding-right: 12px;
+  border-top: 1px #fbf6bd solid;
 }
-.post-responses li.comment .author img {
+.post-responses li .comment {
+  margin-left: 66px;
+  margin-bottom: 6px;
+}
+.post-responses li .comment .author img {
   margin-left: -54px;
   float: left;
 }
-.post-responses li.comment .author {
+.post-responses li .comment .author {
   font-size: 0.8em;
   margin-bottom: 6px;
 }
-.post-responses li.comment .author-url {
+.post-responses li .comment .author-url {
   color: #888;
   font-weight: normal;
 }
-.post-responses li.comment .comment-content.plaintext {
+.post-responses li .comment .comment-content.plaintext {
   white-space: pre-line;
 }
-.post-responses li.comment .comment-content .missing {
+.post-responses li .comment .comment-content .missing {
   color: #888;
 }
-.post-responses li.comment .meta {
+.post-responses li .comment .meta {
   color: #777;
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 0.65em;
   line-height: 1.1em;
 }
-.post-responses li.comment .meta a {
+.post-responses li .comment .meta a {
   color: #777;
 }
-.post-responses li.comment .meta a:hover, .post-responses li.comment .author a:hover {
+.post-responses li .comment .meta a:hover, .post-responses li .comment .author a:hover {
   text-decoration: underline;
 }
-.post-responses li.comment blockquote {
+.post-responses li .comment blockquote {
   border-left: 4px #bbb solid;
   margin-left: 0;
   padding-left: 12px;
+}
+
+.post-footer {
+  padding-top: 20px;
+  font-size: 0.7em;
+  color: #777;
+  text-align: center;
 }
 
 </style>

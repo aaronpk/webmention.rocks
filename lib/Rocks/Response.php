@@ -1,7 +1,7 @@
 <?php
 namespace Rocks;
 
-use DateTime;
+use DateTime, Exception;
 
 class Response {
 
@@ -60,10 +60,23 @@ class Response {
     return null;
   }
 
+  public function content_is_html() {
+    if($this->_comment) {
+      if(@isset($this->_comment['content']['html']) && $this->_comment['content']['html']) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public function published() {
     if($this->_comment) {
       if(@isset($this->_comment['published']) && $this->_comment['published']) {
-        return new DateTime($this->_comment['published']);
+        try {
+          return new DateTime($this->_comment['published']);
+        } catch(Exception $e) {
+          return null;
+        }
       }
     }
     return null;

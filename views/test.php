@@ -30,26 +30,30 @@
           <img class="u-photo" src="<?= $comment->author_photo ?: '/assets/no-photo.png' ?>" width="48">
           <?php if($comment->author_url): ?>
             <a class="p-name u-url" href="<?= $comment->author_url ?>">
-              <?= $comment->author_name ?: 'No Name' ?>
+              <?= htmlspecialchars($comment->author_name ?: 'No Name') ?>
             </a>
             <a class="author-url" href="<?= $comment->author_url ?>">
               <?= parse_url($comment->author_url, PHP_URL_HOST) ?>
             </a>
           <?php else: ?>
-            <span class="p-name"><?= $comment->author_name ?: 'No Name' ?></span>
+            <span class="p-name"><?= htmlspecialchars($comment->author_name ?: 'No Name') ?></span>
           <?php endif; ?>
         </div>
-        <div class="e-content comment-content"><?= $comment->content ?: '<span class="missing">Comment text not found</span>' ?></div>
+        <div class="e-content comment-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= 
+          $comment->content ?: '<span class="missing">Comment text not found</span>' 
+        ?></div>
         <div class="meta">
           <a class="u-url" href="<?= $comment->url ?: $comment->source ?>">
             <?php if($comment->published): ?>
               <time class="dt-published" datetime="<?= $comment->published->format('c') ?>">
-                <?= $comment->published->format('l F j, y g:ia P') ?>
+                <?= $comment->published->format('l, F j, Y g:ia P') ?>
               </time>
+            <?php else: ?>
+              <?= $comment->url ?: $comment->source ?>
             <?php endif; ?>
           </a>
           <?php if($comment->url == null): ?>
-            The post did not provide a URL, using source instead
+            <p>The post did not provide a URL, using source instead</p>
           <?php elseif($comment->url_host != $comment->source_host): ?>
             <a href="<?= $comment->source ?>">via <?= $comment->source_host ?></a>
           <?php endif; ?>
@@ -150,6 +154,7 @@
   margin-left: 54px;
   margin-bottom: 6px;
   padding-top: 6px;
+  padding-right: 12px;
 }
 .post-responses li.comment .author img {
   margin-left: -54px;
@@ -163,7 +168,7 @@
   color: #888;
   font-weight: normal;
 }
-.post-responses li.comment .comment-content {
+.post-responses li.comment .comment-content.plaintext {
   white-space: pre-line;
 }
 .post-responses li.comment .comment-content .missing {
@@ -173,12 +178,18 @@
   color: #777;
   margin-top: 6px;
   font-size: 0.65em;
+  line-height: 1.1em;
 }
 .post-responses li.comment .meta a {
   color: #777;
 }
 .post-responses li.comment .meta a:hover, .post-responses li.comment .author a:hover {
   text-decoration: underline;
+}
+.post-responses li.comment blockquote {
+  border-left: 4px #bbb solid;
+  margin-left: 0;
+  padding-left: 12px;
 }
 
 </style>

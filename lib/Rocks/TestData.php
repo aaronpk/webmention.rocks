@@ -47,9 +47,14 @@ class TestData {
       // Odd-case Link header with absolute URL
       7 => [
         'link_tag' => '',
-        'link_header' => '<'.Config::$base.'test/2/webmention'.$params.'>; rel=webmention',
+        'link_header' => '<'.Config::$base.'test/7/webmention'.$params.'>; rel=webmention',
         'link_header_name' => 'LinK',
         'description' => 'This post advertises its Webmention endpoint with an HTTP header with intentionally unusual casing, "<code>LinK</code>". This helps you test whether you are handling HTTP header names in a case insensitive way.',
+      ],
+      8 => [
+        'link_tag' => '',
+        'link_header' => '<'.Config::$base.'test/8/webmention'.$params.'>; rel="webmention"',
+        'description' => 'This post advertises its Webmention endpoint with an HTTP <code>Link</code> header. Unlike tests #1 and #2, the rel value is quoted, since HTTP allows both <code>rel="webmention"</code> and <code>rel=webmention</code> for the Link header.',
       ],
     ];
     if($num) {

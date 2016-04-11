@@ -65,6 +65,7 @@ class Webmention {
     $responseID = Rocks\Redis::makeResponseID($sourceURL, $targetURL);
     $webmentionID = Rocks\Redis::makeWebmentionID($sourceURL, $targetURL);
 
+    // TODO: figure out how to handle publishing the streaming data
     redis()->publish(Config::$base . 'test/'.$num.'/stream', json_encode([
       'id' => $webmentionID, 'source'=>$sourceURL, 'target'=>$targetURL
     ]));
@@ -104,6 +105,8 @@ class Webmention {
           $stream->write($body);
           $stream->rewind();
           return $response->withBody($stream)->withStatus(200);
+        } else {
+          return $response;
         }
       } else {
         return $response;

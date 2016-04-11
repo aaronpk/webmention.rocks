@@ -7,4 +7,6 @@ class Config {
 
   public static $clientID = 'https://webmention-rocks.dev/';
   public static $defaultAuthorizationEndpoint = 'https://indieauth.com/auth';
+
+  public static $relMeEmail = false;
 }

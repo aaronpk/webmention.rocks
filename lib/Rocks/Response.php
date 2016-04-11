@@ -5,7 +5,7 @@ use DateTime, Exception;
 
 class Response {
 
-  private $_data;
+  public $_data;
   private $_comment;
 
   public function __construct($json) {

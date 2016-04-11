@@ -148,53 +148,53 @@
 
 /* comments */
 
-.post-container .post-responses ul {
+.post-container .post-responses > ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-.post-responses li {
+.post-responses > ul > li {
   padding: 0;
   margin: 0;
   padding-top: 6px;
   padding-right: 12px;
   border-top: 1px #fbf6bd solid;
 }
-.post-responses li .comment {
+.post-responses > ul > li .comment {
   margin-left: 66px;
   margin-bottom: 6px;
 }
-.post-responses li .comment .author img {
+.post-responses > ul > li .comment .author img {
   margin-left: -54px;
   float: left;
 }
-.post-responses li .comment .author {
+.post-responses > ul > li .comment .author {
   font-size: 0.8em;
   margin-bottom: 6px;
 }
-.post-responses li .comment .author-url {
+.post-responses > ul > li .comment .author-url {
   color: #888;
   font-weight: normal;
 }
-.post-responses li .comment .comment-content.plaintext {
+.post-responses > ul > li .comment .comment-content.plaintext {
   white-space: pre-line;
 }
-.post-responses li .comment .comment-content .missing {
+.post-responses > ul > li .comment .comment-content .missing {
   color: #888;
 }
-.post-responses li .comment .meta {
+.post-responses > ul > li .comment .meta {
   color: #777;
   margin-top: 8px;
   font-size: 0.65em;
   line-height: 1.1em;
 }
-.post-responses li .comment .meta a {
+.post-responses > ul > li .comment .meta a {
   color: #777;
 }
-.post-responses li .comment .meta a:hover, .post-responses li .comment .author a:hover {
+.post-responses > ul > li .comment .meta a:hover, .post-responses > ul > li .comment .author a:hover {
   text-decoration: underline;
 }
-.post-responses li .comment blockquote {
+.post-responses > ul > li .comment blockquote {
   border-left: 4px #bbb solid;
   margin-left: 0;
   padding-left: 12px;

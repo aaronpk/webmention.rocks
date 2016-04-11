@@ -23,8 +23,9 @@ class Controller {
 
     $head = $_SERVER['REQUEST_METHOD'] == 'HEAD';
 
-    if($header=TestData::link_header($num, $head))
-      $response = $response->withHeader('Link', $header);
+    if($header=TestData::link_header($num, $head)) {
+      $response = $response->withHeader(TestData::link_header_name($num, $head), $header);
+    }
 
     $date = new DateTime();
     $date->sub(new DateInterval('PT3H'));

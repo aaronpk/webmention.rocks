@@ -44,6 +44,13 @@ class TestData {
         'link_header' => '',
         'description' => 'This post advertises its <a rel="webmention" href="'.Config::$base.'test/6/webmention">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The Webmention endpoint is listed as an absolute URL.',
       ],
+      // Odd-case Link header with absolute URL
+      7 => [
+        'link_tag' => '',
+        'link_header' => '<'.Config::$base.'test/2/webmention'.$params.'>; rel=webmention',
+        'link_header_name' => 'LinK',
+        'description' => 'This post advertises its Webmention endpoint with an HTTP header with intentionally unusual casing, <code>LinK</code> header. This helps you test whether you are handling HTTP header names in a case insensitive way.',
+      ],
     ];
     if($num) {
       if(array_key_exists($num, $data)) {
@@ -66,6 +73,14 @@ class TestData {
 
   public static function link_header($num, $head) {
     return self::data($num, $head)['link_header'];
+  }
+
+  public static function link_header_name($num, $head) {
+    $data = self::data($num, $head);
+    if(array_key_exists('link_header_name', $data))
+      return $data['link_header_name'];
+    else
+      return 'Link';
   }
 
   public static function a_tag($num, $head) {

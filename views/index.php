@@ -17,7 +17,11 @@
       comment show up on each of them.</p>
     <ul>
       <?php foreach($testData as $i=>$data): ?>
-        <li><a href="/test/<?= $i ?>">Test <?= $i ?></a></li>
+        <li>
+          <a href="/test/<?= $i ?>">Test <?= $i ?></a>
+          -
+          <?= htmlspecialchars($data['name']) ?>
+        </li>
       <?php endforeach; ?>
     </ul>
   </section>

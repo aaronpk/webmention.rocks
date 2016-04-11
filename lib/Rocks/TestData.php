@@ -49,7 +49,7 @@ class TestData {
         'link_tag' => '',
         'link_header' => '<'.Config::$base.'test/2/webmention'.$params.'>; rel=webmention',
         'link_header_name' => 'LinK',
-        'description' => 'This post advertises its Webmention endpoint with an HTTP header with intentionally unusual casing, <code>LinK</code> header. This helps you test whether you are handling HTTP header names in a case insensitive way.',
+        'description' => 'This post advertises its Webmention endpoint with an HTTP header with intentionally unusual casing, "<code>LinK</code>". This helps you test whether you are handling HTTP header names in a case insensitive way.',
       ],
     ];
     if($num) {

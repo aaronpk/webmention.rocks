@@ -62,7 +62,12 @@ class Webmention {
     $sourceURL = @$post['source'];
     $targetURL = @$post['target'];
 
-    redis()->publish('incoming', json_encode(['source'=>$sourceURL, 'target'=>$targetURL]));
+    $responseID = Rocks\Redis::makeResponseID($sourceURL, $targetURL);
+    $webmentionID = Rocks\Redis::makeWebmentionID($sourceURL, $targetURL);
+
+    redis()->publish(Config::$base . 'test/'.$num.'/stream', json_encode([
+      'id' => $webmentionID, 'source'=>$sourceURL, 'target'=>$targetURL
+    ]));
 
     // Validate the syntax of the source URL
     $response = $this->_validateSourceURL($request, $response, $sourceURL);
@@ -80,14 +85,29 @@ class Webmention {
       return $result;
     $source = $result;
 
+
     // Parse the source HTML and check for a link to target
     $response = $this->_verifySourceLinksToTarget($request, $response, $source, $targetURL);
     if($response->getStatusCode() == 400) {
       if($source['code'] == 410 || $source['code'] == 200) {
-        // TODO If the source URL returned 410 or 200, and delete any existing comment if we have one
-
+        // If we've seen this before, and if the source URL returned 410 or 200, delete the existing comment
+        if(Rocks\Redis::getResponse($responseID)) {
+          Rocks\Redis::deleteResponse($responseID);
+          $body = "";
+          if($source['code'] == 410) {
+            $body .= "The source URL returned HTTP 410, and we have previously seen this source URL, so the response has been deleted.";
+          } else {
+            $body .= "The source URL returned HTTP 200, and we have previously seen this source URL, so the response has been deleted.";
+          }
+          // This is the worst hack ever. Why can't I just replace the response body??
+          $stream = new Zend\Diactoros\Stream('php://temp', 'wb+');
+          $stream->write($body);
+          $stream->rewind();
+          return $response->withBody($stream)->withStatus(200);
+        }
+      } else {
+        return $response;
       }
-      return $response;
     }
 
     // Parse the Microformats on the source URL to extract post/author information
@@ -108,9 +128,10 @@ class Webmention {
       'comment' => $comment,
     ];
 
-    // TODO: If there is an existing webmention with this source URL, remove it first
-
-    redis()->zadd('webmention.rocks:test:'.$num.':responses', time(), json_encode($data));
+    // Store the response data and set the expiration date
+    Rocks\Redis::setResponseData($responseID, $data);
+    // Add the response ID to the list of responses for this post
+    Rocks\Redis::addResponse($num, $responseID);
 
     return $response;
   }

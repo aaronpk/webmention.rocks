@@ -1,4 +1,4 @@
-      <li class="p-<?= $type ?> h-cite">
+      <li class="p-<?= $type ?> h-cite" data-response-id="<?= $comment->hash() ?>">
         <div class="comment">
           <div class="p-author h-card author">
             <img class="u-photo" src="<?= $comment->author_photo ?: '/assets/no-photo.png' ?>" width="48">

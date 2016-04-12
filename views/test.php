@@ -23,10 +23,12 @@
     </div>
   </div>
   <div class="post-responses">
+    <div id="debug"></div>
+
     <?php foreach(Rocks\Response::facepileTypes() as $type): ?>
       <?php if($responses[$type]): ?>
-        <ul class="facepile">
-          <li class="icon"><i class="ui <?= Rocks\Response::facepileTypeIcon($type) ?> icon"></i></li>
+        <div class="facepile-type-icon"><i class="ui <?= Rocks\Response::facepileTypeIcon($type) ?> icon"></i></div>
+        <ul class="facepile stream <?= $type ?>">
           <?php foreach($responses[$type] as $res): ?>
             <?php $this->insert('partials/facepile-icon', ['res'=>$res, 'type'=>$type]); ?>
           <?php endforeach; ?>
@@ -35,7 +37,7 @@
       <?php endif; ?>
     <?php endforeach; ?>
 
-    <ul class="comments">
+    <ul class="comments stream reply">
       <?php foreach($responses['reply'] as $comment): ?>
         <?php $this->insert('partials/comment', ['comment'=>$comment, 'type'=>'reply']); ?>
       <?php endforeach; ?>
@@ -47,7 +49,7 @@
         <h3>Other Mentions</h3>
         <p style="font-size: 0.6em; color: #666;">The mentions below linked to this post, but did not include this post's URL as an <code>in-reply-to</code> property.</p>
       </div>
-      <ul class="comments">
+      <ul class="comments stream mention">
         <?php foreach($responses['mention'] as $comment): ?>
           <?php $this->insert('partials/comment', ['comment'=>$comment, 'type'=>'mention']); ?>
         <?php endforeach; ?>
@@ -60,6 +62,8 @@
   </div>
 </div>
 
+<div id="test-num" data-num="<?= $num ?>"></div>
+<script src="/assets/streaming.js"></script>
 
 <style type="text/css">
 
@@ -150,9 +154,11 @@
   float: left;
 }
 
-.post-responses > ul.facepile > li .icon {
+.post-responses .facepile-type-icon {
   font-size: 2em;
-  padding-top: 14px;
+  padding-top: 16px;
+  padding-left: 4px;
+  float: left;
 }
 
 /* comments */

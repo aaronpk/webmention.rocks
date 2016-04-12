@@ -5,20 +5,34 @@ use DateTime, Exception;
 
 class Response {
 
+  public $id;
   public $_data;
   private $_comment;
 
-  public function __construct($json) {
-    $data = json_decode($json, true);
+  public function __construct($json, $id) {
+    if(is_array($json))
+      $data = $json;
+    else
+      $data = json_decode($json, true);
     $this->_data = $data;
     if(@isset($data['comment']['data'])) {
       $this->_comment = $data['comment']['data'];
     }
+    $this->id = $id;
   }
 
   public function __get($key) {
     if(method_exists($this, $key))
       return $this->$key();
+  }
+
+  public function hash() {
+    return self::hashForId($this->id);
+  }
+
+  public static function hashForId($id) {
+    preg_match('/\/([^\/]+)$/', $id, $match);
+    return $match[1];
   }
 
   public function author_photo() {

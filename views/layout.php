@@ -9,6 +9,8 @@
   <link href="/assets/semantic.min.css" rel="stylesheet">
   <link href="/assets/style.css" rel="stylesheet">
 
+  <script src="/assets/jquery-1.11.3.min.js"></script>
+
   <?= isset($link_tag) ? $link_tag : '' ?>
 
 </head>

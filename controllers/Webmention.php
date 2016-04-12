@@ -104,6 +104,9 @@ class Webmention {
           $stream = new Zend\Diactoros\Stream('php://temp', 'wb+');
           $stream->write($body);
           $stream->rewind();
+
+          $this->_publishDelete($num, $responseID);
+
           return $response->withBody($stream)->withStatus(200);
         } else {
           return $response;
@@ -135,6 +138,9 @@ class Webmention {
     Rocks\Redis::setResponseData($responseID, $data);
     // Add the response ID to the list of responses for this post
     Rocks\Redis::addResponse($num, $responseID);
+
+    // Publish to anyone listening on the EventSource channel
+    $this->_publish($num, new Rocks\Response($data, $responseID));
 
     return $response;
   }
@@ -323,6 +329,32 @@ class Webmention {
     }
 
     return $response;
+  }
+
+  private function _publish($num, $comment) {
+    if(in_array($comment->getMentionType(), ['reply','mention']))
+      $html = view('partials/comment', ['comment' => $comment, 'type' => $comment->getMentionType()]);
+    else
+      $html = view('partials/facepile-icon', ['res' => $comment, 'type' => $comment->getMentionType()]);
+
+    $ch = curl_init(Config::$base . 'streaming/pub?id=test-'.$num);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+      'type' => $comment->getMentionType(),
+      'hash' => $comment->hash(),
+      'html' => $html
+    ]));
+    curl_exec($ch);
+  }
+
+  private function _publishDelete($num, $id) {
+    $ch = curl_init(Config::$base . 'streaming/pub?id=test-'.$num);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+      'action' => 'delete',
+      'hash' => Rocks\Response::hashForId($id),
+    ]));
+    curl_exec($ch);
   }
 
 }

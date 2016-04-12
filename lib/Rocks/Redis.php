@@ -51,11 +51,11 @@ class Redis {
   public static function getResponse($id) {
     $data = redis()->get($id);
     if($data)
-      return new Response($data);
+      return new Response($data, $id);
 
     $filename = self::filenameForResponse($id);
     if(file_exists($filename))
-      return new Response(file_get_contents($filename));
+      return new Response(file_get_contents($filename), $id);
 
     return null;
   }

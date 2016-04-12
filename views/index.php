@@ -5,7 +5,7 @@
 
   <section class="content">
     <h3>About this site</h3>
-    <p><b><i>Webmention Rocks!</i></b> is a validator to help you test your Webmention
+    <p><b><i>Webmention Rocks!</i></b> is a validator to help you test your <a href="https://www.w3.org/TR/webmention/">Webmention</a>
       implementation. Several kinds of tests are available on the site.</p>
   </section>
 

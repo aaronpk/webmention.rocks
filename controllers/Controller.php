@@ -27,18 +27,29 @@ class Controller {
       $response = $response->withHeader(TestData::link_header_name($num, $head), $header);
     }
 
+    // Set the post's published date to 3 hours ago
     $date = new DateTime();
     $date->sub(new DateInterval('PT3H'));
     $date->setTimeZone(new DateTimeZone('America/Los_Angeles'));
 
-    $comments = Rocks\Redis::getResponsesForTest($num); // load the past 48 hours of mentions
-    if($comments) {
-      $comments = array_map(function($item){
+    $responseTypes = [
+      'like' => [],
+      'repost' => [],
+      'bookmark' => [],
+      'reply' => [],
+      'mention' => [],
+    ];
+    $numResponses = 0;
+    if($responses = Rocks\Redis::getResponsesForTest($num)) {
+      $responses = array_map(function($item){
         return Rocks\Redis::getResponse($item);
-      }, $comments);
-      $comments = array_filter($comments, function($item) {
-        return $item;
-      });
+      }, $responses);
+      foreach($responses as $r) {
+        if($r) {
+          $responseTypes[$r->getMentionType()][] = $r;
+          $numResponses++;
+        }
+      }
     }
 
     $response->getBody()->write(view('test', [
@@ -46,7 +57,8 @@ class Controller {
       'num' => $args['num'],
       'test' => TestData::data($num, $head),
       'date' => $date,
-      'comments' => $comments
+      'responses' => $responseTypes,
+      'num_responses' => $numResponses,
     ]));
     return $response;
   }  

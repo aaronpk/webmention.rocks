@@ -4,7 +4,7 @@
                     ]); ?>
 
 <div class="post-container h-entry">
-  <div class="post-main <?= count($comments) ? 'has-responses' : '' ?>">
+  <div class="post-main <?= $num_responses > 0 ? 'has-responses' : '' ?>">
     <div class="left p-author h-card">
       <a href="/">
         <img src="/assets/webmention-rocks-icon.png" width="80" class="u-photo" alt="Webmention Rocks!">
@@ -23,46 +23,37 @@
     </div>
   </div>
   <div class="post-responses">
-    <ul>
-      <?php foreach($comments as $comment): ?>
-      <li class="p-comment h-cite">
-        <div class="comment">
-          <div class="p-author h-card author">
-            <img class="u-photo" src="<?= $comment->author_photo ?: '/assets/no-photo.png' ?>" width="48">
-            <?php if($comment->author_url): ?>
-              <a class="p-name u-url" href="<?= $comment->author_url ?>">
-                <?= htmlspecialchars($comment->author_name ?: 'No Name') ?>
-              </a>
-              <a class="author-url" href="<?= $comment->author_url ?>">
-                <?= parse_url($comment->author_url, PHP_URL_HOST) ?>
-              </a>
-            <?php else: ?>
-              <span class="p-name"><?= htmlspecialchars($comment->author_name ?: 'No Name') ?></span>
-            <?php endif; ?>
-          </div>
-          <div class="e-content comment-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= 
-            $comment->content ?: '<span class="missing">Comment text not found</span>' 
-          ?></div>
-          <div class="meta">
-            <a class="u-url" href="<?= $comment->url ?: $comment->source ?>">
-              <?php if($comment->published): ?>
-                <time class="dt-published" datetime="<?= $comment->published->format('c') ?>">
-                  <?= $comment->published->format('l, F j, Y g:ia P') ?>
-                </time>
-              <?php else: ?>
-                <?= $comment->url ?: $comment->source ?>
-              <?php endif; ?>
-            </a>
-            <?php if($comment->url == null): ?>
-              <p>The post did not provide a URL, using source instead</p>
-            <?php elseif($comment->url_host != $comment->source_host): ?>
-              <a href="<?= $comment->source ?>">via <?= $comment->source_host ?></a>
-            <?php endif; ?>
-          </div>
-        </div>
-      </li>
+    <?php foreach(Rocks\Response::facepileTypes() as $type): ?>
+      <?php if($responses[$type]): ?>
+        <ul class="facepile">
+          <li class="icon"><i class="ui <?= Rocks\Response::facepileTypeIcon($type) ?> icon"></i></li>
+          <?php foreach($responses[$type] as $res): ?>
+            <?php $this->insert('partials/facepile-icon', ['res'=>$res, 'type'=>$type]); ?>
+          <?php endforeach; ?>
+        </ul>
+        <div style="clear:both;"></div>
+      <?php endif; ?>
+    <?php endforeach; ?>
+
+    <ul class="comments">
+      <?php foreach($responses['reply'] as $comment): ?>
+        <?php $this->insert('partials/comment', ['comment'=>$comment, 'type'=>'reply']); ?>
       <?php endforeach; ?>
     </ul>
+
+    <?php if(count($responses['mention'])): ?>
+    <div style="border-top: 1px #fbf6bd solid;">
+      <div style="padding: 12px 12px 3px 12px;">
+        <h3>Other Mentions</h3>
+        <p style="font-size: 0.6em; color: #666;">The mentions below linked to this post, but did not include this post's URL as an <code>in-reply-to</code> property.</p>
+      </div>
+      <ul class="comments">
+        <?php foreach($responses['mention'] as $comment): ?>
+          <?php $this->insert('partials/comment', ['comment'=>$comment, 'type'=>'mention']); ?>
+        <?php endforeach; ?>
+      </ul>
+      <?php endif; ?>
+    </div>
   </div>
   <div class="post-footer">
     <p>Responses are stored for 48 hours and may be deleted after that time.</p>
@@ -146,55 +137,73 @@
   font-weight: bold;
 }
 
+/* facepile */
+
+.post-container .post-responses > ul.facepile {
+  margin: 0;
+  padding: 0;
+  padding-top: 6px;
+  list-style-type: none;
+}
+
+.post-responses > ul.facepile > li {
+  float: left;
+}
+
+.post-responses > ul.facepile > li .icon {
+  font-size: 2em;
+  padding-top: 14px;
+}
+
 /* comments */
 
-.post-container .post-responses > ul {
+.post-container .post-responses ul.comments {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-.post-responses > ul > li {
+.post-responses ul.comments > li {
   padding: 0;
   margin: 0;
   padding-top: 6px;
   padding-right: 12px;
   border-top: 1px #fbf6bd solid;
 }
-.post-responses > ul > li .comment {
+.post-responses ul.comments > li .comment {
   margin-left: 66px;
   margin-bottom: 6px;
 }
-.post-responses > ul > li .comment .author img {
+.post-responses ul.comments > li .comment .author img {
   margin-left: -54px;
   float: left;
 }
-.post-responses > ul > li .comment .author {
+.post-responses ul.comments > li .comment .author {
   font-size: 0.8em;
   margin-bottom: 6px;
 }
-.post-responses > ul > li .comment .author-url {
+.post-responses ul.comments > li .comment .author-url {
   color: #888;
   font-weight: normal;
 }
-.post-responses > ul > li .comment .comment-content.plaintext {
+.post-responses ul.comments > li .comment .comment-content.plaintext {
   white-space: pre-line;
 }
-.post-responses > ul > li .comment .comment-content .missing {
+.post-responses ul.comments > li .comment .comment-content .missing {
   color: #888;
 }
-.post-responses > ul > li .comment .meta {
+.post-responses ul.comments > li .comment .meta {
   color: #777;
   margin-top: 8px;
   font-size: 0.65em;
   line-height: 1.1em;
 }
-.post-responses > ul > li .comment .meta a {
+.post-responses ul.comments > li .comment .meta a {
   color: #777;
 }
-.post-responses > ul > li .comment .meta a:hover, .post-responses > ul > li .comment .author a:hover {
+.post-responses ul.comments > li .comment .meta a:hover, .post-responses ul.comments > li .comment .author a:hover {
   text-decoration: underline;
 }
-.post-responses > ul > li .comment blockquote {
+.post-responses ul.comments > li .comment blockquote {
   border-left: 4px #bbb solid;
   margin-left: 0;
   padding-left: 12px;

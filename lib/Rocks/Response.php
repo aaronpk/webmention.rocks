@@ -111,4 +111,37 @@ class Response {
     return null;
   }
 
+  public function getMentionType() {
+    if($this->isTypeOf('like-of'))
+      return 'like';
+    if($this->isTypeOf('repost-of'))
+      return 'repost';
+    if($this->isTypeOf('bookmark-of'))
+      return 'bookmark';
+    if($this->isTypeOf('in-reply-to'))
+      return 'reply';
+    // TODO: Add reacji support
+    return 'mention';
+  }
+
+  public function isTypeOf($property) {
+    return array_key_exists($property, $this->_comment)
+      && in_array($this->_data['target'], $this->_comment[$property]);
+  }
+
+  public static function facepileTypes() {
+    return ['like','repost','bookmark'];
+  }
+
+  public static function facepileTypeIcon($type) {
+    switch($type) {
+      case 'like':
+        return 'star';
+      case 'repost':
+        return 'retweet';
+      case 'bookmark':
+        return 'bookmark';
+    }
+  }
+
 }

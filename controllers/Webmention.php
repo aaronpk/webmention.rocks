@@ -184,7 +184,7 @@ class Webmention {
         );
     }
 
-    if(!isPublicAddress($ip)) {
+    if(Config::$allowLocalhostSource == false && !isPublicAddress($ip)) {
       return $this->_error($request, $response,
         'invalid_source',
         'The source hostname resolved to a private IP address: '.$ip
@@ -220,8 +220,7 @@ class Webmention {
     }
 
     $host = @$target['host'];
-    $thisHost = parse_url(Config::$base, PHP_URL_HOST);
-    if($host != $thisHost) {
+    if(!in_array($host, Config::$hostnames)) {
       return $this->_error($request, $response,
         'invalid_target',
         'This webmention endpoint only handles webmentions for '.$thisHost.'.'

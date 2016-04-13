@@ -92,7 +92,7 @@ class Webmention {
     if($response->getStatusCode() == 400) {
       if($source['code'] == 410 || $source['code'] == 200) {
         // If we've seen this before, and if the source URL returned 410 or 200, delete the existing comment
-        if(Rocks\Redis::getResponse($responseID)) {
+        if($old = Rocks\Redis::getResponse($responseID)) {
           Rocks\Redis::deleteResponse($responseID);
           $body = "";
           if($source['code'] == 410) {
@@ -105,7 +105,7 @@ class Webmention {
           $stream->write($body);
           $stream->rewind();
 
-          $this->_publishDelete($num, $responseID);
+          $this->_publishDelete($num, $responseID, $old);
 
           return $response->withBody($stream)->withStatus(200);
         } else {
@@ -337,22 +337,30 @@ class Webmention {
     else
       $html = view('partials/facepile-icon', ['res' => $comment, 'type' => $comment->getMentionType()]);
 
+    if($comment->getMentionType() == 'reacji')
+      $reacji_html = view('partials/reacji', ['emoji'=>$comment->text_content, 'reacjis'=>[$comment]]);
+    else
+      $reacji_html = false;
+
     $ch = curl_init(Config::$base . 'streaming/pub?id=test-'.$num);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
       'type' => $comment->getMentionType(),
       'hash' => $comment->hash(),
-      'html' => $html
+      'html' => $html,
+      'emoji' => $comment->getMentionType() == 'reacji' ? $comment->text_content() : false,
+      'reacji_html' => $reacji_html
     ]));
     curl_exec($ch);
   }
 
-  private function _publishDelete($num, $id) {
+  private function _publishDelete($num, $id, $comment) {
     $ch = curl_init(Config::$base . 'streaming/pub?id=test-'.$num);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
       'action' => 'delete',
-      'hash' => Rocks\Response::hashForId($id),
+      'hash' => $comment->hash(),
+      'emoji' => $comment->getMentionType() == 'reacji' ? $comment->text_content() : false,
     ]));
     curl_exec($ch);
   }

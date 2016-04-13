@@ -28,15 +28,13 @@
     <div class="responses-row reacji <?= count($responses['reacji']) ? '' : 'empty' ?>">
       <div style="padding: 12px 12px 3px 12px;">
         <h3 style="margin: 0;">Reacji</h3>
-        <p class="help-text">The emoji below are <a href="http://indiewebcamp.com/reacji">Reacji</a> posts, created by people posting a comment linking to this post with an <code><a href="http://indiewebcamp.com/in-reply-to">in-reply-to</a></code> property, whose text is a single emoji character.</p>
+        <p class="help-text">The emoji below show <a href="http://indiewebcamp.com/reacji">Reacji</a> responses, created by people posting a comment linking to this post with an <code><a href="http://indiewebcamp.com/in-reply-to">in-reply-to</a></code> property, whose text is a single emoji character.</p>
       </div>
       <ul class="reacji stream reacji">
-        <?php foreach($responses['reacji'] as $emoji=>$ress): ?>
-          <?php foreach($responses['reacji'][$emoji] as $reacjis): ?>
-            <li><span class="emojichar"><?= $emoji ?></span> <span class="count"><?= count($reacjis) ?></span></li>
-          </ul>
+        <?php foreach($responses['reacji'] as $emoji=>$reacjis): ?>
+          <?php $this->insert('partials/reacji', ['emoji'=>$emoji, 'reacjis'=>$reacjis]); ?>
         <?php endforeach; ?>
-      <?php endforeach; ?>
+      </ul>
       <div style="clear:both;"></div>
     </div>
 

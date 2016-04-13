@@ -66,11 +66,20 @@
   border: 1px #fbf6bd solid;
   border-radius: 6px;
 }
+
+/* name of the test */
 .post-container h3 {
   margin: 0;
   font-size: 16pt;
   font-weight: bold;
 }
+/* name if a comment has the name */
+.post-container h4 {
+  font-size: 15pt;
+  font-weight: bold;
+}
+
+
 
 /* facepile */
 
@@ -131,7 +140,7 @@
   color: #888;
   font-weight: normal;
 }
-.post-responses ul.comments > li .comment .comment-content.plaintext {
+.post-responses ul.comments > li .comment .plaintext {
   white-space: pre-line;
 }
 .post-responses ul.comments > li .comment .comment-content .missing {

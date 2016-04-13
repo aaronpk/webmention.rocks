@@ -62,6 +62,15 @@ class Response {
     return null;
   }
 
+  public function name() {
+    if($this->_comment) {
+      if(@isset($this->_comment['name']) && $this->_comment['name']) {
+        return $this->_comment['name'];
+      }
+    }
+    return false;
+  }
+
   public function content() {
     if($this->_comment) {
       if(@isset($this->_comment['content']['html']) && $this->_comment['content']['html']) {

@@ -13,9 +13,13 @@
               <span class="p-name"><?= htmlspecialchars($comment->author_name ?: 'No Name') ?></span>
             <?php endif; ?>
           </div>
-          <div class="e-content comment-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= 
-            $comment->content ?: '<span class="missing">Comment text not found</span>' 
-          ?></div>
+          <div class="comment-content">
+            <?php if($comment->name): ?>
+              <a href="<?= $comment->url ?: $comment->source ?>"><h4 class="p-name"><?= htmlspecialchars($comment->name) ?></h4></a> 
+            <?php else: ?>
+              <div class="e-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= $comment->content ?: '<span class="missing">Comment text not found</span>' ?></div>
+            <?php endif; ?>
+          </div>
           <div class="meta">
             <a class="u-url" href="<?= $comment->url ?: $comment->source ?>">
               <?php if($comment->published): ?>

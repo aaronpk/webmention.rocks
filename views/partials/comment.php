@@ -15,7 +15,9 @@
           </div>
           <div class="comment-content">
             <?php if($comment->name): ?>
-              <a href="<?= $comment->url ?: $comment->source ?>"><h4 class="p-name"><?= htmlspecialchars($comment->name) ?></h4></a> 
+              <a href="<?= $comment->url ?: $comment->source ?>">
+                <h3 class="p-name"><?= htmlspecialchars($comment->name) ?></h3>
+              </a> 
             <?php else: ?>
               <div class="e-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= $comment->content ?: '<span class="missing">Comment text not found</span>' ?></div>
             <?php endif; ?>

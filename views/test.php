@@ -11,7 +11,7 @@
       </a>
     </div>
     <div class="right">
-      <h3 class="p-name"><a href="/test/<?= $num ?>">Test #<?= $num ?></a></h3>
+      <h1 class="p-name"><a href="/test/<?= $num ?>">Test #<?= $num ?></a></h1>
       <div class="e-content"><?= $test['description'] ?></div>
       <div class="meta">
         <a href="/test/<?= $num ?>" class="u-url">
@@ -41,7 +41,7 @@
 
     <div class="responses-row reply <?= count($responses['reply']) ? '' : 'empty' ?>">
       <div style="padding: 12px 12px 3px 12px;">
-        <h3>Comments</h3>
+        <h3 style="margin: 0;">Comments</h3>
         <p style="font-size: 0.6em; color: #666;">The mentions below are replies to this post, and marked up their link to the post with the <code><a href="http://indiewebcamp.com/in-reply-to">in-reply-to</a></code> property.</p>
       </div>
       <ul class="comments stream reply">
@@ -53,7 +53,7 @@
 
     <div class="responses-row mention <?= count($responses['mention']) ? '' : 'empty' ?>">
       <div style="padding: 12px 12px 3px 12px;">
-        <h3>Other Mentions</h3>
+        <h3 style="margin: 0;">Other Mentions</h3>
         <p style="font-size: 0.6em; color: #666;">The mentions below linked to this post, but did not include this post's URL as an <code><a href="http://indiewebcamp.com/in-reply-to">in-reply-to</a></code> property.</p>
       </div>
       <ul class="comments stream mention">

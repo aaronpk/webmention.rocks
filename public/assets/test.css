@@ -68,14 +68,22 @@
 }
 
 /* name of the test */
-.post-container h3 {
+.post-container h1 {
   margin: 0;
   font-size: 16pt;
   font-weight: bold;
 }
-/* name if a comment has the name */
-.post-container h4 {
+/* name if a comment has the name, or if the comment text includes h tags */
+.post-container .post-responses h1,
+.post-container .post-responses h2,
+.post-container .post-responses h3 {
   font-size: 15pt;
+  font-weight: bold;
+}
+.post-container .post-responses h4,
+.post-container .post-responses h5,
+.post-container .post-responses h6 {
+  font-size: 13pt;
   font-weight: bold;
 }
 

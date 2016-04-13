@@ -19,6 +19,13 @@ $(function(){
           $("li[data-response-id="+data.text.hash+"]").html(data.text.html);
         }
       }
+      $(".responses-row ul").each(function(row){ 
+        if($(this).children("li").length == 0) { 
+          $(this).parent().addClass("empty");
+        } else {
+          $(this).parent().removeClass("empty");
+        }
+      });
     };
 
     socket.addEventListener('update', function(event) {
@@ -29,5 +36,5 @@ $(function(){
       console.log("error: ", event);
     };
   }
-  
+
 });

@@ -120,6 +120,15 @@
   display: none;
 }
 
+.post-responses .responses-row .help-text {
+  font-size: 0.7em; 
+  color: #666;  
+}
+
+.post-responses .responses-row .help-text code {
+  word-wrap: nowrap;
+}
+
 .post-container .post-responses ul.comments {
   margin: 0;
   padding: 0;

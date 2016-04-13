@@ -13,6 +13,7 @@
     },
     "files": [
       "lib/helpers.php",
+      "lib/emoji.php",
       "controllers/Controller.php",
       "controllers/Webmention.php"
     ]

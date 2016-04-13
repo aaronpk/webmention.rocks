@@ -38,7 +38,9 @@ class Controller {
       'bookmark' => [],
       'reply' => [],
       'mention' => [],
+      'reacji' => [],
     ];
+
     $numResponses = 0;
     if($responses = Rocks\Redis::getResponsesForTest($num)) {
       $responses = array_map(function($item){
@@ -46,11 +48,24 @@ class Controller {
       }, $responses);
       foreach($responses as $r) {
         if($r) {
-          $responseTypes[$r->getMentionType()][] = $r;
+          // Group reacji another level based on the emoji used
+          if($type=$r->getMentionType() == 'reacji') {
+            $emoji = $r->text_content();
+            if(!array_key_exists($emoji, $responseTypes['reacji']))
+              $responseTypes['reacji'][$emoji] = [];
+            $responseTypes['reacji'][$emoji][] = $r;
+          } else {
+            $responseTypes[$r->getMentionType()][] = $r;
+          }
           $numResponses++;
         }
       }
     }
+
+    // Sort reacji by number descending
+    uksort($responseTypes['reacji'], function($a, $b) use($responseTypes){
+      return count($responseTypes['reacji'][$a]) < count($responseTypes['reacji'][$b]);
+    });
 
     $response->getBody()->write(view('test', [
       'title' => 'Webmention Rocks!',

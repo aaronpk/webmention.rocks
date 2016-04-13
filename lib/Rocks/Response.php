@@ -2,6 +2,7 @@
 namespace Rocks;
 
 use DateTime, Exception;
+use EmojiRecognizer;
 
 class Response {
 
@@ -83,6 +84,15 @@ class Response {
     return null;
   }
 
+  public function text_content() {
+    if($this->_comment) {
+      if(@isset($this->_comment['content']['text']) && $this->_comment['content']['text']) {
+        return $this->_comment['content']['text'];
+      }
+    }
+    return null;
+  }
+
   public function content_is_html() {
     if($this->_comment) {
       if(@isset($this->_comment['content']['html']) && $this->_comment['content']['html']) {
@@ -134,6 +144,11 @@ class Response {
     return null;
   }
 
+  // Return url if present, otherwise source
+  public function href() {
+    return $this->url() ?: $this->source();
+  }
+
   public function getMentionType() {
     if($this->isTypeOf('like-of'))
       return 'like';
@@ -141,9 +156,15 @@ class Response {
       return 'repost';
     if($this->isTypeOf('bookmark-of'))
       return 'bookmark';
-    if($this->isTypeOf('in-reply-to'))
+    if($this->isTypeOf('in-reply-to')) {
+      // Check if this post is a reacji (the reply text is a single emoji character)
+      if($comment = $this->text_content()) {
+        if(EmojiRecognizer::isSingleEmoji($comment)) {
+          return 'reacji';
+        }
+      }
       return 'reply';
-    // TODO: Add reacji support
+    }
     return 'mention';
   }
 

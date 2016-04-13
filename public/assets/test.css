@@ -109,6 +109,42 @@
   float: left;
 }
 
+/* reacji */
+
+.post-responses .responses-row.reacji {
+  margin-bottom: 8px;
+}
+
+.post-responses ul.reacji {
+  margin: 0;
+  padding: 0;
+  padding-top: 6px;
+  margin-left: 12px;
+  list-style-type: none;
+}
+.post-responses ul.reacji li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px #fbf6bd solid;
+  border-radius: 4px;
+  padding: 0 2px;
+  margin-right: 6px;
+  float: left;
+}
+.post-responses ul.reacji li .emojichar {
+  flex: 0;
+  font-size: 2em;
+  line-height: 1.2em;
+}
+.post-responses ul.reacji li .count {
+  flex: 0;
+  font-size: 0.8em;
+  color: #666;
+  margin-left: 6px;
+  margin-right: 4px;
+}
+
 
 /* comments */
 

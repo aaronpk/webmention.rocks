@@ -29,7 +29,7 @@
                   <?= $comment->published->format('l, F j, Y g:ia P') ?>
                 </time>
               <?php else: ?>
-                <?= $comment->url ?: $comment->source ?>
+                <?= $comment->href ?>
               <?php endif; ?>
             </a>
             <?php if($comment->url == null): ?>

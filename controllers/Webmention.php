@@ -80,12 +80,26 @@ class Webmention {
     if($response->getStatusCode() == 400)
       return $response;
 
+    // For any of the tests that include a false endpoint, check if the webmention was
+    // sent to that endpoint and delete the comment if present
+    $params = $request->getQueryParams();
+    if(array_key_exists('error', $params)) {
+      // Delete the existing comment for this source URL if there is one
+      if($existing = Rocks\Redis::getResponse($responseID)) {
+        Rocks\Redis::deleteResponse($responseID);
+        $this->_publishDelete($num, $responseID, $existing);
+      }
+      $testData = TestData::data($num);
+      return $this->_error($request, $response, 
+        'error', 
+        array_key_exists('error_description', $testData) ? $testData['error_description'] : 'There was an error.');
+    }
+
     // Fetch the source URL, reporting any errors that occurred
     $result = $this->_fetchSourceURL($request, $response, $sourceURL);
     if(!is_array($result) && $result->getStatusCode() == 400)
       return $result;
     $source = $result;
-
 
     // Parse the source HTML and check for a link to target
     $response = $this->_verifySourceLinksToTarget($request, $response, $source, $targetURL);

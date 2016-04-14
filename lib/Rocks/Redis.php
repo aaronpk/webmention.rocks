@@ -40,7 +40,9 @@ class Redis {
       redis()->zrem(Config::$base . 'test/'.$num.'/responses', $id);
     }
     // Rename the file to *.deleted.json
-    rename(self::filenameForResponse($id), self::filenameForResponse($id, true));
+    $oldfilename = self::filenameForResponse($id);
+    if(file_exists($oldfilename))
+      rename($oldfilename, self::filenameForResponse($id, true));
   }
 
   public static function getResponsesForTest($testNum) {

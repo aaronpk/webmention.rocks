@@ -31,7 +31,7 @@ class TestData {
       ],
       // Link tag with absolute URL
       4 => [
-        'link_tag' => '<link rel="webmention" href="'.Config::$base.'test/4/webmention'.$params.'">',
+        'link_tag' => '<link href="'.Config::$base.'test/4/webmention'.$params.'" rel="webmention">',
         'link_header' => '',
         'name' => 'HTML <link> tag, absolute URL',
         'description' => 'This post advertises its Webmention endpoint with an HTML <code>&lt;link&gt;</code> tag in the document. The Webmention endpoint is listed as an absolute URL.',
@@ -48,7 +48,7 @@ class TestData {
         'link_tag' => '',
         'link_header' => '',
         'name' => 'HTML <a> tag, absolute URL',
-        'description' => 'This post advertises its <a rel="webmention" href="'.Config::$base.'test/6/webmention">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The Webmention endpoint is listed as an absolute URL.',
+        'description' => 'This post advertises its <a href="'.Config::$base.'test/6/webmention" rel="webmention">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The Webmention endpoint is listed as an absolute URL.',
       ],
       // Odd-case Link header with absolute URL
       7 => [
@@ -58,12 +58,35 @@ class TestData {
         'name' => 'HTTP Link header with strange casing',
         'description' => 'This post advertises its Webmention endpoint with an HTTP header with intentionally unusual casing, "<code>LinK</code>". This helps you test whether you are handling HTTP header names in a case insensitive way.',
       ],
+      // Link header with quoted rel name
       8 => [
         'link_tag' => '',
         'link_header' => '<'.Config::$base.'test/8/webmention'.$params.'>; rel="webmention"',
         'name' => 'HTTP Link header, quoted rel',
         'description' => 'This post advertises its Webmention endpoint with an HTTP <code>Link</code> header. Unlike tests #1 and #2, the rel value is quoted, since HTTP allows both <code>rel="webmention"</code> and <code>rel=webmention</code> for the Link header.',
       ],
+      // Multiple rel values on a link tag
+      9 => [
+        'link_tag' => '<link rel="webmention somethingelse" href="'.Config::$base.'test/9/webmention">',
+        'link_header' => '',
+        'name' => 'Multiple rel values on a <link> tag',
+        'description' => 'This post has a &lt;link&gt; tag with multiple rel values.',
+      ],
+      // Multiple rel values on a Link header
+      10 => [
+        'link_tag' => '',
+        'link_header' => '<'.Config::$base.'test/10/webmention'.$params.'>; rel="webmention somethingelse"',
+        'name' => 'Multiple rel values on a Link header',
+        'description' => 'This post has an HTTP Link tag with multiple rel values.',
+      ],
+      // Multiple endpoints defined, must use first
+      11 => [
+        'link_tag' => '<link rel="webmention" href="'.Config::$base.'test/11/webmention">',
+        'link_header' => '<'.Config::$base.'test/11/webmention?error>; rel="webmention"',
+        'name' => 'Multiple Webmention endpoints advertised',
+        'description' => 'This post advertises its Webmention endpoint in the HTTP Link header, HTML &lt;link&gt; tag, as well as an <a href="'.Config::$base.'test/11/webmention?error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the Link header.',
+        'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
+      ]
     ];
     if($num) {
       if(array_key_exists($num, $data)) {

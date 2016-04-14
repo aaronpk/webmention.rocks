@@ -30,8 +30,4 @@
     <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors</p>
   </section>
 
-  <?php if(Config::$relMeEmail): ?>
-    <a href="mailto:<?= Config::$relMeEmail ?>" rel="me"></a>
-  <?php endif; ?>
-
 </div>

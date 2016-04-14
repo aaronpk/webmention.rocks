@@ -3,6 +3,7 @@ namespace Rocks;
 
 use DateTime, Exception;
 use EmojiRecognizer;
+use DomDocument;
 
 class Response {
 
@@ -75,7 +76,7 @@ class Response {
   public function content() {
     if($this->_comment) {
       if(@isset($this->_comment['content']['html']) && $this->_comment['content']['html']) {
-        return $this->_comment['content']['html'];
+        return self::add_nofollow($this->_comment['content']['html']);
       }
       if(@isset($this->_comment['content']['text']) && $this->_comment['content']['text']) {
         return $this->_comment['content']['text'];
@@ -186,6 +187,33 @@ class Response {
       case 'bookmark':
         return 'bookmark';
     }
+  }
+
+  private static function add_nofollow($html) {
+    $dom = new DOMDocument;
+    $dom->loadHTML($html);
+    $anchors = $dom->getElementsByTagName('a');
+    foreach($anchors as $anchor) { 
+      $rel = array(); 
+
+      if($anchor->hasAttribute('rel') AND ($relAtt = $anchor->getAttribute('rel')) !== '') {
+         $rel = preg_split('/\s+/', trim($relAtt));
+      }
+
+      if(in_array('nofollow', $rel)) {
+        continue;
+      }
+
+      $rel[] = 'nofollow';
+      $anchor->setAttribute('rel', implode(' ', $rel));
+    }
+
+    $dom->saveHTML();
+    $html = '';
+    foreach($dom->getElementsByTagName('body')->item(0)->childNodes as $element) {
+      $html .= $dom->saveXML($element, LIBXML_NOEMPTYTAG);
+    }
+    return $html;
   }
 
 }

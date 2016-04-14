@@ -1,12 +1,12 @@
-      <li class="p-<?= $type ?> h-cite" data-response-id="<?= $comment->hash() ?>">
+      <li class="p-<?= $type ?> h-cite" data-response-id="<?= $comment->hash ?>">
         <div class="comment">
           <div class="p-author h-card author">
             <img class="u-photo" src="<?= $comment->author_photo ?: '/assets/no-photo.png' ?>" width="48">
             <?php if($comment->author_url): ?>
-              <a class="p-name u-url" href="<?= $comment->author_url ?>">
+              <a class="p-name u-url" href="<?= $comment->author_url ?>" rel="nofollow">
                 <?= htmlspecialchars($comment->author_name ?: 'No Name') ?>
               </a>
-              <a class="author-url" href="<?= $comment->author_url ?>">
+              <a class="author-url" href="<?= $comment->author_url ?>" rel="nofollow">
                 <?= parse_url($comment->author_url, PHP_URL_HOST) ?>
               </a>
             <?php else: ?>
@@ -15,7 +15,7 @@
           </div>
           <div class="comment-content">
             <?php if($comment->name): ?>
-              <a href="<?= $comment->url ?: $comment->source ?>">
+              <a href="<?= $comment->url ?: $comment->source ?>" rel="nofollow">
                 <h3 class="p-name"><?= htmlspecialchars($comment->name) ?></h3>
               </a> 
             <?php else: ?>
@@ -23,7 +23,7 @@
             <?php endif; ?>
           </div>
           <div class="meta">
-            <a class="u-url" href="<?= $comment->url ?: $comment->source ?>">
+            <a class="u-url" href="<?= $comment->url ?: $comment->source ?>" rel="nofollow">
               <?php if($comment->published): ?>
                 <time class="dt-published" datetime="<?= $comment->published->format('c') ?>">
                   <?= $comment->published->format('l, F j, Y g:ia P') ?>

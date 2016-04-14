@@ -225,6 +225,9 @@
   margin-left: 0;
   padding-left: 12px;
 }
+.post-responses ul.comments > li .comment .comment-content img {
+  max-width: 100%;
+}
 
 .post-footer {
   padding-top: 20px;

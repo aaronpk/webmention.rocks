@@ -40,7 +40,7 @@ class Response {
   public function author_photo() {
     if($this->_comment) {
       if(@isset($this->_comment['author']['photo'])) {
-        return $this->_comment['author']['photo'];
+        return \ImageProxy::url($this->_comment['author']['photo']);
       }
     }
     return null;
@@ -76,7 +76,7 @@ class Response {
   public function content() {
     if($this->_comment) {
       if(@isset($this->_comment['content']['html']) && $this->_comment['content']['html']) {
-        return self::add_nofollow($this->_comment['content']['html']);
+        return self::add_nofollow_and_img_proxy($this->_comment['content']['html']);
       }
       if(@isset($this->_comment['content']['text']) && $this->_comment['content']['text']) {
         return $this->_comment['content']['text'];
@@ -189,14 +189,15 @@ class Response {
     }
   }
 
-  private static function add_nofollow($html) {
+  private static function add_nofollow_and_img_proxy($html) {
     $dom = new DOMDocument;
     $dom->loadHTML($html);
+
     $anchors = $dom->getElementsByTagName('a');
     foreach($anchors as $anchor) { 
       $rel = array(); 
 
-      if($anchor->hasAttribute('rel') AND ($relAtt = $anchor->getAttribute('rel')) !== '') {
+      if($anchor->hasAttribute('rel') && ($relAtt = $anchor->getAttribute('rel')) !== '') {
          $rel = preg_split('/\s+/', trim($relAtt));
       }
 
@@ -206,6 +207,14 @@ class Response {
 
       $rel[] = 'nofollow';
       $anchor->setAttribute('rel', implode(' ', $rel));
+    }
+
+    $imgs = $dom->getElementsByTagName('img');
+    foreach($imgs as $img) {
+      if($img->hasAttribute('src') && ($src = $img->getAttribute('src')) !== '') {
+        $src = \ImageProxy::url($src);
+        $img->setAttribute('src', $src);
+      }
     }
 
     $dom->saveHTML();

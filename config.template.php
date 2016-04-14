@@ -10,4 +10,7 @@ class Config {
   // You might need to allow source URLs to resolve to localhost for development
   // In production, there is almost never a valid reason to allow localhost sources
   public static $allowLocalhostSource = false;
+
+  // Used when an encryption key is needed. Set to something random.
+  public static $secret = 'xxxx';
 }

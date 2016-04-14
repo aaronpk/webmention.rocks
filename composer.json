@@ -5,7 +5,8 @@
     "league/plates": "~3.1",
     "predis/predis": "~1.0",
     "mf2/mf2": "~0.3",
-    "ezyang/htmlpurifier": "^4.7"
+    "ezyang/htmlpurifier": "^4.7",
+    "guzzlehttp/guzzle": "~6.0"
   },
   "autoload": {
     "psr-4": {
@@ -15,7 +16,8 @@
       "lib/helpers.php",
       "lib/emoji.php",
       "controllers/Controller.php",
-      "controllers/Webmention.php"
+      "controllers/Webmention.php",
+      "controllers/ImageProxy.php"
     ]
   }
 }

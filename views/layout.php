@@ -11,6 +11,7 @@
   <link href="/assets/test.css" rel="stylesheet">
 
   <script src="/assets/jquery-1.11.3.min.js"></script>
+  <script src="/assets/semantic.min.js"></script>
 
   <?= isset($link_tag) ? $link_tag : '' ?>
 

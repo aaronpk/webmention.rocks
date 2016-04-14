@@ -57,4 +57,12 @@ $(function(){
     };
   }
 
+  $('ul.reacji .emojichar')
+    .popup({
+      inline: true,
+      position: 'bottom left',
+      offset: 0,
+      hoverable: true
+    });
+
 });

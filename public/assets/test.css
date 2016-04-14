@@ -136,6 +136,7 @@
   flex: 0;
   font-size: 2em;
   line-height: 1.2em;
+  cursor: pointer;
 }
 .post-responses ul.reacji li .count {
   flex: 0;
@@ -144,7 +145,15 @@
   margin-left: 6px;
   margin-right: 4px;
 }
-
+.post-responses ul.reacji-links {
+  margin: 0;
+  padding: 0;
+  max-width: 300px;
+  overflow: scroll;
+}
+.post-responses ul.reacji-links li {
+  border: 0;
+}
 
 /* comments */
 

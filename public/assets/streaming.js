@@ -36,7 +36,7 @@ $(function(){
         if($("li[data-response-id="+data.text.hash+"]").length == 0) {
           $(".stream."+data.text.type).prepend(data.text.html);
         } else {
-          $("li[data-response-id="+data.text.hash+"]").html(data.text.html);
+          $("li[data-response-id="+data.text.hash+"]").replaceWith(data.text.html);
         }
       }
       $(".responses-row ul").each(function(row){ 

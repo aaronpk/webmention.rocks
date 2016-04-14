@@ -191,7 +191,10 @@ class Response {
 
   private static function add_nofollow_and_img_proxy($html) {
     $dom = new DOMDocument;
-    $dom->loadHTML($html);
+    libxml_use_internal_errors(true); // suppress parse errors and warnings
+    // Force interpreting this as UTF-8
+    @$dom->loadHTML('<?xml encoding="UTF-8">' . $html, LIBXML_NOWARNING|LIBXML_NOERROR);
+    libxml_clear_errors();
 
     $anchors = $dom->getElementsByTagName('a');
     foreach($anchors as $anchor) { 
@@ -218,6 +221,7 @@ class Response {
     }
 
     $dom->saveHTML();
+
     $html = '';
     foreach($dom->getElementsByTagName('body')->item(0)->childNodes as $element) {
       $html .= $dom->saveXML($element, LIBXML_NOEMPTYTAG);

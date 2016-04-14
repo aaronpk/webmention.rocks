@@ -42,7 +42,11 @@ class Webmention {
   }
 
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
-    $num = $args['num'];
+    // Match the route for #15
+    if(preg_match('/^\/test\/(\d+)$/', $request->getUri()->getPath(), $match))
+      $num = $match[1];
+    else
+      $num = $args['num'];
 
     if(!TestData::exists($num)) {
       $response->getBody()->write('Test not found');

@@ -111,6 +111,13 @@ class TestData {
         'description' => 'This post contains sample code with escaped HTML which should not be discovered by the Webmention client. <code>&lt;a href="/test/14/webmention?error" rel="webmention"&gt;&lt;/a&gt;</code> There is also a <a href="/test/14/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
         'error_description' => 'You sent the Webmention to the endpoint that was part of the escaped HTML! Make sure you\'re actually parsing the HTML, and not just looking for a string match.'
       ],
+      // Webmention href is an empty string
+      15 => [
+        'link_header' => '',
+        'link_tag' => '<link rel="webmention" href="">',
+        'name' => 'Webmention href is an empty string',
+        'description' => 'This post has a &lt;link&gt; tag where the href value is an empty string, meaning the page is its own Webmention endpoint. This tests the relative URL resolver of the sender to ensure an empty string is resolved to the page\'s URL.',
+      ],
 
       // rel=webmention on a non-hyperlink tag
       // x => [

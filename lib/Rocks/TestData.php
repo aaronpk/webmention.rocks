@@ -81,12 +81,29 @@ class TestData {
       ],
       // Multiple endpoints defined, must use first
       11 => [
-        'link_tag' => '<link rel="webmention" href="'.Config::$base.'test/11/webmention">',
-        'link_header' => '<'.Config::$base.'test/11/webmention?error>; rel="webmention"',
+        'link_tag' => '<link rel="webmention" href="/test/11/webmention">',
+        'link_header' => '</test/11/webmention?error>; rel="webmention"',
         'name' => 'Multiple Webmention endpoints advertised',
-        'description' => 'This post advertises its Webmention endpoint in the HTTP Link header, HTML &lt;link&gt; tag, as well as an <a href="'.Config::$base.'test/11/webmention?error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the Link header.',
+        'description' => 'This post advertises its Webmention endpoint in the HTTP Link header, HTML &lt;link&gt; tag, as well as an <a href="/test/11/webmention?error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the Link header.',
         'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
-      ]
+      ],
+      // rel=not-webmention should not receive a webmention
+      12 => [
+        'link_tag' => '<link rel="not-webmention" href="/test/12/webmention?error">',
+        'link_header' => '',
+        'name' => 'Checking for exact match of rel=webmention',
+        'description' => 'This post contains a link tag with a rel value of "not-webmention", just to make sure you aren\'t using naïve string matching to find the endpoint. There is also a <a href="/test/12/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
+        'error_description' => 'You sent the Webmention to the wrong endpoint! You found the incorrect endpoint advertised with a value of rel=not-webmention. Make sure you\'re looking for an exact match of "webmention" when checking rel values.',
+      ],
+
+      // rel=webmention on a non-hyperlink tag
+      // x => [
+      //   'link_tag' => '',
+      //   'link_header' => '',
+      //   'name' => 'An <b> tag with rel=webmention attribute should not receive a Webmention',
+      //   'description' => 'This post contains a <b href="/test/12/webmention?error" rel="webmention">&lt;b&gt;</b> tag with a rel=webmention attribute, but since Webmention endpoints can only be defined on hyperlink tags (&lt;link&gt; or &lt;a&gt;) it should not receive a webmention. There is also a correct endpoint defined, so if your comment appears below, it means you successfully ignored the false endpoint. <a href="/test/12/webmention" rel="webmention"></a>',
+      //   'error_description' => 'You sent the Webmention to the endpoint advertised in the <b> tag, but your code should have skipped that and found the endpoint advertised in the <a> tag instead.',
+      // ],
     ];
     if($num) {
       if(array_key_exists($num, $data)) {

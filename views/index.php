@@ -11,11 +11,12 @@
 
   <section class="content">
     <h3>Webmention Endpoint Discovery</h3>
-    
+
     <p>The test posts below advertise their Webmention endpoints in a variety of ways, 
       to help you test your endpoint discovery code.</p>
     <p>You should be able to write a post that links to each post below, and have your
       comment show up on each of them.</p>
+    <p>In your comment, please describe what software and/or libraries you are using to send Webmentions. (name, link)</p>
 
     <ul>
       <?php foreach($testData as $i=>$data): ?>

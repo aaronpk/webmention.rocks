@@ -77,7 +77,7 @@ class TestData {
         'link_tag' => '',
         'link_header' => '<'.Config::$base.'test/10/webmention'.$params.'>; rel="webmention somethingelse"',
         'name' => 'Multiple rel values on a Link header',
-        'description' => 'This post has an HTTP Link tag with multiple rel values.',
+        'description' => 'This post has an HTTP Link header with multiple rel values.',
       ],
       // Multiple endpoints defined, must use first
       11 => [
@@ -94,6 +94,22 @@ class TestData {
         'name' => 'Checking for exact match of rel=webmention',
         'description' => 'This post contains a link tag with a rel value of "not-webmention", just to make sure you aren\'t using naïve string matching to find the endpoint. There is also a <a href="/test/12/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
         'error_description' => 'You sent the Webmention to the wrong endpoint! You found the incorrect endpoint advertised with a value of rel=not-webmention. Make sure you\'re looking for an exact match of "webmention" when checking rel values.',
+      ],
+      // Tag in an HTML comment
+      13 => [
+        'link_tag' => '',
+        'link_header' => '',
+        'name' => 'False endpoint inside an HTML comment',
+        'description' => 'This post contains an HTML comment <!-- <a href="/test/13/webmention?error" rel="webmention"></a> --> that contains a rel=webmention element, which should not receive a Webmention since it\'s inside an HTML comment. There is also a <a href="/test/13/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
+        'error_description' => 'You sent the Webmention to the endpoint that was inside an HTML comment! Make sure you\'re actually parsing the HTML, and not just looking for a string match.'
+      ],
+      // Escaped HTML tag
+      14 => [
+        'link_tag' => '',
+        'link_header' => '',
+        'name' => 'False endpoint in escaped HTML',
+        'description' => 'This post contains sample code with escaped HTML which should not be discovered by the Webmention client. <code>&lt;a href="/test/14/webmention?error" rel="webmention"&gt;&lt;/a&gt;</code> There is also a <a href="/test/14/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
+        'error_description' => 'You sent the Webmention to the endpoint that was part of the escaped HTML! Make sure you\'re actually parsing the HTML, and not just looking for a string match.'
       ],
 
       // rel=webmention on a non-hyperlink tag

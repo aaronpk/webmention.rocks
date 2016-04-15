@@ -58,7 +58,7 @@ class DiscoveryTestController {
       return count($responseTypes['reacji'][$a]) < count($responseTypes['reacji'][$b]);
     });
 
-    $response->getBody()->write(view('test', [
+    $response->getBody()->write(view('discovery-test', [
       'title' => 'Webmention Rocks!',
       'num' => $args['num'],
       'test' => DiscoveryTestData::data($num, $head),

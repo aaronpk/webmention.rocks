@@ -18,6 +18,7 @@
       "controllers/Controller.php",
       "controllers/DiscoveryTestController.php",
       "controllers/UpdateTestController.php",
+      "controllers/Webmention.php",
       "controllers/DiscoveryWebmention.php",
       "controllers/UpdateWebmention.php",
       "controllers/ImageProxy.php"

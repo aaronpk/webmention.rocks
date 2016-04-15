@@ -10,7 +10,7 @@
       </a>
     </div>
     <div class="right">
-      <h1 class="p-name"><a href="/test/<?= $num ?>/step/<?= $step ?>">Update Test #<?= $num ?> Step #<?= $step ?></a></h1>
+      <h1 class="p-name"><a href="/test/<?= $num ?>/step/<?= $step ?>">Update Test #<?= $num ?> Step <?= $step ?>.</a></h1>
       <div class="e-content"><?= $test['steps'][$step]['description'] ?></div>
       <div class="meta">
         <a href="/test/<?= $num ?>" class="u-url">

@@ -16,7 +16,7 @@
   flex-direction: row;  
 
   border-radius: 8px;
-  border: 1px #fbf6bd solid;
+  border: 1px #abcce9 solid;
 
   background: #fff;
   padding: 12px;
@@ -47,10 +47,10 @@
 }
 
 .post-container .post-responses {
-  background: #fffef1;
+  background: #f7fbff;
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
-  border: 1px #fbf6bd solid;
+  border: 1px #abcce9 solid;
   border-top: 0;
 }
 
@@ -63,7 +63,7 @@
 }
 .post-container img {
   background: white;
-  border: 1px #fbf6bd solid;
+  border: 1px #abcce9 solid;
   border-radius: 6px;
 }
 
@@ -126,7 +126,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  border: 1px #fbf6bd solid;
+  border: 1px #abcce9 solid;
   border-radius: 4px;
   padding: 0 2px;
   margin-right: 6px;
@@ -158,7 +158,7 @@
 /* comments */
 
 .post-container .responses-row {
-  border-top: 1px #fbf6bd solid;  
+  border-top: 1px #abcce9 solid;  
 }
 
 .post-responses .responses-row.empty {
@@ -184,7 +184,7 @@
   margin: 0;
   padding-top: 6px;
   padding-right: 12px;
-  border-top: 1px #fbf6bd solid;
+  border-top: 1px #abcce9 solid;
 }
 .post-responses ul.comments > li .comment {
   margin-left: 66px;

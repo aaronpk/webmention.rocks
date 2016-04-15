@@ -188,6 +188,7 @@ class DiscoveryTestData extends TestData {
 
       // rel=webmention on a non-hyperlink tag
       // x => [
+      //   'published' => '',
       //   'link_header' => '',
       //   'link_tag' => '',
       //   'name' => 'An <b> tag with rel=webmention attribute should not receive a Webmention',

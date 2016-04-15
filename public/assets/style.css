@@ -1,6 +1,6 @@
 
 body {
-  background: #fffcdf;
+  background: #cee0f0;
 }
 
 #header-graphic {
@@ -18,7 +18,7 @@ body {
 section.content {
   padding: 10px;
   border-radius: 4px;
-  border: 1px #fbf6bd solid;
+  border: 1px #abcce9 solid;
   background: #fff;
   margin-bottom: 12px;
 }
@@ -36,11 +36,11 @@ section.content h4 {
 }
 
 section.content textarea {
-  border: 1px #f7ef98 solid;
+  border: 1px #abcce9 solid;
   border-radius: 4px;
   padding: 7px;
-  -webkit-box-shadow: inset 0px 0px 6px 2px #fffdea;
-  -moz-box-shadow: inset 0px 0px 6px 2px #fffdea;
-  box-shadow: inset 0px 0px 6px 2px #fffdea;
+  -webkit-box-shadow: inset 0px 0px 6px 2px #e0edf9;
+  -moz-box-shadow: inset 0px 0px 6px 2px #e0edf9;
+  box-shadow: inset 0px 0px 6px 2px #e0edf9;
 }
 

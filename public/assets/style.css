@@ -34,3 +34,13 @@ section.content h4 {
     margin-right: 8px;
   }
 }
+
+section.content textarea {
+  border: 1px #f7ef98 solid;
+  border-radius: 4px;
+  padding: 7px;
+  -webkit-box-shadow: inset 0px 0px 6px 2px #fffdea;
+  -moz-box-shadow: inset 0px 0px 6px 2px #fffdea;
+  box-shadow: inset 0px 0px 6px 2px #fffdea;
+}
+

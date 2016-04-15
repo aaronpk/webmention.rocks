@@ -1,10 +1,10 @@
 <?php
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Rocks\TestData;
+use Rocks\DiscoveryTestData;
 use Rocks\HTTP;
 
-class Webmention {
+class DiscoveryWebmention {
 
   private function _error(ServerRequestInterface $request, ResponseInterface $response, $error, $description=false) {
 
@@ -28,7 +28,7 @@ class Webmention {
   public function get(ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $num = $args['num'];
 
-    if(!TestData::exists($num)) {
+    if(!DiscoveryTestData::exists($num)) {
       $response->getBody()->write('Test not found');
       return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
     }
@@ -49,7 +49,7 @@ class Webmention {
   }
 
   private function _test_exists(ResponseInterface $response, $num) {
-    if(!TestData::exists($num)) {
+    if(!DiscoveryTestData::exists($num)) {
       $response->getBody()->write('Test not found');
       return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
     } else {
@@ -79,7 +79,7 @@ class Webmention {
     // Delete the existing comment for this source URL if there is one
     $this->_deleteResponse($num, $responseID);
 
-    $testData = TestData::data($num);
+    $testData = DiscoveryTestData::data($num);
 
     return $this->_error($request, $response, 
       'error', 
@@ -145,7 +145,7 @@ class Webmention {
     if($mode == 'error') {
       $this->_deleteResponse($num, $responseID);
 
-      $testData = TestData::data($num);
+      $testData = DiscoveryTestData::data($num);
 
       return $this->_error($request, $response, 
         'error', 

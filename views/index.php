@@ -21,7 +21,7 @@
     <ul>
       <?php foreach($discoveryTestData as $i=>$data): ?>
         <li>
-          <a href="/test/<?= $i ?>">Discovery Test <?= $i ?></a>
+          <a href="/test/<?= $i ?>">Discovery Test #<?= $i ?></a>
           -
           <?= htmlspecialchars($data['name']) ?>
         </li>
@@ -51,8 +51,13 @@
     <p>The tests below will test whether you properly support <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-updated-posts">sending Webmentions for updated posts</a>.</p>
 
     <ul>
-      <li><a href="/update/1">Update Test 1</a></li>
-      <li><a href="/update/2">Update Test 2</a></li>
+      <?php foreach($updateTestData as $i=>$data): ?>
+        <li>
+          <a href="/update/<?= $i ?>">Update Test #<?= $i ?></a>
+          -
+          <?= htmlspecialchars($data['name']) ?>
+        </li>
+      <?php endforeach; ?>
     </ul>
   </section>
 

@@ -25,7 +25,8 @@ $route->map('POST', '/test/{num}/webmention/{mode}', 'DiscoveryWebmention::handl
 $route->map('POST', '/test/15', 'DiscoveryWebmention::handle'); // in test #15 the page is its own webmention handler
 $route->map('POST', '/test/20', 'DiscoveryWebmention::handle_error'); // for #20, the webmention sent to itself is wrong
 
-$route->map('GET', '/update/{num}', 'UpdateTestController::view');
+$route->map('GET', '/update/{test}', 'UpdateTestController::view');
+$route->map('GET', '/update/{test}/step/{step}', 'UpdateTestController::step');
 $route->map('POST', '/update/{test}/step/{step}/webmention', 'UpdateWebmention::handle');
 
 $route->map('GET', '/image', 'ImageProxy::image');

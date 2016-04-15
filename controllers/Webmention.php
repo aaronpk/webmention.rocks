@@ -130,6 +130,16 @@ class Webmention {
     if($response->getStatusCode() == 400)
       return $response;
 
+    // Test 21 requires the query string be mainted, so double check it exists
+    if($num == 21) {
+      $params = $request->getQueryParams();
+      if(!array_key_exists('query', $params)
+        || $params['query'] != 'yes'
+        || array_key_exists('query', $post)) {
+        $mode = 'error';
+      }
+    }
+
     // For any of the tests that include a false endpoint, check if the webmention was
     // sent to that endpoint and delete the comment if present
     if($mode == 'error') {

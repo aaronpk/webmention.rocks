@@ -157,6 +157,13 @@ class TestData {
         'description' => 'This post has a &lt;link&gt; tag which has no href attribute. Your Webmention client should not find this link tag, and should send the webmention to <a href="/test/20/webmention" rel="webmention">this endpoint</a> instead.',
         'error_description' => 'You sent the Webmention to the wrong endpoint! Chances are your code found the link tag with rel=webmention and assumed that the lack of an href attribute makes the tag point to itself. Instead, you should skip this element since there is no href, and find the <a> tag in the body instead.'
       ],
+      21 => [
+        'link_header' => '',
+        'link_tag' => '<link rel="webmention" href="/test/21/webmention?query=yes">',
+        'name' => 'Webmention endpoint has query string parameters',
+        'description' => 'This post\'s Webmention endpoint has query string parameters. Your Webmention client must preserve the query string parameters, and not send them in the post body.',
+        'error_description' => 'The Webmention endpoint has a query string, but you either left it out, or sent the values as POST body parameters instead. Make sure you do not modify the URL discovered other than resolving it to an absolute URL.'
+      ],
 
       // rel=webmention on a non-hyperlink tag
       // x => [

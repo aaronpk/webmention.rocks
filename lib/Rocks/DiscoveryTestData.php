@@ -10,6 +10,7 @@ class DiscoveryTestData extends TestData {
     return [
       // Link header with relative URL
       1 => [
+        'published' => '2016-04-09T21:25:31-07:00',
         'link_header' => '</test/1/webmention'.$params.'>; rel=webmention',
         'link_tag' => '',
         'name' => 'HTTP Link header, unquoted rel, relative URL',
@@ -17,6 +18,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Link header with absolute URL
       2 => [
+        'published' => '2016-04-09T21:25:31-07:00',
         'link_header' => '<'.Config::$base.'test/2/webmention'.$params.'>; rel=webmention',
         'link_tag' => '',
         'name' => 'HTTP Link header, unquoted rel, absolute URL',
@@ -24,6 +26,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Link tag with relative URL
       3 => [
+        'published' => '2016-04-09T21:25:31-07:00',
         'link_header' => '',
         'link_tag' => '<link rel="webmention" href="/test/3/webmention'.$params.'">',
         'name' => 'HTML <link> tag, relative URL',
@@ -31,6 +34,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Link tag with absolute URL
       4 => [
+        'published' => '2016-04-09T21:25:31-07:00',
         'link_header' => '',
         'link_tag' => '<link href="'.Config::$base.'test/4/webmention'.$params.'" rel="webmention">',
         'name' => 'HTML <link> tag, absolute URL',
@@ -38,6 +42,7 @@ class DiscoveryTestData extends TestData {
       ],
       // <a> tag with relative URL
       5 => [
+        'published' => '2016-04-09T21:25:31-07:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'HTML <a> tag, relative URL',
@@ -45,6 +50,7 @@ class DiscoveryTestData extends TestData {
       ],
       // <a> tag with absolute URL
       6 => [
+        'published' => '2016-04-09T21:25:31-07:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'HTML <a> tag, absolute URL',
@@ -52,6 +58,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Odd-case Link header with absolute URL
       7 => [
+        'published' => '2016-04-11T17:34:58-07:00',
         'link_header' => '<'.Config::$base.'test/7/webmention'.$params.'>; rel=webmention',
         'link_header_name' => 'LinK',
         'link_tag' => '',
@@ -60,6 +67,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Link header with quoted rel name
       8 => [
+        'published' => '2016-04-11T18:18:05-07:00',
         'link_header' => '<'.Config::$base.'test/8/webmention'.$params.'>; rel="webmention"',
         'link_tag' => '',
         'name' => 'HTTP Link header, quoted rel',
@@ -67,6 +75,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Multiple rel values on a link tag
       9 => [
+        'published' => '2016-04-14T17:05:16+02:00',
         'link_header' => '',
         'link_tag' => '<link rel="webmention somethingelse" href="'.Config::$base.'test/9/webmention">',
         'name' => 'Multiple rel values on a <link> tag',
@@ -74,6 +83,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Multiple rel values on a Link header
       10 => [
+        'published' => '2016-04-14T17:05:16+02:00',
         'link_header' => '<'.Config::$base.'test/10/webmention'.$params.'>; rel="webmention somethingelse"',
         'link_tag' => '',
         'name' => 'Multiple rel values on a Link header',
@@ -81,6 +91,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Multiple endpoints defined, must use first
       11 => [
+        'published' => '2016-04-14T17:05:16+02:00',
         'link_header' => '</test/11/webmention>; rel="webmention"',
         'link_tag' => '<link rel="webmention" href="/test/11/webmention/error">',
         'name' => 'Multiple Webmention endpoints advertised: Link, <link>, <a>',
@@ -89,6 +100,7 @@ class DiscoveryTestData extends TestData {
       ],
       // rel=not-webmention should not receive a webmention
       12 => [
+        'published' => '2016-04-14T17:44:23+02:00',
         'link_header' => '',
         'link_tag' => '<link rel="not-webmention" href="/test/12/webmention/error">',
         'name' => 'Checking for exact match of rel=webmention',
@@ -97,6 +109,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Tag in an HTML comment
       13 => [
+        'published' => '2016-04-14T18:16:17+02:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'False endpoint inside an HTML comment',
@@ -105,6 +118,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Escaped HTML tag
       14 => [
+        'published' => '2016-04-14T18:16:17+02:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'False endpoint in escaped HTML',
@@ -113,6 +127,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Webmention href is an empty string
       15 => [
+        'published' => '2016-04-14T23:26:48+02:00',
         'link_header' => '',
         'link_tag' => '<link rel="webmention" href="">',
         'name' => 'Webmention href is an empty string',
@@ -120,6 +135,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Multiple endpoints defined, must use first
       16 => [
+        'published' => '2016-04-15T08:27:15+02:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'Multiple Webmention endpoints advertised: <a>, <link>',
@@ -128,6 +144,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Multiple endpoints defined, must use first
       17 => [
+        'published' => '2016-04-15T08:27:15+02:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'Multiple Webmention endpoints advertised: <link>, <a>',
@@ -135,6 +152,7 @@ class DiscoveryTestData extends TestData {
         'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
       ],
       18 => [
+        'published' => '2016-04-15T08:27:15+02:00',
         'link_header' => [
           '<'.Config::$base.'test/18/webmention/error>; rel="other"',
           '<'.Config::$base.'test/18/webmention'.$params.'>; rel="webmention"',
@@ -144,6 +162,7 @@ class DiscoveryTestData extends TestData {
         'description' => 'This post returns two HTTP Link headers, the first with a different rel value. This ensures your code correcly parses the HTTP response when multiple Link headers are returned.',
       ],
       19 => [
+        'published' => '2016-04-15T08:27:15+02:00',
         'link_header' => '<'.Config::$base.'test/19/webmention/error>; rel="other", <'.Config::$base.'test/19/webmention'.$params.'>; rel="webmention"',
         'link_tag' => '',
         'name' => 'Single HTTP Link header with multiple values',
@@ -151,6 +170,7 @@ class DiscoveryTestData extends TestData {
       ],
       // Webmention rel with no href
       20 => [
+        'published' => '2016-04-15T11:03:35+02:00',
         'link_header' => '',
         'link_tag' => '',
         'name' => 'Link tag with no href attribute',
@@ -158,6 +178,7 @@ class DiscoveryTestData extends TestData {
         'error_description' => 'You sent the Webmention to the wrong endpoint! Chances are your code found the link tag with rel=webmention and assumed that the lack of an href attribute makes the tag point to itself. Instead, you should skip this element since there is no href, and find the <a> tag in the body instead.'
       ],
       21 => [
+        'published' => '2016-04-15T11:33:50+02:00',
         'link_header' => '',
         'link_tag' => '<link rel="webmention" href="/test/21/webmention?query=yes">',
         'name' => 'Webmention endpoint has query string parameters',

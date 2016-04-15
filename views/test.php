@@ -15,8 +15,9 @@
       <div class="e-content"><?= $test['description'] ?></div>
       <div class="meta">
         <a href="/test/<?= $num ?>" class="u-url">
-          <time class="dt-published" datetime="<?= $date->format('c') ?>">
-            <?= $date->format('l F j, Y g:ia P') ?>
+          Published:
+          <time class="dt-published" datetime="<?= $published->format('c') ?>">
+            <?= $published->format('l F j, Y g:ia P') ?>
           </time>
         </a>
       </div>

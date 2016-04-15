@@ -23,10 +23,6 @@ class DiscoveryTestController {
     }
 
     // Set the post's published date to 3 hours ago
-    $date = new DateTime();
-    $date->sub(new DateInterval('PT3H'));
-    $date->setTimeZone(new DateTimeZone('America/Los_Angeles'));
-
     $responseTypes = [
       'like' => [],
       'repost' => [],
@@ -66,7 +62,7 @@ class DiscoveryTestController {
       'title' => 'Webmention Rocks!',
       'num' => $args['num'],
       'test' => DiscoveryTestData::data($num, $head),
-      'date' => $date,
+      'published' => DiscoveryTestData::published($num),
       'responses' => $responseTypes,
       'num_responses' => $numResponses,
     ]));

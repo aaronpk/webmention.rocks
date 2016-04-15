@@ -1,6 +1,7 @@
 <?php
 namespace Rocks;
 use Config;
+use DateTime;
 
 class TestData {
 
@@ -40,6 +41,10 @@ class TestData {
 
   public static function a_tag($num, $head) {
     return self::data($num, $head)['a_tag'];
+  }
+
+  public static function published($num) {
+    return new DateTime(self::data($num)['published']);
   }
 
 }

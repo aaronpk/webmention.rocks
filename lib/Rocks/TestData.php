@@ -41,7 +41,7 @@ class TestData {
         'link_header' => '',
         'link_tag' => '',
         'name' => 'HTML <a> tag, relative URL',
-        'description' => 'This post advertises its <a rel="webmention" href="/test/5/webmention'.$params.'">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The URL is relative, so this will also test whether your discovery code properly resolves the relative URL.',
+        'description' => 'This post advertises its <a rel="webmention" href="/test/5/webmention">Webmention endpoint</a> with an HTML <code>&lt;a&gt;</code> tag in the body. The URL is relative, so this will also test whether your discovery code properly resolves the relative URL.',
       ],
       // <a> tag with absolute URL
       6 => [
@@ -82,15 +82,15 @@ class TestData {
       // Multiple endpoints defined, must use first
       11 => [
         'link_header' => '</test/11/webmention>; rel="webmention"',
-        'link_tag' => '<link rel="webmention" href="/test/11/webmention?error">',
-        'name' => 'Multiple Webmention endpoints advertised',
-        'description' => 'This post advertises its Webmention endpoint in the HTTP Link header, HTML &lt;link&gt; tag, as well as an <a href="/test/11/webmention?error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the Link header.',
+        'link_tag' => '<link rel="webmention" href="/test/11/webmention/error">',
+        'name' => 'Multiple Webmention endpoints advertised: Link, <link>, <a>',
+        'description' => 'This post advertises its Webmention endpoint in the HTTP Link header, HTML &lt;link&gt; tag, as well as an <a href="/test/11/webmention/error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the Link header.',
         'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
       ],
       // rel=not-webmention should not receive a webmention
       12 => [
         'link_header' => '',
-        'link_tag' => '<link rel="not-webmention" href="/test/12/webmention?error">',
+        'link_tag' => '<link rel="not-webmention" href="/test/12/webmention/error">',
         'name' => 'Checking for exact match of rel=webmention',
         'description' => 'This post contains a link tag with a rel value of "not-webmention", just to make sure you aren\'t using naïve string matching to find the endpoint. There is also a <a href="/test/12/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
         'error_description' => 'You sent the Webmention to the wrong endpoint! You found the incorrect endpoint advertised with a value of rel=not-webmention. Make sure you\'re looking for an exact match of "webmention" when checking rel values.',
@@ -100,7 +100,7 @@ class TestData {
         'link_header' => '',
         'link_tag' => '',
         'name' => 'False endpoint inside an HTML comment',
-        'description' => 'This post contains an HTML comment <!-- <a href="/test/13/webmention?error" rel="webmention"></a> --> that contains a rel=webmention element, which should not receive a Webmention since it\'s inside an HTML comment. There is also a <a href="/test/13/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
+        'description' => 'This post contains an HTML comment <!-- <a href="/test/13/webmention/error" rel="webmention"></a> --> that contains a rel=webmention element, which should not receive a Webmention since it\'s inside an HTML comment. There is also a <a href="/test/13/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
         'error_description' => 'You sent the Webmention to the endpoint that was inside an HTML comment! Make sure you\'re actually parsing the HTML, and not just looking for a string match.'
       ],
       // Escaped HTML tag
@@ -108,7 +108,7 @@ class TestData {
         'link_header' => '',
         'link_tag' => '',
         'name' => 'False endpoint in escaped HTML',
-        'description' => 'This post contains sample code with escaped HTML which should not be discovered by the Webmention client. <code>&lt;a href="/test/14/webmention?error" rel="webmention"&gt;&lt;/a&gt;</code> There is also a <a href="/test/14/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
+        'description' => 'This post contains sample code with escaped HTML which should not be discovered by the Webmention client. <code>&lt;a href="/test/14/webmention/error" rel="webmention"&gt;&lt;/a&gt;</code> There is also a <a href="/test/14/webmention" rel="webmention">correct endpoint</a> defined, so if your comment appears below, it means you successfully ignored the false endpoint.',
         'error_description' => 'You sent the Webmention to the endpoint that was part of the escaped HTML! Make sure you\'re actually parsing the HTML, and not just looking for a string match.'
       ],
       // Webmention href is an empty string
@@ -118,13 +118,44 @@ class TestData {
         'name' => 'Webmention href is an empty string',
         'description' => 'This post has a &lt;link&gt; tag where the href value is an empty string, meaning the page is its own Webmention endpoint. This tests the relative URL resolver of the sender to ensure an empty string is resolved to the page\'s URL.',
       ],
+      // Multiple endpoints defined, must use first
+      16 => [
+        'link_header' => '',
+        'link_tag' => '',
+        'name' => 'Multiple Webmention endpoints advertised: <a>, <link>',
+        'description' => 'This post advertises its Webmention endpoint in an HTML <a href="/test/11/webmention" rel="webmention">&lt;a&gt; tag</a>, followed by a later definition in a &lt;link&gt; tag. Your Webmention client must only send a Webmention to the one in the &lt;a&gt; tag since it appears first in the document. <link rel="webmention" href="/test/11/webmention/error">',
+        'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
+      ],
+      // Multiple endpoints defined, must use first
+      17 => [
+        'link_header' => '',
+        'link_tag' => '',
+        'name' => 'Multiple Webmention endpoints advertised: <link>, <a>',
+        'description' => 'This post advertises its Webmention endpoint in an HTML &lt;link&gt; tag <link rel="webmention" href="/test/11/webmention"> followed by a later definition in an <a href="/test/11/webmention/error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the &lt;link&gt; tag since it appears first in the document.',
+        'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
+      ],
+      18 => [
+        'link_header' => [
+          '<'.Config::$base.'test/2/webmention/error>; rel="other"',
+          '<'.Config::$base.'test/2/webmention'.$params.'>; rel="webmention"',
+        ],
+        'link_tag' => '',
+        'name' => 'Multiple HTTP Link headers',
+        'description' => 'This post returns two HTTP Link headers, the first with a different rel value. This ensures your code correcly parses the HTTP response when multiple Link headers are returned.',
+      ],
+      19 => [
+        'link_header' => '<'.Config::$base.'test/2/webmention/error>; rel="other", <'.Config::$base.'test/2/webmention'.$params.'>; rel="webmention"',
+        'link_tag' => '',
+        'name' => 'Single HTTP Link header with multiple values',
+        'description' => 'This post returns one HTTP Link header with multiple values separated by a comma. This ensures your code correcly parses the HTTP response when multiple Link headers are returned.',
+      ],
 
       // rel=webmention on a non-hyperlink tag
       // x => [
       //   'link_header' => '',
       //   'link_tag' => '',
       //   'name' => 'An <b> tag with rel=webmention attribute should not receive a Webmention',
-      //   'description' => 'This post contains a <b href="/test/12/webmention?error" rel="webmention">&lt;b&gt;</b> tag with a rel=webmention attribute, but since Webmention endpoints can only be defined on hyperlink tags (&lt;link&gt; or &lt;a&gt;) it should not receive a webmention. There is also a correct endpoint defined, so if your comment appears below, it means you successfully ignored the false endpoint. <a href="/test/12/webmention" rel="webmention"></a>',
+      //   'description' => 'This post contains a <b href="/test/12/webmention/error" rel="webmention">&lt;b&gt;</b> tag with a rel=webmention attribute, but since Webmention endpoints can only be defined on hyperlink tags (&lt;link&gt; or &lt;a&gt;) it should not receive a webmention. There is also a correct endpoint defined, so if your comment appears below, it means you successfully ignored the false endpoint. <a href="/test/12/webmention" rel="webmention"></a>',
       //   'error_description' => 'You sent the Webmention to the endpoint advertised in the <b> tag, but your code should have skipped that and found the endpoint advertised in the <a> tag instead.',
       // ],
     ];

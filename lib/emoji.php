@@ -1,4 +1,6 @@
 <?php
+// Copied from https://github.com/dissolve/single-emoji-recognizer
+// TODO: bring this in via a composer dependency once it's published as a composer package
 
 class EmojiRecognizer
 {

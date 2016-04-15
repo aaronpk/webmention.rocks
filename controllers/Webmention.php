@@ -48,6 +48,12 @@ class Webmention {
     else
       $num = $args['num'];
 
+    // The path might be /test/15/webmention/error which sets mode=error
+    if(array_key_exists('mode', $args))
+      $mode = $args['mode'];
+    else
+      $mode = false;
+
     if(!TestData::exists($num)) {
       $response->getBody()->write('Test not found');
       return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
@@ -86,8 +92,7 @@ class Webmention {
 
     // For any of the tests that include a false endpoint, check if the webmention was
     // sent to that endpoint and delete the comment if present
-    $params = $request->getQueryParams();
-    if(array_key_exists('error', $params)) {
+    if($mode == 'error') {
       // Delete the existing comment for this source URL if there is one
       if($existing = Rocks\Redis::getResponse($responseID)) {
         Rocks\Redis::deleteResponse($responseID);

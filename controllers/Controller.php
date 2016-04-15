@@ -23,8 +23,11 @@ class Controller {
 
     $head = $_SERVER['REQUEST_METHOD'] == 'HEAD';
 
-    if($header=TestData::link_header($num, $head)) {
-      $response = $response->withHeader(TestData::link_header_name($num, $head), $header);
+    if($headers=TestData::link_header($num, $head)) {
+      if(!is_array($headers))
+        $headers = [$headers];
+      foreach($headers as $header)
+        $response = $response->withAddedHeader(TestData::link_header_name($num, $head), $header);
     }
 
     // Set the post's published date to 3 hours ago

@@ -19,6 +19,7 @@
       "controllers/DiscoveryTestController.php",
       "controllers/UpdateTestController.php",
       "controllers/DiscoveryWebmention.php",
+      "controllers/UpdateWebmention.php",
       "controllers/ImageProxy.php"
     ]
   }

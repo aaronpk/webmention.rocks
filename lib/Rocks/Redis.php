@@ -62,4 +62,22 @@ class Redis {
     return null;
   }
 
+  public static function createOneTimeKey() {
+    $key = random_string(20);
+    redis()->setex(Config::$base . 'onetime/' . $key, 600, 'active');
+    return $key;
+  }
+
+  // If the key exists (hasn't been used yet), it deletes the key and returns true.
+  // Returns false if the key doesn't exist (the endpoint has expired).
+  public static function useOneTimeKey($key) {
+    $str = Config::$base . 'onetime/' . $key;
+    if(redis()->get($str) == 'active') {
+      redis()->del($str);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

@@ -5,6 +5,11 @@ use Config;
 class UpdateTestData extends TestData {
 
   protected static function _testData() {
+    static $key;
+    
+    if(!isset($key))
+      $key = Redis::createOneTimeKey();
+
     return [
       1 => [
         'published' => '2016-04-15T17:30:31+02:00',
@@ -18,12 +23,12 @@ class UpdateTestData extends TestData {
             <li>You should see your post appear here when successful.</li>
           </ol>
         </p>
-        <link rel="webmention" href="/update/1/step/2/webmention">
+        <link rel="webmention" href="/update/1/step/2/webmention?key='.$key.'">
         ',
         'steps' => [
           1 => [
             'description' => 'You should see your post listed here when you\'ve completed <a href="/update/1">step 1 of the test</a>. Once you complete step 2, it will be removed from this page and will show up on the main test page.
-            <link rel="webmention" href="/update/1/step/1/webmention">',
+            <link rel="webmention" href="/update/1/step/1/webmention?key='.$key.'">',
           ],
           2 => [
             'description' => 'This page doesn\'t do anything. You can ignore it.',
@@ -41,12 +46,12 @@ class UpdateTestData extends TestData {
             <li>You should see your post appear here with the new content when successful.</li>
           </ol>
         </p>
-        <link rel="webmention" href="/update/2/step/2/webmention">
+        <link rel="webmention" href="/update/2/step/2/webmention?key='.$key.'">
         ',
         'steps' => [
           1 => [
             'description' => 'You should see your post listed here when you\'ve completed <a href="/update/2">step 1 of the test</a>. Once you complete step 2, it will be removed from this page and will show up on the main test page.
-            <link rel="webmention" href="/update/2/step/1/webmention">',
+            <link rel="webmention" href="/update/2/step/1/webmention?key='.$key.'">',
           ],
           2 => [
             'description' => 'This page doesn\'t do anything. You can ignore it.',

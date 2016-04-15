@@ -1,14 +1,14 @@
 <?php
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Rocks\TestData;
+use Rocks\DiscoveryTestData;
 
 class Controller {
 
   public function index(ServerRequestInterface $request, ResponseInterface $response) {
     $response->getBody()->write(view('index', [
       'title' => 'Webmention Rocks!',
-      'testData' => TestData::data()
+      'discoveryTestData' => DiscoveryTestData::data(),
     ]));
     return $response;
   }
@@ -16,18 +16,18 @@ class Controller {
   public function test(ServerRequestInterface $request, ResponseInterface $response, $args) {
     $num = $args['num'];
 
-    if(!TestData::exists($num)) {
+    if(!DiscoveryTestData::exists($num)) {
       $response->getBody()->write('Test not found');
       return $response->withStatus(404);
     }
 
     $head = $_SERVER['REQUEST_METHOD'] == 'HEAD';
 
-    if($headers=TestData::link_header($num, $head)) {
+    if($headers=DiscoveryTestData::link_header($num, $head)) {
       if(!is_array($headers))
         $headers = [$headers];
       foreach($headers as $header)
-        $response = $response->withAddedHeader(TestData::link_header_name($num, $head), $header);
+        $response = $response->withAddedHeader(DiscoveryTestData::link_header_name($num, $head), $header);
     }
 
     // Set the post's published date to 3 hours ago
@@ -73,7 +73,7 @@ class Controller {
     $response->getBody()->write(view('test', [
       'title' => 'Webmention Rocks!',
       'num' => $args['num'],
-      'test' => TestData::data($num, $head),
+      'test' => DiscoveryTestData::data($num, $head),
       'date' => $date,
       'responses' => $responseTypes,
       'num_responses' => $numResponses,

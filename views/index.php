@@ -13,15 +13,15 @@
     <h3>Webmention Endpoint Discovery</h3>
 
     <p>The test posts below advertise their Webmention endpoints in a variety of ways, 
-      to help you test your endpoint discovery code.</p>
+      to help you test your <a href="https://www.w3.org/TR/webmention/#sender-discovers-receiver-webmention-endpoint">Webmention endpoint discovery</a> implementation.</p>
     <p>You should be able to write a post that links to each post below, and have your
       comment show up on each of them.</p>
     <p>In your comment, please describe what software and/or libraries you are using to send Webmentions. (name, link)</p>
 
     <ul>
-      <?php foreach($testData as $i=>$data): ?>
+      <?php foreach($discoveryTestData as $i=>$data): ?>
         <li>
-          <a href="/test/<?= $i ?>">Test <?= $i ?></a>
+          <a href="/test/<?= $i ?>">Discovery Test <?= $i ?></a>
           -
           <?= htmlspecialchars($data['name']) ?>
         </li>
@@ -32,17 +32,28 @@
 
     <h4>HTML</h4>
     <textarea style="width: 100%;" rows="4"><?php 
-      foreach($testData as $i=>$data):
+      foreach($discoveryTestData as $i=>$data):
         echo '<a href="' . Config::$base . 'test/' . $i . '">Test ' . $i . '</a>'."\n";
       endforeach;
     ?></textarea>
 
     <h4>Text</h4>
     <textarea style="width: 100%;" rows="4"><?php 
-      foreach($testData as $i=>$data):
+      foreach($discoveryTestData as $i=>$data):
         echo Config::$base . 'test/' . $i . "\n";
       endforeach;
     ?></textarea>
+  </section>
+
+  <section class="content">
+    <h3>Webmention Updates</h3>
+
+    <p>The tests below will test whether you properly support <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-updated-posts">sending Webmentions for updated posts</a>.</p>
+
+    <ul>
+      <li><a href="/update/1">Update Test 1</a></li>
+      <li><a href="/update/2">Update Test 2</a></li>
+    </ul>
   </section>
 
   <section class="content">

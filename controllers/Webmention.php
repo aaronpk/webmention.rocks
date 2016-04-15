@@ -130,7 +130,7 @@ class Webmention {
     if($response->getStatusCode() == 400)
       return $response;
 
-    // Test 21 requires the query string be mainted, so double check it exists
+    // Test 21 requires the query string be maintained, so double check it exists
     if($num == 21) {
       $params = $request->getQueryParams();
       if(!array_key_exists('query', $params)

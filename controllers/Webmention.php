@@ -42,7 +42,7 @@ class Webmention {
   }
 
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
-    // Match the route for #15
+    // Match the route for #15 and #20
     if(preg_match('/^\/test\/(\d+)$/', $request->getUri()->getPath(), $match))
       $num = $match[1];
     else
@@ -53,6 +53,10 @@ class Webmention {
       $mode = $args['mode'];
     else
       $mode = false;
+
+    // For test 20, if the page itself receives a webmention then it's an error
+    if($num == 20)
+      $mode = 'error';
 
     if(!TestData::exists($num)) {
       $response->getBody()->write('Test not found');

@@ -123,7 +123,7 @@ class TestData {
         'link_header' => '',
         'link_tag' => '',
         'name' => 'Multiple Webmention endpoints advertised: <a>, <link>',
-        'description' => 'This post advertises its Webmention endpoint in an HTML <a href="/test/11/webmention" rel="webmention">&lt;a&gt; tag</a>, followed by a later definition in a &lt;link&gt; tag. Your Webmention client must only send a Webmention to the one in the &lt;a&gt; tag since it appears first in the document. <link rel="webmention" href="/test/11/webmention/error">',
+        'description' => 'This post advertises its Webmention endpoint in an HTML <a href="/test/16/webmention" rel="webmention">&lt;a&gt; tag</a>, followed by a later definition in a &lt;link&gt; tag. Your Webmention client must only send a Webmention to the one in the &lt;a&gt; tag since it appears first in the document. <link rel="webmention" href="/test/16/webmention/error">',
         'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
       ],
       // Multiple endpoints defined, must use first
@@ -131,20 +131,20 @@ class TestData {
         'link_header' => '',
         'link_tag' => '',
         'name' => 'Multiple Webmention endpoints advertised: <link>, <a>',
-        'description' => 'This post advertises its Webmention endpoint in an HTML &lt;link&gt; tag <link rel="webmention" href="/test/11/webmention"> followed by a later definition in an <a href="/test/11/webmention/error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the &lt;link&gt; tag since it appears first in the document.',
+        'description' => 'This post advertises its Webmention endpoint in an HTML &lt;link&gt; tag <link rel="webmention" href="/test/17/webmention"> followed by a later definition in an <a href="/test/17/webmention/error" rel="webmention">&lt;a&gt; tag</a>. Your Webmention client must only send a Webmention to the one in the &lt;link&gt; tag since it appears first in the document.',
         'error_description' => 'You sent the Webmention to the wrong endpoint. This test checks whether you are sending to only the first endpoint discovered.',
       ],
       18 => [
         'link_header' => [
-          '<'.Config::$base.'test/2/webmention/error>; rel="other"',
-          '<'.Config::$base.'test/2/webmention'.$params.'>; rel="webmention"',
+          '<'.Config::$base.'test/18/webmention/error>; rel="other"',
+          '<'.Config::$base.'test/18/webmention'.$params.'>; rel="webmention"',
         ],
         'link_tag' => '',
         'name' => 'Multiple HTTP Link headers',
         'description' => 'This post returns two HTTP Link headers, the first with a different rel value. This ensures your code correcly parses the HTTP response when multiple Link headers are returned.',
       ],
       19 => [
-        'link_header' => '<'.Config::$base.'test/2/webmention/error>; rel="other", <'.Config::$base.'test/2/webmention'.$params.'>; rel="webmention"',
+        'link_header' => '<'.Config::$base.'test/19/webmention/error>; rel="other", <'.Config::$base.'test/19/webmention'.$params.'>; rel="webmention"',
         'link_tag' => '',
         'name' => 'Single HTTP Link header with multiple values',
         'description' => 'This post returns one HTTP Link header with multiple values separated by a comma. This ensures your code correcly parses the HTTP response when multiple Link headers are returned.',

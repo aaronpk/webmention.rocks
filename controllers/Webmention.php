@@ -41,8 +41,42 @@ class Webmention {
     return $response;    
   }
 
+  public function handle_error(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    if(preg_match('/^\/test\/(\d+)$/', $request->getUri()->getPath(), $match))
+      $num = $match[1];
+    else
+      $num = $args['num'];
+
+    if(!TestData::exists($num)) {
+      $response->getBody()->write('Test not found');
+      return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
+    }
+
+    $post = $request->getParsedBody();
+
+    $sourceURL = @$post['source'];
+    $targetURL = @$post['target'];
+
+    // Validate the syntax of the target URL
+    $response = $this->_validateTargetURL($request, $response, $targetURL, $num);
+    if($response->getStatusCode() == 400)
+      return $response;
+
+    $responseID = Rocks\Redis::makeResponseID($sourceURL, $targetURL);
+
+    // Delete the existing comment for this source URL if there is one
+    if($existing = Rocks\Redis::getResponse($responseID)) {
+      Rocks\Redis::deleteResponse($responseID);
+      $this->_publishDelete($num, $responseID, $existing);
+    }
+    $testData = TestData::data($num);
+    return $this->_error($request, $response, 
+      'error', 
+      array_key_exists('error_description', $testData) ? $testData['error_description'] : 'There was an error.');
+  }
+
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
-    // Match the route for #15 and #20
+    // Match the route for #15
     if(preg_match('/^\/test\/(\d+)$/', $request->getUri()->getPath(), $match))
       $num = $match[1];
     else
@@ -53,10 +87,6 @@ class Webmention {
       $mode = $args['mode'];
     else
       $mode = false;
-
-    // For test 20, if the page itself receives a webmention then it's an error
-    if($num == 20)
-      $mode = 'error';
 
     if(!TestData::exists($num)) {
       $response->getBody()->write('Test not found');

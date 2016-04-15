@@ -152,9 +152,9 @@ class TestData {
       // Webmention rel with no href
       20 => [
         'link_header' => '',
-        'link_tag' => '<link rel="webmention">',
+        'link_tag' => '',
         'name' => 'Link tag with no href attribute',
-        'description' => 'This post has a &lt;link&gt; tag which has no href attribute. Your Webmention client should not find this link tag, and should send the webmention to <a href="/test/20/webmention" rel="webmention">this endpoint</a> instead.',
+        'description' => 'This post has a &lt;link&gt; tag which has no href attribute. Your Webmention client should not find this link tag, and should send the webmention to <a href="/test/20/webmention" rel="webmention">this endpoint</a> instead. <link rel="webmention">',
         'error_description' => 'You sent the Webmention to the wrong endpoint! Chances are your code found the link tag with rel=webmention and assumed that the lack of an href attribute makes the tag point to itself. Instead, you should skip this element since there is no href, and find the <a> tag in the body instead.'
       ],
       21 => [

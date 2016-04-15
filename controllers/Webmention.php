@@ -38,18 +38,30 @@ class Webmention {
       'num' => $args['num']
     ]));
 
-    return $response;    
+    return $response;
   }
 
-  public function handle_error(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+  private function _test_num(ServerRequestInterface $request, array $args) {
     if(preg_match('/^\/test\/(\d+)$/', $request->getUri()->getPath(), $match))
-      $num = $match[1];
+      return $match[1];
     else
-      $num = $args['num'];
+      return $args['num'];
+  }
 
+  private function _test_exists(ResponseInterface $response, $num) {
     if(!TestData::exists($num)) {
       $response->getBody()->write('Test not found');
       return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
+    } else {
+      return true;
+    }
+  }
+
+  public function handle_error(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $num = $this->_test_num($request, $args);
+
+    if($this->_test_exists($response, $num) !== true) {
+      return $response;
     }
 
     $post = $request->getParsedBody();
@@ -65,22 +77,17 @@ class Webmention {
     $responseID = Rocks\Redis::makeResponseID($sourceURL, $targetURL);
 
     // Delete the existing comment for this source URL if there is one
-    if($existing = Rocks\Redis::getResponse($responseID)) {
-      Rocks\Redis::deleteResponse($responseID);
-      $this->_publishDelete($num, $responseID, $existing);
-    }
+    $this->_deleteResponse($num, $responseID);
+
     $testData = TestData::data($num);
+
     return $this->_error($request, $response, 
       'error', 
       array_key_exists('error_description', $testData) ? $testData['error_description'] : 'There was an error.');
   }
 
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
-    // Match the route for #15
-    if(preg_match('/^\/test\/(\d+)$/', $request->getUri()->getPath(), $match))
-      $num = $match[1];
-    else
-      $num = $args['num'];
+    $num = $this->_test_num($request, $args);
 
     // The path might be /test/15/webmention/error which sets mode=error
     if(array_key_exists('mode', $args))
@@ -88,9 +95,8 @@ class Webmention {
     else
       $mode = false;
 
-    if(!TestData::exists($num)) {
-      $response->getBody()->write('Test not found');
-      return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
+    if($this->_test_exists($response, $num) !== true) {
+      return $response;
     }
 
     // Check the content type of the request
@@ -127,12 +133,10 @@ class Webmention {
     // For any of the tests that include a false endpoint, check if the webmention was
     // sent to that endpoint and delete the comment if present
     if($mode == 'error') {
-      // Delete the existing comment for this source URL if there is one
-      if($existing = Rocks\Redis::getResponse($responseID)) {
-        Rocks\Redis::deleteResponse($responseID);
-        $this->_publishDelete($num, $responseID, $existing);
-      }
+      $this->_deleteResponse($num, $responseID);
+
       $testData = TestData::data($num);
+
       return $this->_error($request, $response, 
         'error', 
         array_key_exists('error_description', $testData) ? $testData['error_description'] : 'There was an error.');
@@ -149,8 +153,7 @@ class Webmention {
     if($response->getStatusCode() == 400) {
       if($source['code'] == 410 || $source['code'] == 200) {
         // If we've seen this before, and if the source URL returned 410 or 200, delete the existing comment
-        if($old = Rocks\Redis::getResponse($responseID)) {
-          Rocks\Redis::deleteResponse($responseID);
+        if($this->_deleteResponse($num, $responseID) == true) {
           $body = "";
           if($source['code'] == 410) {
             $body .= "The source URL returned HTTP 410, and we have previously seen this source URL, so the response has been deleted.";
@@ -161,8 +164,6 @@ class Webmention {
           $stream = new Zend\Diactoros\Stream('php://temp', 'wb+');
           $stream->write($body);
           $stream->rewind();
-
-          $this->_publishDelete($num, $responseID, $old);
 
           return $response->withBody($stream)->withStatus(200);
         } else {
@@ -411,7 +412,7 @@ class Webmention {
     curl_exec($ch);
   }
 
-  private function _publishDelete($num, $id, $comment) {
+  private function _publishDelete($num, $responseID, $comment) {
     $ch = curl_init(Config::$base . 'streaming/pub?id=test-'.$num);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
@@ -420,6 +421,17 @@ class Webmention {
       'emoji' => $comment->getMentionType() == 'reacji' ? $comment->text_content() : false,
     ]));
     curl_exec($ch);
+  }
+
+  private function _deleteResponse($num, $responseID) {
+    // Delete the existing comment for this source URL if there is one
+    if($existing = Rocks\Redis::getResponse($responseID)) {
+      Rocks\Redis::deleteResponse($responseID);
+      $this->_publishDelete($num, $responseID, $existing);
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

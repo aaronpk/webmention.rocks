@@ -12,7 +12,7 @@ class UpdateTestData extends TestData {
 
     return [
       1 => [
-        'published' => '2016-04-15T17:30:31+02:00',
+        'published' => '2016-04-16T03:05:00+02:00',
         'name' => 'Simple update',
         'description' => '<p>This test verifies your handling of adding a link when <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-updated-posts">updating a post</a>. You will pass this test when you both re-send a Webmention to a previously mentioned URL, as well as send a Webmention to a new URL that appears in the post.</p>
         <p>

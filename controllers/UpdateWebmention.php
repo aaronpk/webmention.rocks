@@ -110,6 +110,8 @@ class UpdateWebmention extends Webmention {
 
   /*
     Test 1
+  
+    // this comment is wrong, fix it later
 
     > Write a post that links to http://wmrocks.dev/update/1/step/1, and send Webmentions for your post.
 
@@ -139,7 +141,7 @@ class UpdateWebmention extends Webmention {
 
     // Check that the source actually links to the target URL for this step
     $response = $this->_verifySourceLinksToTarget($request, $response,
-      $info['source'], Config::$base . 'update/1/step/1');
+      $info['source'], Config::$base . 'update/1');
     if($response->getStatusCode() == 400) {
       return $response;
     }
@@ -153,10 +155,10 @@ class UpdateWebmention extends Webmention {
     // If this is a new source URL... 
     if(!$existing) {
       // Make sure the source page does not have a link to /update/1
-      if($this->_sourceDocHasLinkTo($doc, Config::$base . 'update/1', false)) {
+      if($this->_sourceDocHasLinkTo($doc, Config::$base . 'update/1/step/2', false)) {
         return $this->_error($request, $response,
           'test_failed',
-          'It looks like your post has a link to the wrong post! Make sure the first Webmention you send is only when your post links to the /update/1/step/1 post.',
+          'It looks like your post has a link to the wrong post! Make sure the first Webmention you send is only when your post links to the /update/1 post.',
           200 // the webmention isn't invalid, but the test failed
           );
       }
@@ -169,7 +171,7 @@ class UpdateWebmention extends Webmention {
       Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 1);
       Rocks\Redis::addInProgressResponse(1, $info['sourceID']);
 
-      $response->getBody()->write('Got it! You\'ve completed step one and you should see your in-progress response on ' . Config::$base . 'update/1/step/1');
+      $response->getBody()->write('Got it! You\'ve completed step one and you should see your in-progress response on ' . Config::$base . 'update/1');
       return $response;
 
     } else {
@@ -179,13 +181,14 @@ class UpdateWebmention extends Webmention {
         $info['source'], $info['sourceURL'], $info['targetURL'], 'source');
 
       // Make sure their post has been updated to include a link to both posts
-      if($this->_sourceDocHasLinkTo($doc, Config::$base . 'update/1')) {
+      if($this->_sourceDocHasLinkTo($doc, Config::$base . 'update/1/step/2')) {
 
         // If they have already completed part 3, they pass the test!
         if(Rocks\Redis::hasSourcePassedPart($info['sourceID'], 1, 3)) {
   
           Rocks\Redis::addResponse(1, $info['sourceID'], 'update');
-          Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 2);
+          Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 2); // this is part 2
+          Rocks\Redis::removeInProgressResponse(1, $info['sourceID']);
 
           $response->getBody()->write('Congrats, you\'ve passed the test!');
           return $response;
@@ -195,7 +198,7 @@ class UpdateWebmention extends Webmention {
           Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 2);
           Rocks\Redis::addInProgressResponse(1, $info['sourceID']);
 
-          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1/step/1. Make sure you send the update Webmention to the other URL now too!');
+          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1. Make sure you send the update Webmention to the other URL now too!');
           return $response;
         }
 
@@ -217,7 +220,7 @@ class UpdateWebmention extends Webmention {
 
     // Check that the source actually links to the target URL for this step
     $response = $this->_verifySourceLinksToTarget($request, $response, 
-      $info['source'], Config::$base . 'update/1');
+      $info['source'], Config::$base . 'update/1/step/2');
     if($response->getStatusCode() == 400) {
       return $response;
     }
@@ -231,7 +234,7 @@ class UpdateWebmention extends Webmention {
     // If this source has already passed part 1...
     if(Rocks\Redis::hasSourcePassedPart($info['sourceID'], 1, 1)) {
 
-      if($this->_sourceDocHasLinkTo($doc, Config::$base . 'update/1/step/1')) {
+      if($this->_sourceDocHasLinkTo($doc, Config::$base . 'update/1')) {
 
         $this->_storeResponseData($info['sourceID'], 1, 
           $info['source'], $info['sourceURL'], $info['targetURL'], 'source');
@@ -241,6 +244,7 @@ class UpdateWebmention extends Webmention {
   
           Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 3);
           Rocks\Redis::addResponse(1, $info['sourceID'], 'update');
+          Rocks\Redis::removeInProgressResponse(1, $info['sourceID']);
 
           $response->getBody()->write('Congrats, you\'ve passed the test!');
           return $response;
@@ -249,7 +253,7 @@ class UpdateWebmention extends Webmention {
           Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 3);
           Rocks\Redis::addInProgressResponse(1, $info['sourceID']);
 
-          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1. Make sure you send the update Webmention to the other URL now too!');
+          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1/step/2. Make sure you send the update Webmention to the original URL now too!');
           return $response;
         }
 
@@ -267,18 +271,10 @@ class UpdateWebmention extends Webmention {
       // The test fails, but the webmention isn't technically invalid, so return 200 and tell them that
       return $this->_error($request, $response,
         'test_not_started',
-        'It looks like you sent a Webmention to the wrong page. To start this test, send a Webmention to the ' . Config::$base . 'update/1/step/1 page first.',
+        'It looks like you sent a Webmention to the wrong page. To start this test, send a Webmention to the ' . Config::$base . 'update/1 page first.',
         200 // the webmention isn't invalid, but the test failed
         );
     }
-  }
-
-  private function _verify_test_1(ServerRequestInterface $request, ResponseInterface $response) {
-    // At this point, both step 1 and step 2 have received webmentions
-
-    // Check the contents of the source URL and ensure it has links to both pages
-
-
   }
 
 

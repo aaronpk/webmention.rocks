@@ -13,15 +13,30 @@ class UpdateTestController extends Controller {
       return $response->withStatus(404);
     }
 
-    list($responseTypes, $numResponses) = $this->_gatherResponseTypes($num, 'update');
+    if($inProgress = Rocks\Redis::getInProgressResponses($num, 'update')) {
+      $inProgress = array_map(function($item){
+        return Rocks\Redis::getResponse($item);
+      }, $inProgress);
+    } else {
+      $inProgress = [];
+    }
+
+    if($responses = Rocks\Redis::getResponsesForTest($num, 'update')) {
+      $responses = array_map(function($item){
+        return Rocks\Redis::getResponse($item);
+      }, $responses);
+    } else {
+      $responses = [];
+    }
 
     $response->getBody()->write(view('update-test', [
       'title' => 'Webmention Rocks!',
       'num' => $num,
       'test' => UpdateTestData::data($num),
       'published' => UpdateTestData::published($num),
-      'responses' => $responseTypes,
-      'num_responses' => $numResponses,
+      'responses' => $responses,
+      'in_progress' => $inProgress,
+      'num_responses' => (count($responses)+count($inProgress)),
     ]));
     return $response;
   }
@@ -42,21 +57,12 @@ class UpdateTestController extends Controller {
       return $response->withStatus(404);
     }
 
-    if($responses = Rocks\Redis::getInProgressResponses($num, 'update')) {
-      $responses = array_map(function($item){
-        return Rocks\Redis::getResponse($item);
-      }, $responses);
-    } else {
-      $responses = [];
-    }
-
     $response->getBody()->write(view('update-step', [
       'title' => 'Webmention Rocks!',
       'num' => $num,
       'step' => $step,
       'test' => $test,
       'published' => UpdateTestData::published($num),
-      'responses' => $responses,
     ]));
     return $response;
   }

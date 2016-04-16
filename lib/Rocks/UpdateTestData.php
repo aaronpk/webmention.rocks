@@ -17,21 +17,21 @@ class UpdateTestData extends TestData {
         'description' => '<p>This test verifies your handling of adding a link when <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-updated-posts">updating a post</a>. You will pass this test when you both re-send a Webmention to a previously mentioned URL, as well as send a Webmention to a new URL that appears in the post.</p>
         <p>
           <ol>
-            <li>Write a post that links to <a href="/update/1/step/1">'.Config::$base.'update/1/step/1</a>, and send Webmentions for your post.</li>
-            <li>Verify you see your post as "pending" <a href="/update/1/step/1">on the page</a>.</li>
-            <li>Update your post to include a link to <a href="/update/1">this page</a>, and send webmentions for your post again, to both URLs.</li>
-            <li>You should see your post appear here when successful.</li>
+            <li>Write a post that links to <a href="/update/1">this page</a>, and send Webmentions for your post.</li>
+            <li>Verify you see your post as "pending" on this page.</li>
+            <li>Update your post to include a link to <a href="/update/1/step/2">' . Config::$base . 'update/1/step/2</a>, and send webmentions for your post again, to both URLs.</li>
+            <li>You should see your post here with three checkboxes when successful.</li>
           </ol>
         </p>
-        <link rel="webmention" href="/update/1/step/2/webmention?key='.$key.'">
+        <link rel="webmention" href="/update/1/step/1/webmention?key='.$key.'">
         ',
         'steps' => [
           1 => [
-            'description' => 'You should see your post listed here when you\'ve completed <a href="/update/1">step 1 of the test</a>. Once you complete step 2, it will also show up on the main test page.
-            <link rel="webmention" href="/update/1/step/1/webmention?key='.$key.'">',
+            'description' => 'This page doesn\'t do anything. You can ignore it.',
           ],
           2 => [
-            'description' => 'This page doesn\'t do anything. You can ignore it.',
+            'description' => 'This is a stub page for <a href="/update/1">Test #1</a>. Once you send an update Webmention to this page and the first page, your comment will appear there.
+            <link rel="webmention" href="/update/1/step/2/webmention?key='.$key.'">',
           ]
         ],
       ],

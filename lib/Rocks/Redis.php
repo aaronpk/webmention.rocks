@@ -134,6 +134,10 @@ class Redis {
     // TODO: Remove old responses from the list
   }
 
+  public static function removeInProgressResponse($testNum, $responseID) {
+    redis()->zrem(Config::$base . 'update/' . $testNum . '/inprogress/responses', $responseID);
+  }
+
   public static function getInProgressResponses($testNum, $testKey='update') {
     return redis()->zrevrangebyscore(Config::$base . $testKey . '/' . $testNum . '/inprogress/responses',
       time()+300, time()-600);

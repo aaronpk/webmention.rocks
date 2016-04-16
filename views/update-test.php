@@ -24,9 +24,29 @@
   </div>
   <div class="post-responses">
 
-    <?php $this->insert('partials/full-responses', [
-      'responses' => $responses
-    ]); ?>    
+    <div class="responses-row <?= count($in_progress) ? '' : 'empty' ?>" style="background-color: #fffaeb; padding-bottom: 4px;">
+      <div style="padding: 12px 12px 3px 12px;">
+        <h3 style="margin: 0;">In Progress</h3>
+        <p class="help-text">The mentions below are in progress, and have not yet completed the test. They will be deleted if they are not completed within 10 minutes of first posting.</p>
+      </div>
+      <ul class="comments stream mention">
+        <?php foreach($in_progress as $comment): ?>
+          <?php $this->insert('partials/update-comment', ['comment'=>$comment, 'type'=>'mention', 'test'=>$num]); ?>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+
+    <div class="responses-row <?= count($responses) ? '' : 'empty' ?>" style="background-color: #dfffe1;">
+      <div style="padding: 12px 12px 3px 12px;">
+        <h3 style="margin: 0;">Mentions</h3>
+        <p class="help-text">The mentions below have successfully passed the test!</p>
+      </div>
+      <ul class="comments stream mention">
+        <?php foreach($responses as $comment): ?>
+          <?php $this->insert('partials/comment', ['comment'=>$comment, 'type'=>'mention']); ?>
+        <?php endforeach; ?>
+      </ul>
+    </div>
 
   </div>
   <div class="post-footer">

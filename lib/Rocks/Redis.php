@@ -119,12 +119,12 @@ class Redis {
    ** Helper methods for keeping track of update state
    **/
 
-  // Check if this source URL has passed step 1/2
+  // Check if this source URL has passed step 1/2/2
   public static function hasSourcePassedPart($responseID, $test, $part) {
     return redis()->get(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID) == 'passed';
   }
 
-  // Store source URL has passed step 1/2
+  // Store source URL has passed step 1/2/3
   public static function setSourceHasPassedPart($responseID, $test, $part) {
     redis()->setex(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID, 600, 'passed');
   }
@@ -136,6 +136,8 @@ class Redis {
 
   public static function removeInProgressResponse($testNum, $responseID) {
     redis()->zrem(Config::$base . 'update/' . $testNum . '/inprogress/responses', $responseID);
+    for($part=1; $part<=3; $part++)
+      redis()->del(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID);
   }
 
   public static function getInProgressResponses($testNum, $testKey='update') {
@@ -143,6 +145,13 @@ class Redis {
       time()+300, time()-600);
   }
 
+  public static function extendExpiration($test, $responseID) {
+    // Extend the expiration of passing the three tests
+    for($part=1; $part<=3; $part++)
+      redis()->expire(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID, 600);
+    // And bump the timer of the in progress item
+    self::addInProgressResponse($test, $responseID);
+  }
 
 
 }

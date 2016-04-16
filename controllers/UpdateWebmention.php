@@ -170,8 +170,9 @@ class UpdateWebmention extends Webmention {
       // Should show up as a single checkmark
       Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 1);
       Rocks\Redis::addInProgressResponse(1, $info['sourceID']);
+      Rocks\Redis::extendExpiration(1, $info['sourceID']);
 
-      $response->getBody()->write('Got it! You\'ve completed step one and you should see your in-progress response on ' . Config::$base . 'update/1');
+      $response->getBody()->write('Got it! You\'ve completed step one and you should see your in-progress response on ' . Config::$base . 'update/1. You have 10 minutes to complete the next step.');
       return $response;
 
     } else {
@@ -197,8 +198,9 @@ class UpdateWebmention extends Webmention {
           // Otherwise, still in progress, mark as successfully completing part 2
           Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 2);
           Rocks\Redis::addInProgressResponse(1, $info['sourceID']);
+          Rocks\Redis::extendExpiration(1, $info['sourceID']);
 
-          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1. Make sure you send the update Webmention to the other URL now too!');
+          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1. Make sure you send the update Webmention to the other URL now too! You have 10 minutes to complete the next step.');
           return $response;
         }
 
@@ -252,8 +254,9 @@ class UpdateWebmention extends Webmention {
           // Otherwise, still in progress, mark as successfully completing part 3
           Rocks\Redis::setSourceHasPassedPart($info['sourceID'], 1, 3);
           Rocks\Redis::addInProgressResponse(1, $info['sourceID']);
+          Rocks\Redis::extendExpiration(1, $info['sourceID']);
 
-          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1/step/2. Make sure you send the update Webmention to the original URL now too!');
+          $response->getBody()->write('Congrats, you sent an update Webmention to ' . Config::$base . 'update/1/step/2. Make sure you send the update Webmention to the original URL now too! You have 10 minutes to complete the next step.');
           return $response;
         }
 

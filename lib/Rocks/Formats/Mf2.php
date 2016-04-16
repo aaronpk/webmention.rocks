@@ -474,6 +474,7 @@ class Mf2 {
       'a',
       'abbr',
       'b',
+      'br',
       'code',
       'del',
       'em',

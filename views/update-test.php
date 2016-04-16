@@ -3,7 +3,7 @@
                     ]); ?>
 
 <div class="post-container h-entry">
-  <div class="post-main">
+  <div class="post-main <?= $num_responses > 0 ? 'has-responses' : '' ?>">
     <div class="left p-author h-card">
       <a href="/">
         <img src="/assets/webmention-rocks-icon.png" width="80" class="u-photo" alt="Webmention Rocks!">
@@ -22,5 +22,14 @@
       </div>
     </div>
   </div>
-</div>
+  <div class="post-responses">
 
+    <?php $this->insert('partials/full-responses', [
+      'responses' => $responses
+    ]); ?>    
+
+  </div>
+  <div class="post-footer">
+    <p>Responses are stored for 48 hours and may be deleted after that time.</p>
+  </div>
+</div>

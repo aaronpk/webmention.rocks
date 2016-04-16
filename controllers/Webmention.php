@@ -5,7 +5,7 @@ use Rocks\HTTP;
 
 class Webmention {
 
-  protected function _error(ServerRequestInterface $request, ResponseInterface $response, $error, $description=false) {
+  protected function _error(ServerRequestInterface $request, ResponseInterface $response, $error, $description=false, $code=400) {
     $post = $request->getParsedBody();
     if(@$post['via'] == 'browser') {
       $response->getBody()->write(view('webmention-error', [
@@ -13,13 +13,13 @@ class Webmention {
         'error' => $error,
         'description' => $description
       ]));
-      return $response->withStatus(400);
+      return $response->withStatus($code);
     } else {
       $content = $error."\n";
       if($description)
         $content .= "\n".$description."\n";
       $response->getBody()->write($content);
-      return $response->withHeader('Content-Type', 'text/plain')->withStatus(400);
+      return $response->withHeader('Content-Type', 'text/plain')->withStatus($code);
     }
   }
 
@@ -120,7 +120,7 @@ class Webmention {
         );
     }
 
-    if(!preg_match('/^\/test\/\d+$/', $path)) {
+    if(!preg_match('/^\/(test|update)\/\d+(\/step\/\d+)?$/', $path)) {
       return $this->_error($request, $response,
         'invalid_target',
         'The target provided does not accept webmentions.'
@@ -129,7 +129,7 @@ class Webmention {
 
     // Check that the target matches the test number of the webmention endpoint
     $path = parse_url($targetURL, PHP_URL_PATH);
-    preg_match('/^\/([a-z]+)\/(\d+)$/', $path, $match);
+    preg_match('/^\/([a-z]+)\/(\d+)(\/step\/\d+)?$/', $path, $match);
     if($match[1] != $type || $match[2] != $num) {
       return $this->_error($request, $response, 
         'invalid_target', 
@@ -152,14 +152,19 @@ class Webmention {
     return $result;
   }
 
-  protected function _verifySourceLinksToTarget($request, $response, $source, $targetURL) {
-
+  protected function _HTMLtoDOMDocument($html) {
     // Parse the source body as HTML
     $doc = new DOMDocument();
     libxml_use_internal_errors(true); # suppress parse errors and warnings
-    $body = mb_convert_encoding($source['body'], 'HTML-ENTITIES', mb_detect_encoding($source['body']));
+    $body = mb_convert_encoding($html, 'HTML-ENTITIES', mb_detect_encoding($html));
     @$doc->loadHTML($body, LIBXML_NOWARNING|LIBXML_NOERROR);
     libxml_clear_errors();
+    return $doc;
+  }
+
+  protected function _verifySourceLinksToTarget($request, $response, $source, $targetURL) {
+
+    $doc = $this->_HTMLtoDOMDocument($source['body']);
 
     if(!$doc) {
       return $this->_error($request, $response,
@@ -207,6 +212,29 @@ class Webmention {
     }
 
     return $response;
+  }
+
+  protected function _storeResponseData($responseID, $num, $source, $sourceURL, $targetURL, $type='response') {
+    // Parse the Microformats on the source URL to extract post/author information
+    $mf2 = mf2\Parse($source['body'], $source['url']);
+
+    $comment = false;
+    if($mf2 && count($mf2['items']) > 0) {
+      $http = new HTTP();
+      $comment = Rocks\Formats\Mf2::parse($mf2, $source['url'], $http);
+    }
+
+    $data = [
+      'source' => $sourceURL,
+      'target' => $targetURL,
+      'date' => date('c'),
+      'comment' => $comment,
+    ];
+
+    // Store the response data and set the expiration date
+    Rocks\Redis::setResponseData($responseID, $data, $type);
+
+    return $data;
   }
 
 }

@@ -6,7 +6,7 @@ class UpdateTestData extends TestData {
 
   protected static function _testData() {
     static $key;
-    
+
     if(!isset($key))
       $key = Redis::createOneTimeKey();
 
@@ -27,7 +27,7 @@ class UpdateTestData extends TestData {
         ',
         'steps' => [
           1 => [
-            'description' => 'You should see your post listed here when you\'ve completed <a href="/update/1">step 1 of the test</a>. Once you complete step 2, it will be removed from this page and will show up on the main test page.
+            'description' => 'You should see your post listed here when you\'ve completed <a href="/update/1">step 1 of the test</a>. Once you complete step 2, it will also show up on the main test page.
             <link rel="webmention" href="/update/1/step/1/webmention?key='.$key.'">',
           ],
           2 => [
@@ -35,6 +35,7 @@ class UpdateTestData extends TestData {
           ]
         ],
       ],
+      /*
       2 => [
         'published' => '2016-04-15T18:30:31+02:00',
         'name' => 'Removing a link',
@@ -58,6 +59,7 @@ class UpdateTestData extends TestData {
           ]
         ],
       ]
+      */
     ];
   }
 

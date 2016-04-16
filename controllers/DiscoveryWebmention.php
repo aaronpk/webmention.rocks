@@ -165,31 +165,15 @@ class DiscoveryWebmention extends Webmention {
       }
     }
 
-    // Parse the Microformats on the source URL to extract post/author information
-    $mf2 = mf2\Parse($source['body'], $source['url']);
+    $data = $this->_storeResponseData($responseID, $num, $source, $sourceURL, $targetURL);
 
-    $comment = false;
-    if($mf2 && count($mf2['items']) > 0) {
-      $http = new HTTP();
-      $comment = Rocks\Formats\Mf2::parse($mf2, $source['url'], $http);
-    }
-
-    // Store the source URL and comment data in Redis
-
-    $data = [
-      'source' => $sourceURL,
-      'target' => $targetURL,
-      'date' => date('c'),
-      'comment' => $comment,
-    ];
-
-    // Store the response data and set the expiration date
-    Rocks\Redis::setResponseData($responseID, $data);
     // Add the response ID to the list of responses for this post
-    Rocks\Redis::addResponse($num, $responseID);
+    Rocks\Redis::addResponse($num, $responseID, 'test');
 
     // Publish to anyone listening on the EventSource channel
     $this->_publish($num, new Rocks\Response($data, $responseID));
+
+    $response->getBody()->write('Got it! Your response should be visible on the website now!');
 
     return $response;
   }

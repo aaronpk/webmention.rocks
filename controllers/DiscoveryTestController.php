@@ -3,7 +3,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rocks\DiscoveryTestData;
 
-class DiscoveryTestController {
+class DiscoveryTestController extends Controller {
 
   public function view(ServerRequestInterface $request, ResponseInterface $response, $args) {
     $num = $args['num'];
@@ -22,41 +22,7 @@ class DiscoveryTestController {
         $response = $response->withAddedHeader(DiscoveryTestData::link_header_name($num, $head), $header);
     }
 
-    // Set the post's published date to 3 hours ago
-    $responseTypes = [
-      'like' => [],
-      'repost' => [],
-      'bookmark' => [],
-      'reply' => [],
-      'mention' => [],
-      'reacji' => [],
-    ];
-
-    $numResponses = 0;
-    if($responses = Rocks\Redis::getResponsesForTest($num)) {
-      $responses = array_map(function($item){
-        return Rocks\Redis::getResponse($item);
-      }, $responses);
-      foreach($responses as $r) {
-        if($r) {
-          // Group reacji another level based on the emoji used
-          if($type=$r->getMentionType() == 'reacji') {
-            $emoji = $r->text_content();
-            if(!array_key_exists($emoji, $responseTypes['reacji']))
-              $responseTypes['reacji'][$emoji] = [];
-            $responseTypes['reacji'][$emoji][] = $r;
-          } else {
-            $responseTypes[$r->getMentionType()][] = $r;
-          }
-          $numResponses++;
-        }
-      }
-    }
-
-    // Sort reacji by number descending
-    uksort($responseTypes['reacji'], function($a, $b) use($responseTypes){
-      return count($responseTypes['reacji'][$a]) < count($responseTypes['reacji'][$b]);
-    });
+    list($responseTypes, $numResponses) = $this->_gatherResponseTypes($num, 'test');
 
     $response->getBody()->write(view('discovery-test', [
       'title' => 'Webmention Rocks!',

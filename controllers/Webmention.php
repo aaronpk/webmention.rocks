@@ -129,7 +129,7 @@ class Webmention {
 
     // Check that the target matches the test number of the webmention endpoint
     $path = parse_url($targetURL, PHP_URL_PATH);
-    preg_match('/^\/([a-z]+)\/(\d+)(\/step\/\d+)?$/', $path, $match);
+    preg_match('/^\/([a-z]+)\/(\d+)(?:\/step\/\d+)?$/', $path, $match);
     if($match[1] != $type || $match[2] != $num) {
       return $this->_error($request, $response, 
         'invalid_target', 

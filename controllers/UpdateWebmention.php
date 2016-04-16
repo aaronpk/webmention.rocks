@@ -133,10 +133,23 @@ class UpdateWebmention extends Webmention {
 
    */
 
+
+  // TODO:
+  // if the test has passed for the source URL, do not let it start a new test
+
+
   private function test_1_step_1(ServerRequestInterface $request, ResponseInterface $response) {
+
     $info = $this->_basic_verification($request, $response, 1);
     if(!is_array($info)) {
       return $info; // is an error response
+    }
+
+    // Only allow this endpoint to accept mentions for /update/1
+    if($info['targetURL'] != Config::$base . 'update/1') {
+      return $this->_error($request, $response, 
+        'invalid_target', 
+        'This webmention endpoint does not handle webmentions for the provided target.');
     }
 
     // Check that the source actually links to the target URL for this step
@@ -218,6 +231,13 @@ class UpdateWebmention extends Webmention {
     $info = $this->_basic_verification($request, $response, 1);
     if(!is_array($info)) {
       return $info;
+    }
+
+    // Only allow this endpoint to accept mentions for /update/1
+    if($info['targetURL'] != Config::$base . 'update/1/step/2') {
+      return $this->_error($request, $response, 
+        'invalid_target', 
+        'This webmention endpoint does not handle webmentions for the provided target.');
     }
 
     // Check that the source actually links to the target URL for this step

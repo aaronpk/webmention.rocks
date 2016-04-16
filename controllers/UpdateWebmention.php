@@ -204,8 +204,8 @@ class UpdateWebmention extends Webmention {
 
       } else {
         return $this->_error($request, $response,
-          'no_change',
-          'You re-sent the Webmention, but your post did not add a link to the new URL. Please re-read step 3 on ' . Config::$base . 'update/1 and try again.',
+          'incomplete',
+          'You re-sent the Webmention, but your post did not add a link to the new URL. Please re-read step 2 on ' . Config::$base . 'update/1 and try again.',
           200 // the webmention isn't invalid, but the test failed
           );
       }
@@ -260,7 +260,7 @@ class UpdateWebmention extends Webmention {
       } else {
         return $this->_error($request, $response,
           'incomplete',
-          'We got the Webmention, but it looks like you removed the link to the first post from your HTML. Please re-read step 3 on ' . Config::$base . 'update/1 and try again.',
+          'We got the Webmention, but it looks like you removed the link to the first post from your HTML. Please re-read step 2 on ' . Config::$base . 'update/1 and try again.',
           200 // the webmention isn't invalid, but the test failed
           );
       }

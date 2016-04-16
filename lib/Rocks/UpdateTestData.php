@@ -17,9 +17,10 @@ class UpdateTestData extends TestData {
         'description' => '<p>This test verifies your handling of adding a link when <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-updated-posts">updating a post</a>. You will pass this test when you both re-send a Webmention to a previously mentioned URL, as well as send a Webmention to a new URL that appears in the post.</p>
         <p>
           <ol>
-            <li>Write a post that links to <a href="/update/1">this page</a>, and send Webmentions for your post.</li>
-            <li>Verify you see your post as "pending" on this page.</li>
-            <li>Update your post to include a link to <a href="/update/1/step/2">' . Config::$base . 'update/1/step/2</a>, and send webmentions for your post again, to both URLs.</li>
+            <li>Write a post that links to <a href="/update/1">this page</a>, and send Webmentions for your post.<br>
+            Verify you see your post as "pending" on this page.</li>
+            <li>Update your post to include a link to <a href="/update/1/step/2">' . Config::$base . 'update/1/step/2</a>, and send a webmention to the new URL.</li>
+            <li>Send a webmention to the original URL as well. (The order of these is not significant.)</li>
             <li>You should see your post here with three checkboxes when successful.</li>
           </ol>
         </p>

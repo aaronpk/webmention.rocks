@@ -23,9 +23,9 @@
             <?php endif; ?>
 
             <code style="font-size: 0.93em;">
-            A: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 1) ? 'X' : ' ' ?>] 
-            B: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 2) ? 'X' : ' ' ?>] 
-            C: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 3) ? 'X' : ' ' ?>]
+            1: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 1) ? 'X' : ' ' ?>] 
+            2: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 2) ? 'X' : ' ' ?>] 
+            3: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 3) ? 'X' : ' ' ?>]
             </code>
 
           </div>

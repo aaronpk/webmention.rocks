@@ -38,7 +38,7 @@
 
     <div class="responses-row <?= count($responses) ? '' : 'empty' ?>" style="background-color: #dfffe1;">
       <div style="padding: 12px 12px 3px 12px;">
-        <h3 style="margin: 0;">Mentions</h3>
+        <h3 style="margin: 0;">Successful Tests</h3>
         <p class="help-text">The mentions below have successfully passed the test!</p>
       </div>
       <ul class="comments stream mention">

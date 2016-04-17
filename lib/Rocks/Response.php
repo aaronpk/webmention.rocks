@@ -224,7 +224,7 @@ class Response {
 
     $html = '';
     foreach($dom->getElementsByTagName('body')->item(0)->childNodes as $element) {
-      $html .= $dom->saveXML($element, LIBXML_NOEMPTYTAG);
+      $html .= $dom->saveHTML($element);
     }
     return $html;
   }

@@ -150,6 +150,10 @@ class Response {
     return $this->url() ?: $this->source();
   }
 
+  public function created() {
+    return new DateTime($this->_data['date']);
+  }
+
   public function getMentionType() {
     if($this->isTypeOf('like-of'))
       return 'like';

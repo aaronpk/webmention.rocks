@@ -19,9 +19,20 @@ class Controller {
 
     $ids = Rocks\Redis::getAllResponses();
     $responses = [];
+    $sources = [];
     foreach($ids as $id) {
-      if(!preg_match('/deleted/', $id))
-        $responses[] = Rocks\Redis::getResponse($id);
+      if(!preg_match('/deleted/', $id)) {
+        $r = Rocks\Redis::getResponse($id);
+      }
+      if(array_key_exists($r->source, $sources)) {
+        if($r->created->format('U') > $sources[$r->source]->format('U')) {
+          $sources[$r->source] = $r->created;
+          $responses[$r->source] = $r;
+        }
+      } else {
+        $responses[$r->source] = $r;
+        $sources[$r->source] = $r->created;
+      }
     }
 
     $response->getBody()->write(view('discovery-results', [

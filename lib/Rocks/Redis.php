@@ -69,6 +69,18 @@ class Redis {
       time()+300, time()-3600*24*14);
   }
 
+  public static function getAllResponses() {
+    $glob = dirname(__FILE__) . '/../../data/response/*.json';
+    $files = glob($glob);
+    $responses = [];
+    foreach($files as $f) {
+      if(preg_match('/\/([a-z0-9]+)\.json/', $f, $match)) {
+        $responses[] = Config::$base . 'response/' . $match[1];
+      }
+    }
+    return $responses;
+  }
+
   public static function getResponse($id) {
     $data = redis()->get($id);
     if($data)

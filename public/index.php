@@ -18,6 +18,7 @@ $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'Controller::index');
 
+$route->map('GET', '/discovery', 'Controller::discovery');
 $route->map('GET', '/test/{num}', 'DiscoveryTestController::view');
 $route->map('GET', '/test/{num}/webmention', 'DiscoveryWebmention::get');
 $route->map('POST', '/test/{num}/webmention', 'DiscoveryWebmention::handle');

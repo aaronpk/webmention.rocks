@@ -15,6 +15,23 @@ class Controller {
     return $response;
   }
 
+  public function discovery(ServerRequestInterface $request, ResponseInterface $response) {
+
+    $ids = Rocks\Redis::getAllResponses();
+    $responses = [];
+    foreach($ids as $id) {
+      if(!preg_match('/deleted/', $id))
+        $responses[] = Rocks\Redis::getResponse($id);
+    }
+
+    $response->getBody()->write(view('discovery-results', [
+      'title' => 'Webmention Rocks!',
+      'responses' => $responses,
+      'num_responses' => count($responses)
+    ]));
+    return $response;
+  }
+
   protected function _gatherResponseTypes($num, $testKey) {
     $responseTypes = [
       'like' => [],

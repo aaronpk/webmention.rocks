@@ -120,7 +120,7 @@ class Webmention {
         );
     }
 
-    if(!preg_match('/^\/(test|update)\/\d+(\/step\/\d+)?$/', $path)) {
+    if(!preg_match('/^\/(test|update)\/\d+(\/(?:step|part)\/\d+)?$/', $path)) {
       return $this->_error($request, $response,
         'invalid_target',
         'The target provided does not accept webmentions.'
@@ -129,7 +129,7 @@ class Webmention {
 
     // Check that the target matches the test number of the webmention endpoint
     $path = parse_url($targetURL, PHP_URL_PATH);
-    preg_match('/^\/([a-z]+)\/(\d+)(?:\/step\/\d+)?$/', $path, $match);
+    preg_match('/^\/([a-z]+)\/(\d+)(?:\/(?:step|part)\/\d+)?$/', $path, $match);
     if($match[1] != $type || $match[2] != $num) {
       return $this->_error($request, $response, 
         'invalid_target', 
@@ -214,7 +214,7 @@ class Webmention {
     return $response;
   }
 
-  protected function _storeResponseData($responseID, $num, $source, $sourceURL, $targetURL, $type='response') {
+  protected function _storeResponseData($responseID, $num, $source, $sourceURL, $targetURL, $type='response', $longLifetime=true) {
     // Parse the Microformats on the source URL to extract post/author information
     $mf2 = mf2\Parse($source['body'], $source['url']);
 
@@ -232,7 +232,11 @@ class Webmention {
     ];
 
     // Store the response data and set the expiration date
-    Rocks\Redis::setResponseData($responseID, $data, $type);
+    if($type == 'response' || $longLifetime) {
+      Rocks\Redis::setResponseData($responseID, $data, $type);
+    } else {
+      Rocks\Redis::setInProgressSourceData($responseID, $data);
+    }
 
     return $data;
   }

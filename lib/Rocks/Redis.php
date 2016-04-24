@@ -19,7 +19,10 @@ class Redis {
   private static function filenameForResponse($responseID, $deleted=false) {
     $folder = dirname(__FILE__) . '/../../data/response/';
     preg_match('/response\/(.+)/', $responseID, $id);
-    return $folder.'/'.$id[1].($deleted ? '.deleted' : '').'.json';
+    if(array_key_exists(1, $id))
+      return $folder.'/'.$id[1].($deleted ? '.deleted' : '').'.json';
+    else
+      return null;
   }
 
   private static function filenameForSource($sourceID, $deleted=false) {
@@ -39,6 +42,15 @@ class Redis {
     if(!file_exists($folder))
       mkdir($folder, 0755, true);
     file_put_contents($filename, json_encode($data));
+  }
+
+  public static function getResponseData($responseID) {
+    $data = redis()->get($responseID);
+    if($data) {
+      return json_decode($data);
+    } else {
+      return null;
+    }
   }
 
   public static function addResponse($testNum, $responseID, $testKey='test') {
@@ -81,26 +93,30 @@ class Redis {
     return $responses;
   }
 
-  public static function getResponse($id) {
+  public static function getResponse($id, $onlyCached=false) {
     $data = redis()->get($id);
     if($data)
       return new Response($data, $id);
 
-    $filename = self::filenameForResponse($id);
-    if(file_exists($filename))
-      return new Response(file_get_contents($filename), $id);
+    if($onlyCached == false) {
+      $filename = self::filenameForResponse($id);
+      if(file_exists($filename))
+        return new Response(file_get_contents($filename), $id);
+    }
 
     return null;
   }
 
-  public static function getSource($id) {
+  public static function getSource($id, $onlyCached=false) {
     $data = redis()->get($id);
     if($data)
       return new Response($data, $id);
 
-    $filename = self::filenameForSource($id);
-    if(file_exists($filename))
-      return new Response(file_get_contents($filename), $id);
+    if($onlyCached == false) {
+      $filename = self::filenameForSource($id);
+      if(file_exists($filename))
+        return new Response(file_get_contents($filename), $id);
+    }
 
     return null;
   }
@@ -131,12 +147,16 @@ class Redis {
    ** Helper methods for keeping track of update state
    **/
 
-  // Check if this source URL has passed step 1/2/2
+  public static function setInProgressSourceData($sourceID, $data) {
+    redis()->setex($sourceID, 600, json_encode($data));
+  }
+
+  // Check if this source URL has passed step 1/2/3/4
   public static function hasSourcePassedPart($responseID, $test, $part) {
     return redis()->get(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID) == 'passed';
   }
 
-  // Store source URL has passed step 1/2/3
+  // Store source URL has passed step 1/2/3/4
   public static function setSourceHasPassedPart($responseID, $test, $part) {
     redis()->setex(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID, 600, 'passed');
   }
@@ -149,7 +169,7 @@ class Redis {
   public static function removeInProgressResponse($testNum, $responseID) {
     redis()->zrem(Config::$base . 'update/' . $testNum . '/inprogress/responses', $responseID);
     for($part=1; $part<=3; $part++)
-      redis()->del(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID);
+      redis()->del(Config::$base . 'update/' . $testNum . '/part/' . $part . '/' . $responseID);
   }
 
   public static function getInProgressResponses($testNum, $testKey='update') {

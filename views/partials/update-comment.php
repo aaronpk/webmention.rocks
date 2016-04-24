@@ -22,11 +22,12 @@
               <div class="e-content <?= $comment->content_is_html ? '' : 'plaintext' ?>"><?= $comment->content ?: '<span class="missing">Comment text not found</span>' ?></div>
             <?php endif; ?>
 
-            <code style="font-size: 0.93em;">
-            1: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 1) ? 'X' : ' ' ?>] 
-            2: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 2) ? 'X' : ' ' ?>] 
-            3: [<?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, 3) ? 'X' : ' ' ?>]
-            </code>
+            <div class="progress-checkmarks">
+            <?php for($i=1; $i<=$checkboxes; $i++): ?>
+              <span class="label"><?= $i ?>:</span>
+              <span class="checkmark <?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, $i) ? 'checked' : '' ?>"></span>
+            <?php endfor; ?>
+            </div>
 
           </div>
           <div class="meta">

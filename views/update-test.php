@@ -31,7 +31,7 @@
       </div>
       <ul class="comments stream mention">
         <?php foreach($in_progress as $comment): ?>
-          <?php $this->insert('partials/update-comment', ['comment'=>$comment, 'type'=>'mention', 'test'=>$num]); ?>
+          <?php $this->insert('partials/update-comment', ['comment'=>$comment, 'type'=>'mention', 'test'=>$num, 'checkboxes' => $test['checkboxes']]); ?>
         <?php endforeach; ?>
       </ul>
     </div>

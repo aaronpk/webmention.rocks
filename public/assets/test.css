@@ -235,3 +235,25 @@
   color: #777;
   text-align: center;
 }
+
+.progress-checkmarks .label {
+  display: inline-block;
+}
+
+.progress-checkmarks .checkmark {
+  border: 1px #ffd65c solid;
+  border-radius: 2px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 0.8em;
+  vertical-align: bottom;
+  font-family: Checkbox;
+  font-size: 17px;
+}
+.progress-checkmarks .checkmark.checked:after {
+  content: '\e800';
+  position: relative;
+  bottom: 1px;
+}

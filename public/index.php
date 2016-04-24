@@ -28,7 +28,9 @@ $route->map('POST', '/test/20', 'DiscoveryWebmention::handle_error'); // for #20
 
 $route->map('GET', '/update/{test}', 'UpdateTestController::view');
 $route->map('GET', '/update/{test}/step/{step}', 'UpdateTestController::step');
+$route->map('GET', '/update/{test}/part/{step}', 'UpdateTestController::step');
 $route->map('POST', '/update/{test}/step/{step}/webmention', 'UpdateWebmention::handle');
+$route->map('POST', '/update/{test}/part/{step}/webmention', 'UpdateWebmention::handle');
 
 $route->map('GET', '/image', 'ImageProxy::image');
 

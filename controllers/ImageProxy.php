@@ -32,10 +32,14 @@ class ImageProxy {
 
     if(preg_match('/https?:\/\//', $url)) {
       $client = new GuzzleHttp\Client();
-      $img = $client->request('GET', $url);
-      $contentType = $img->getHeader('Content-type');
-      $response->getBody()->write($img->getBody());
-      return $response->withHeader('Content-type', $contentType);
+      try {
+        $img = $client->request('GET', $url);
+        $contentType = $img->getHeader('Content-type');
+        $response->getBody()->write($img->getBody());
+        return $response->withHeader('Content-type', $contentType);
+      } catch(GuzzleHttp\Exception\ClientException $e) {
+        return self::_400($response);
+      }
     } else {
       return self::_400($response);
     }

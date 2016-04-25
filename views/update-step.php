@@ -13,7 +13,7 @@
       <h1 class="p-name"><a href="/update/<?= $num ?>/part/<?= $step ?>">Update Test #<?= $num ?> Part <?= $step ?>.</a></h1>
       <div class="e-content"><?= $test['steps'][$step]['description'] ?></div>
       <div class="meta">
-        <a href="/update/<?= $num ?>" class="u-url">
+        <a href="/update/<?= $num ?>/part/<?= $step ?>" class="u-url">
           Published:
           <time class="dt-published" datetime="<?= $published->format('c') ?>">
             <?= $published->format('l F j, Y g:ia P') ?>

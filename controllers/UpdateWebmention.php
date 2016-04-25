@@ -1,7 +1,7 @@
 <?php
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Rocks\DiscoveryTestData;
+use Rocks\UpdateTestData;
 use Rocks\HTTP;
 
 class UpdateWebmention extends Webmention {
@@ -23,31 +23,11 @@ class UpdateWebmention extends Webmention {
 
   private function _basic_verification(ServerRequestInterface $request, ResponseInterface $response, $num) {
 
-    $contentType = $request->getHeaderLine('Content-type');
-    if(strpos($contentType, 'application/x-www-form-urlencoded') === false) {
-      return $this->_error($request, $response, 
-        'invalid_content_type', 
-        'Content type must be set to application/x-www-form-urlencoded');
-    }
+    $response = $this->_validateOneTimeEndpoint($request, $response);
+    if($response->getStatusCode() == 400)
+      return $response;
 
-    // These endpoints are always single-use, so reject completely if it has been used before
-    $query = $request->getQueryParams();
-    if(!array_key_exists('key', $query)) {
-      return $this->_error($request, $response,
-        'invalid_request',
-        'The request was missing a key. Most likely this means you dropped the query string parameters or sent them as POST body parameters.'
-        );
-    }
-
-    // This key must exist in the cache, otherwise the endpoint expired or has already been used
-    if(Rocks\Redis::useOneTimeKey($query['key']) == false) {
-      return $this->_error($request, $response,
-        'invalid_request',
-        'This Webmention endpoint has expired. You need to re-discover the endpoint for the post you are replying to.'
-        );
-    }
-
-    // Initial Webmention verification, check source & target syntax, check for link to this page
+    // Initial Webmention verification, check source & target syntax
     $post = $request->getParsedBody();
 
     $sourceURL = @$post['source'];
@@ -80,34 +60,6 @@ class UpdateWebmention extends Webmention {
     ];
   }
 
-  private function _sourceDocHasLinkTo($doc, $link, $strict=true) {
-
-    if(!$doc) {
-      return $this->_error($request, $response,
-        'invalid_source',
-        'The source document could not be parsed as HTML.');
-    }
-
-    $xpath = new DOMXPath($doc);
-
-    if($strict) {
-      $query = '//a[@href] | //link[@href] | //area[@href]';
-    } else {
-      $query = '//*[@href]';
-    }
-
-    $found = false;
-    foreach($xpath->query($query) as $href) {
-      $url = $href->getAttribute('href');
-      if($url == $link) {
-        $found = true;
-        break;
-      }
-    }
-
-    return $found;
-  }
-
   /*
     Test 1
   
@@ -136,7 +88,6 @@ class UpdateWebmention extends Webmention {
 
   // TODO:
   // if the test has passed for the source URL, do not let it start a new test
-
 
   private function test_1_step_1(ServerRequestInterface $request, ResponseInterface $response) {
 
@@ -483,6 +434,21 @@ class UpdateWebmention extends Webmention {
 
     }
     
+  }
+
+  public function get(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $num = $args['test'];
+
+    if(!UpdateTestData::exists($num)) {
+      $response->getBody()->write('Test not found');
+      return $response->withHeader('Content-Type', 'text/plain')->withStatus(404);
+    }
+
+    $response->getBody()->write(view('webmention', [
+      'title' => 'Webmention Rocks!',
+    ]));
+
+    return $response;
   }
 
 }

@@ -62,6 +62,22 @@
   </section>
 
   <section class="content">
+    <h3>Webmention Deletes</h3>
+
+    <p>The tests below will test whether you properly support <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-deleted-posts">sending Webmentions for deleted posts</a>.</p>
+
+    <ul>
+      <?php foreach($deleteTestData as $i=>$data): ?>
+        <li>
+          <a href="/delete/<?= $i ?>">Delete Test #<?= $i ?></a>
+          -
+          <?= htmlspecialchars($data['name']) ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  </section>
+
+  <section class="content">
     <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors</p>
   </section>
 

@@ -25,7 +25,7 @@
             <div class="progress-checkmarks">
             <?php for($i=1; $i<=$checkboxes; $i++): ?>
               <span class="label"><?= $i ?>:</span>
-              <span class="checkmark <?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, $i) ? 'checked' : '' ?>"></span>
+              <span class="checkmark <?= Rocks\Redis::hasSourcePassedPart($comment->id, $test, $i, $group) ? 'checked' : '' ?>"></span>
             <?php endfor; ?>
             </div>
 

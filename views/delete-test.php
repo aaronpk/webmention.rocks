@@ -10,10 +10,10 @@
       </a>
     </div>
     <div class="right">
-      <h1 class="p-name"><a href="/update/<?= $num ?>">Update Test #<?= $num ?></a></h1>
+      <h1 class="p-name"><a href="/delete/<?= $num ?>">Delete Test #<?= $num ?></a></h1>
       <div class="e-content"><?= $test['description'] ?></div>
       <div class="meta">
-        <a href="/update/<?= $num ?>" class="u-url">
+        <a href="/delete/<?= $num ?>" class="u-url">
           Published:
           <time class="dt-published" datetime="<?= $published->format('c') ?>">
             <?= $published->format('l F j, Y g:ia P') ?>
@@ -31,7 +31,7 @@
       </div>
       <ul class="comments stream mention">
         <?php foreach($in_progress as $comment): ?>
-          <?php $this->insert('partials/in-progress-comment', ['comment'=>$comment, 'group'=>'update', 'type'=>'mention', 'test'=>$num, 'checkboxes' => $test['checkboxes']]); ?>
+          <?php $this->insert('partials/in-progress-comment', ['comment'=>$comment, 'group'=>'delete', 'type'=>'mention', 'test'=>$num, 'checkboxes' => $test['checkboxes']]); ?>
         <?php endforeach; ?>
       </ul>
     </div>
@@ -39,7 +39,7 @@
     <div class="responses-row <?= count($responses) ? '' : 'empty' ?>" style="background-color: #dfffe1;">
       <div style="padding: 12px 12px 3px 12px;">
         <h3 style="margin: 0;">Successful Tests</h3>
-        <p class="help-text">The mentions below have successfully passed the test!</p>
+        <p class="help-text">The mentions below have successfully passed the test! If you visit any of the links below, you should see an indication that the post was deleted.</p>
       </div>
       <ul class="comments stream mention">
         <?php foreach($responses as $comment): ?>
@@ -53,3 +53,6 @@
     <p>Responses are stored for 48 hours and may be deleted after that time.</p>
   </div>
 </div>
+
+<div id="test-num" data-num="<?= $num ?>"></div>
+<script src="/assets/streaming.js"></script>

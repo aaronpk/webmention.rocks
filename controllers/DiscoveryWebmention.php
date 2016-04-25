@@ -16,7 +16,6 @@ class DiscoveryWebmention extends Webmention {
 
     $response->getBody()->write(view('webmention', [
       'title' => 'Webmention Rocks!',
-      'num' => $args['num']
     ]));
 
     return $response;

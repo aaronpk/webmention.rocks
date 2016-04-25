@@ -23,6 +23,35 @@ class Webmention {
     }
   }
 
+  protected function _validateOneTimeEndpoint(ServerRequestInterface $request, ResponseInterface $response) {
+
+    $contentType = $request->getHeaderLine('Content-type');
+    if(strpos($contentType, 'application/x-www-form-urlencoded') === false) {
+      return $this->_error($request, $response, 
+        'invalid_content_type', 
+        'Content type must be set to application/x-www-form-urlencoded');
+    }
+
+    // These endpoints are always single-use, so reject completely if it has been used before
+    $query = $request->getQueryParams();
+    if(!array_key_exists('key', $query)) {
+      return $this->_error($request, $response,
+        'invalid_request',
+        'The request was missing a key. Most likely this means you dropped the query string parameters or sent them as POST body parameters.'
+        );
+    }
+
+    // This key must exist in the cache, otherwise the endpoint expired or has already been used
+    if(Rocks\Redis::useOneTimeKey($query['key']) == false) {
+      return $this->_error($request, $response,
+        'invalid_request',
+        'This Webmention endpoint has expired. You need to re-discover the endpoint for the post you are replying to.'
+        );
+    }
+
+    return $response;
+  }
+
   protected function _validateSourceURL(ServerRequestInterface $request, ResponseInterface $response, $sourceURL) {
     if(!$sourceURL) {
       return $this->_error($request, $response, 
@@ -120,7 +149,7 @@ class Webmention {
         );
     }
 
-    if(!preg_match('/^\/(test|update)\/\d+(\/(?:step|part)\/\d+)?$/', $path)) {
+    if(!preg_match('/^\/(test|update|delete)\/\d+(\/(?:step|part)\/\d+)?$/', $path)) {
       return $this->_error($request, $response,
         'invalid_target',
         'The target provided does not accept webmentions.'
@@ -160,6 +189,33 @@ class Webmention {
     @$doc->loadHTML($body, LIBXML_NOWARNING|LIBXML_NOERROR);
     libxml_clear_errors();
     return $doc;
+  }
+
+  protected function _sourceDocHasLinkTo(DOMDocument $doc, $link, $strict=true) {
+    if(!$doc) {
+      return $this->_error($request, $response,
+        'invalid_source',
+        'The source document could not be parsed as HTML.');
+    }
+
+    $xpath = new DOMXPath($doc);
+
+    if($strict) {
+      $query = '//a[@href] | //link[@href] | //area[@href]';
+    } else {
+      $query = '//*[@href]';
+    }
+
+    $found = false;
+    foreach($xpath->query($query) as $href) {
+      $url = $href->getAttribute('href');
+      if($url == $link) {
+        $found = true;
+        break;
+      }
+    }
+
+    return $found;
   }
 
   protected function _verifySourceLinksToTarget($request, $response, $source, $targetURL) {

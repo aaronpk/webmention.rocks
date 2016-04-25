@@ -3,6 +3,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rocks\DiscoveryTestData;
 use Rocks\UpdateTestData;
+use Rocks\DeleteTestData;
 
 class Controller {
 
@@ -11,6 +12,7 @@ class Controller {
       'title' => 'Webmention Rocks!',
       'discoveryTestData' => DiscoveryTestData::data(),
       'updateTestData' => UpdateTestData::data(),
+      'deleteTestData' => DeleteTestData::data(),
     ]));
     return $response;
   }

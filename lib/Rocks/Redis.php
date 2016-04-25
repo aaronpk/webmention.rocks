@@ -152,37 +152,37 @@ class Redis {
   }
 
   // Check if this source URL has passed step 1/2/3/4
-  public static function hasSourcePassedPart($responseID, $test, $part) {
-    return redis()->get(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID) == 'passed';
+  public static function hasSourcePassedPart($responseID, $test, $part, $group='update') {
+    return redis()->get(Config::$base . $group . '/' . $test . '/part/' . $part . '/' . $responseID) == 'passed';
   }
 
   // Store source URL has passed step 1/2/3/4
-  public static function setSourceHasPassedPart($responseID, $test, $part) {
-    redis()->setex(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID, 600, 'passed');
+  public static function setSourceHasPassedPart($responseID, $test, $part, $group='update') {
+    redis()->setex(Config::$base . $group . '/' . $test . '/part/' . $part . '/' . $responseID, 600, 'passed');
   }
 
-  public static function addInProgressResponse($testNum, $responseID) {
-    redis()->zadd(Config::$base . 'update/' . $testNum . '/inprogress/responses', time(), $responseID);
+  public static function addInProgressResponse($testNum, $responseID, $group='update') {
+    redis()->zadd(Config::$base . $group . '/' . $testNum . '/inprogress/responses', time(), $responseID);
     // TODO: Remove old responses from the list
   }
 
-  public static function removeInProgressResponse($testNum, $responseID) {
-    redis()->zrem(Config::$base . 'update/' . $testNum . '/inprogress/responses', $responseID);
+  public static function removeInProgressResponse($testNum, $responseID, $group='update') {
+    redis()->zrem(Config::$base . $group . '/' . $testNum . '/inprogress/responses', $responseID);
     for($part=1; $part<=3; $part++)
-      redis()->del(Config::$base . 'update/' . $testNum . '/part/' . $part . '/' . $responseID);
+      redis()->del(Config::$base . $group . '/' . $testNum . '/part/' . $part . '/' . $responseID);
   }
 
-  public static function getInProgressResponses($testNum, $testKey='update') {
-    return redis()->zrevrangebyscore(Config::$base . $testKey . '/' . $testNum . '/inprogress/responses',
+  public static function getInProgressResponses($testNum, $group='update') {
+    return redis()->zrevrangebyscore(Config::$base . $group . '/' . $testNum . '/inprogress/responses',
       time()+300, time()-600);
   }
 
-  public static function extendExpiration($test, $responseID) {
+  public static function extendExpiration($test, $responseID, $group='update') {
     // Extend the expiration of passing the three tests
     for($part=1; $part<=3; $part++)
-      redis()->expire(Config::$base . 'update/' . $test . '/part/' . $part . '/' . $responseID, 600);
+      redis()->expire(Config::$base . $group . '/' . $test . '/part/' . $part . '/' . $responseID, 600);
     // And bump the timer of the in progress item
-    self::addInProgressResponse($test, $responseID);
+    self::addInProgressResponse($test, $responseID, $group);
   }
 
 

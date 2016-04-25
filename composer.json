@@ -18,9 +18,11 @@
       "controllers/Controller.php",
       "controllers/DiscoveryTestController.php",
       "controllers/UpdateTestController.php",
+      "controllers/DeleteTestController.php",
       "controllers/Webmention.php",
       "controllers/DiscoveryWebmention.php",
       "controllers/UpdateWebmention.php",
+      "controllers/DeleteWebmention.php",
       "controllers/ImageProxy.php"
     ]
   }

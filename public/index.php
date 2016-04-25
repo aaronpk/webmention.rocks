@@ -30,7 +30,12 @@ $route->map('GET', '/update/{test}', 'UpdateTestController::view');
 $route->map('GET', '/update/{test}/step/{step}', 'UpdateTestController::step');
 $route->map('GET', '/update/{test}/part/{step}', 'UpdateTestController::step');
 $route->map('POST', '/update/{test}/step/{step}/webmention', 'UpdateWebmention::handle');
+$route->map('GET', '/update/{test}/part/{step}/webmention', 'UpdateWebmention::get');
 $route->map('POST', '/update/{test}/part/{step}/webmention', 'UpdateWebmention::handle');
+
+$route->map('GET', '/delete/{test}', 'DeleteTestController::view');
+$route->map('GET', '/delete/{test}/webmention', 'DeleteWebmention::get');
+$route->map('POST', '/delete/{test}/webmention', 'DeleteWebmention::handle');
 
 $route->map('GET', '/image', 'ImageProxy::image');
 

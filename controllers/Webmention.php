@@ -25,6 +25,9 @@ class Webmention {
 
   protected function _validateOneTimeEndpoint(ServerRequestInterface $request, ResponseInterface $response) {
 
+    if(!Config::$oneTimeEndpoints)
+      return $response;
+
     $contentType = $request->getHeaderLine('Content-type');
     if(strpos($contentType, 'application/x-www-form-urlencoded') === false) {
       return $this->_error($request, $response, 
@@ -216,6 +219,27 @@ class Webmention {
     }
 
     return $found;
+  }
+
+  protected function _getMetaHTTPStatus(DOMDocument $doc) {
+    if(!$doc) {
+      return $this->_error($request, $response,
+        'invalid_source',
+        'The source document could not be parsed as HTML.');
+    }
+
+    $xpath = new DOMXPath($doc);
+
+    $status = null;
+    foreach($xpath->query('//meta[@http-equiv]') as $meta) {
+      $content = $meta->getAttribute('content');
+      if(preg_match('/^(\d+)/', $content, $match)) {
+        $status = $match[1];
+        break;
+      }
+    }
+
+    return $status;
   }
 
   protected function _verifySourceLinksToTarget($request, $response, $source, $targetURL) {

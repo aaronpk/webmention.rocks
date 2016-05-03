@@ -24,9 +24,9 @@ class DeleteWebmention extends Webmention {
   public function test_1(ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $num = $args['test'];
 
-    // $response = $this->_validateOneTimeEndpoint($request, $response);
-    // if($response->getStatusCode() == 400)
-    //   return $response;
+    $response = $this->_validateOneTimeEndpoint($request, $response);
+    if($response->getStatusCode() == 400)
+      return $response;
 
     $post = $request->getParsedBody();
 
@@ -82,11 +82,14 @@ class DeleteWebmention extends Webmention {
           'It looks like your post still has a link to this test. Make sure you delete the post and try again.', 200);
       }
 
-      // If the post doesn't have a link, but also didn't return HTTP 410, it's an error
-      if($source['code'] != 410) {
+      // If the post doesn't have a link, check for meta status equiv
+      $metaStatus = $this->_getMetaHTTPStatus($doc);
+
+      // If it also didn't return HTTP 410, it's an error
+      if($source['code'] != 410 && $metaStatus != 410) {
         return $this->_error($request, $response,
           'not_deleted',
-          'Your post did not return an HTTP 410 Gone response. A Webmention receiver only considers your post to be deleted when the URL returns HTTP 410.');
+          'Your post did not return a 410 Gone response. A Webmention receiver only considers your post to be deleted when the URL returns HTTP 410 or indicates the 410 response in an HTML meta http-equiv tag.');
       }
 
       // Store the response data on disk

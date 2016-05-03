@@ -78,6 +78,14 @@
   </section>
 
   <section class="content">
+    <h3>Testing your Receiver</h3>
+
+    <p>The formal test suite for testing Webmention receivers is still in progress.</p>
+    <p>In the mean time, you can use <a href="https://github.com/voxpelli/node-webmention-testpinger">this tool</a>
+      which will create several test web pages and send you a webmention from them with a variety of markup.</p>
+  </section>
+
+  <section class="content">
     <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors</p>
   </section>
 

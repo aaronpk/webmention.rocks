@@ -9,6 +9,10 @@
     <p>After completing the tests, you can <a href="http://webmention.net/implementation-reports/">submit an implementation report</a> to the W3C.</p>
   </section>
 
+  <section class="content small">
+    <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors.</p>
+  </section>
+
   <section class="content">
     <h3>Webmention Endpoint Discovery</h3>
 
@@ -85,8 +89,8 @@
       which will create several test web pages and send you a webmention from them with a variety of markup.</p>
   </section>
 
-  <section class="content">
-    <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors</p>
+  <section class="content small">
+    <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors.</p>
   </section>
 
 </div>

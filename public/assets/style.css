@@ -1,6 +1,11 @@
 
 body {
   background: #cee0f0;
+  font-size: 16px;
+}
+
+.small {
+  font-size: 14px;
 }
 
 #header-graphic {

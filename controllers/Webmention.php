@@ -232,10 +232,13 @@ class Webmention {
 
     $status = null;
     foreach($xpath->query('//meta[@http-equiv]') as $meta) {
-      $content = $meta->getAttribute('content');
-      if(preg_match('/^(\d+)/', $content, $match)) {
-        $status = $match[1];
-        break;
+      $equiv = $meta->getAttribute('http-equiv');
+      if(strtolower($equiv) == 'status') {
+        $content = $meta->getAttribute('content');
+        if(is_string($content) && preg_match('/^(\d+)/', $content, $match)) {
+          $status = $match[1];
+          break;
+        }
       }
     }
 

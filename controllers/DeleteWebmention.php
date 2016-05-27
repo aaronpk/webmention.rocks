@@ -52,8 +52,18 @@ class DeleteWebmention extends Webmention {
 
     $existing = Rocks\Redis::getSource($sourceID, true);
 
+    $doc = $this->_HTMLtoDOMDocument($source['body']);
+    $metaStatus = $this->_getMetaHTTPStatus($doc);
+
     // If there is not an in-progress webmention for this source, verify the webmention as normal
     if(!$existing) {
+
+      // If the source returned 410 already, return a specific error message
+      if($source['code'] == 410 || $metaStatus == 410) {
+        return $this->_error($request, $response,
+          'no_link_found',
+          'Your post returned "410 Gone" already, so this receiver treated the page as deleted. In order to start the test, you need to first include a link to this page and not return 410 Gone.', 400);
+      }
 
       $response = $this->_verifySourceLinksToTarget($request, $response, $source, $targetURL);
       if($response->getStatusCode() == 400)
@@ -74,8 +84,6 @@ class DeleteWebmention extends Webmention {
     } else {
     // If we've seen this before, then make sure the source has been deleted and returns HTTP 410
 
-      $doc = $this->_HTMLtoDOMDocument($source['body']);
-
       if($this->_sourceDocHasLinkTo($doc, Config::$base . 'delete/1', false)) {
         return $this->_error($request, $response,
           'not_deleted',
@@ -83,8 +91,6 @@ class DeleteWebmention extends Webmention {
       }
 
       // If the post doesn't have a link, check for meta status equiv
-      $metaStatus = $this->_getMetaHTTPStatus($doc);
-
       // If it also didn't return HTTP 410, it's an error
       if($source['code'] != 410 && $metaStatus != 410) {
         return $this->_error($request, $response,

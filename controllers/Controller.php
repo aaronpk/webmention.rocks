@@ -4,6 +4,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Rocks\DiscoveryTestData;
 use Rocks\UpdateTestData;
 use Rocks\DeleteTestData;
+use Rocks\ReceiverTestData;
 
 class Controller {
 
@@ -13,6 +14,7 @@ class Controller {
       'discoveryTestData' => DiscoveryTestData::data(),
       'updateTestData' => UpdateTestData::data(),
       'deleteTestData' => DeleteTestData::data(),
+      'receiverTestData' => ReceiverTestData::data(),
     ]));
     return $response;
   }

@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: row;  
 
-  border-radius: 8px;
+  border-radius: .28571429rem;
   border: 1px #abcce9 solid;
 
   background: #fff;
@@ -64,8 +64,10 @@
 .post-container img {
   background: white;
   border: 1px #abcce9 solid;
-  border-radius: 6px;
+  border-radius: .28571429rem;
 }
+
+
 
 /* name of the test */
 .post-container h1 {

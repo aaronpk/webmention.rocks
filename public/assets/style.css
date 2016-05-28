@@ -20,6 +20,11 @@ body {
   width: 100%;
 }
 
+.single-column {
+  margin: 0 auto; 
+  max-width: 600px;
+}
+
 section.content {
   padding: 10px;
   border-radius: 4px;

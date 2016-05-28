@@ -1,6 +1,6 @@
 <?php $this->layout('layout', ['title' => $title]); ?>
 
-<div style="margin: 0 auto; max-width: 600px;">
+<div class="single-column">
   <div id="header-graphic"><img src="/assets/webmention-rocks.png"></div>
 
   <section class="content">
@@ -84,9 +84,20 @@
   <section class="content">
     <h3>Testing your Receiver</h3>
 
-    <p>The formal test suite for testing Webmention receivers is still in progress.</p>
-    <p>In the mean time, you can use <a href="https://github.com/voxpelli/node-webmention-testpinger">this tool</a>
+    <p>The formal test suite for testing Webmention receivers is in progress. Some tests are below.</p>
+    <p>You can also use <a href="https://github.com/voxpelli/node-webmention-testpinger">this tool</a>
       which will create several test web pages and send you a webmention from them with a variety of markup.</p>
+
+    <ul>
+      <?php foreach($receiverTestData as $i=>$data): ?>
+        <li>
+          <a href="/receive/<?= $i ?>">Receiver Test #<?= $i ?></a>
+          -
+          <?= htmlspecialchars($data['name']) ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+
   </section>
 
   <section class="content small">

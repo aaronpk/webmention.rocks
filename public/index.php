@@ -18,6 +18,9 @@ $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'Controller::index');
 
+$route->map('GET', '/auth/start', 'AuthController::start');
+$route->map('GET', '/auth/callback', 'AuthController::callback');
+
 $route->map('GET', '/discovery', 'Controller::discovery');
 $route->map('GET', '/test/{num}', 'DiscoveryTestController::view');
 $route->map('GET', '/test/{num}/webmention', 'DiscoveryWebmention::get');
@@ -36,6 +39,10 @@ $route->map('POST', '/update/{test}/part/{step}/webmention', 'UpdateWebmention::
 $route->map('GET', '/delete/{test}', 'DeleteTestController::view');
 $route->map('GET', '/delete/{test}/webmention', 'DeleteWebmention::get');
 $route->map('POST', '/delete/{test}/webmention', 'DeleteWebmention::handle');
+
+$route->map('GET', '/receive/{test}', 'ReceiverTestController::view');
+$route->map('GET', '/receive/{test}/start', 'ReceiverTestController::start');
+$route->map('GET', '/receive/{test}/{code}', 'ReceiverTestController::process');
 
 $route->map('GET', '/image', 'ImageProxy::image');
 

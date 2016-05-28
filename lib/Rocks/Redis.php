@@ -4,6 +4,36 @@ use Config;
 
 class Redis {
 
+  /*** 
+   ** User/Login data
+   **/
+
+  public static function haveSeenUserRecently($url, $set=false) {
+    $key = Config::$base.'seen/'.md5($url);
+    if($set) {
+      redis()->setex($key, 60*60*24*7, 1);
+    } else {
+      return redis()->get($key) == 1;
+    }
+  }
+
+  /***
+   ** For sending webmentions
+   **/
+
+  // Generates a new code that will be used as the source URL for sending to the specified target
+  public static function generateCodeForTarget($target, $num) {
+    $code = md5($target.'::'.time());
+    $key = Config::$base . 'receive/' . $code . '/target';
+    redis()->setex($key, 360*72, json_encode(['target'=>$target, 'num'=>$num]));
+    return $code;
+  }
+
+
+  /*** 
+   ** For receiving webmentions
+   **/
+
   public static function makeResponseID($source, $target) {
     return Config::$base . 'response/' . md5($source . '::' . $target);
   }

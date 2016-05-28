@@ -32,6 +32,19 @@ function random_string($len) {
   return $str;
 }
 
+function session_setup() {
+  session_set_cookie_params(86400*30);
+  session_start();
+}
+
+function is_logged_in() {
+  return isset($_SESSION) && array_key_exists('me', $_SESSION);
+}
+
+function domains_are_equal($a, $b) {
+  return parse_url($a, PHP_URL_HOST) == parse_url($b, PHP_URL_HOST);
+}
+
 function isPublicAddress($ip) {
   // http://stackoverflow.com/a/30143143
 

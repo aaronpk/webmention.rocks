@@ -70,14 +70,19 @@ class ReceiverTestController extends Controller {
       return $response;
     }
 
-    
+    $published = new DateTime($data->published);
+    # TODO: Set the timezone to match the timezone of the post this links to
+    $published->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+
+
 
     $response->getBody()->write(view('receiver-test-run', [
       'title' => 'Webmention Rocks!',
       'num' => $num,
       'test' => ReceiverTestData::data($num),
-      'published' => ReceiverTestData::published($num),
-      'num_responses' => 0
+      'published' => $published,
+      'num_responses' => 0,
+      'target' => $data->target
     ]));
   }
 

@@ -25,7 +25,11 @@ class Redis {
   public static function generateCodeForTarget($target, $num) {
     $code = md5($target.'::'.time());
     $key = Config::$base . 'receive/' . $code . '/target';
-    redis()->setex($key, 360*72, json_encode(['target'=>$target, 'num'=>$num]));
+    redis()->setex($key, 360*72, json_encode([
+      'target' => $target, 
+      'num' => $num,
+      'published' => date('Y-m-d H:i:s')
+    ]));
     return $code;
   }
 

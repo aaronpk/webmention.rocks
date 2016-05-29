@@ -3,6 +3,11 @@
                     ]); ?>
 
 <div class="post-container h-entry">
+
+  <div class="post-main" style="margin-bottom: 12px;">
+    <a href="<?= $target ?>"><?= $target ?></a>
+  </div>
+
   <div class="post-main">
     <div class="left p-author h-card">
       <a href="/">

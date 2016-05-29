@@ -16,7 +16,18 @@
   <?= isset($link_tag) ? $link_tag : '' ?>
 
 </head>
-<body>
+<body<?= is_logged_in() ? ' class="logged-in"' : '' ?>>
+
+<?php if(is_logged_in()): ?>
+<div class="ui top fixed menu">
+  <a class="item" href="/"><img src="/assets/webmention-rocks-icon.png"></a>
+  <a class="item" href="/">Home</a>
+  <div class="right menu">
+    <span class="item"><?= display_url($_SESSION['me']) ?></span>
+    <a class="item" href="/auth/signout">Sign Out</a>
+  </div>
+</div>
+<?php endif; ?>
 
 <?= $this->section('content') ?>
 

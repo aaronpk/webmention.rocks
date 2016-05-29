@@ -29,6 +29,15 @@ class Redis {
     return $code;
   }
 
+  public static function getTargetDataFromCode($code) {
+    $key = Config::$base . 'receive/' . $code . '/target';
+    $data = redis()->get($key);
+    if($data) {
+      return json_decode($data);
+    } else {
+      return null;
+    }
+  }
 
   /*** 
    ** For receiving webmentions

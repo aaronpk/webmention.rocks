@@ -6,6 +6,8 @@ use Rocks\DeleteTestData;
 class DeleteTestController extends Controller {
 
   public function view(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    session_setup();
+
     $num = $args['test'];
 
     if(!DeleteTestData::exists($num)) {

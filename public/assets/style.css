@@ -4,6 +4,14 @@ body {
   font-size: 16px;
 }
 
+body.logged-in {
+  padding-top: 60px;
+}
+
+.ui.top.menu .item img {
+  border-radius: 4px;
+}
+
 .small {
   font-size: 14px;
 }

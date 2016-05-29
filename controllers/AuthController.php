@@ -6,7 +6,7 @@ class AuthController extends Controller {
 
   public function start(ServerRequestInterface $request, ResponseInterface $response) {
     $params = $request->getQueryParams();
-    session_setup();
+    session_setup(true);
     
     if(!array_key_exists('url', $params) || !($me = IndieAuth\Client::normalizeMeURL($params['url']))) {
       $response->getBody()->write(view('auth-error', [
@@ -55,7 +55,7 @@ class AuthController extends Controller {
 
   public function callback(ServerRequestInterface $request, ResponseInterface $response) {
     $params = $request->getQueryParams();
-    session_setup();
+    session_setup(true);
 
     // Verify there is a "me" parameter in the callback
     if(!array_key_exists('me', $params) || !($me = IndieAuth\Client::normalizeMeURL($params['me']))) {
@@ -136,7 +136,7 @@ class AuthController extends Controller {
     unset($_SESSION['attempted_me']);
 
     $_SESSION['me'] = $auth['me'];
-    haveSeenUserRecently($_SESSION['me'], true);
+    Rocks\Redis::haveSeenUserRecently($_SESSION['me'], true);
 
     if(array_key_exists('return-to', $_SESSION)) {
       $returnTo = $_SESSION['return-to'];
@@ -145,6 +145,14 @@ class AuthController extends Controller {
     } else {
       return $response->withHeader('Location', '/')->withStatus(302);
     }
+  }
+
+  public function signout(ServerRequestInterface $request, ResponseInterface $response) {
+    session_setup(true);
+    unset($_SESSION['me']);
+    $_SESSION = [];
+    session_destroy();
+    return $response->withHeader('Location', '/')->withStatus(302);
   }
 
 }

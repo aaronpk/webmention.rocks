@@ -7,6 +7,8 @@ use Rocks\HTTP;
 class DiscoveryWebmention extends Webmention {
 
   public function get(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    session_setup();
+
     $num = $args['num'];
 
     if(!DiscoveryTestData::exists($num)) {

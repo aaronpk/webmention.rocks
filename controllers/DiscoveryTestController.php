@@ -6,6 +6,8 @@ use Rocks\DiscoveryTestData;
 class DiscoveryTestController extends Controller {
 
   public function view(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    session_setup();
+
     $num = $args['num'];
 
     if(!DiscoveryTestData::exists($num)) {

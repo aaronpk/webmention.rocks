@@ -32,9 +32,14 @@ function random_string($len) {
   return $str;
 }
 
-function session_setup() {
-  session_set_cookie_params(86400*30);
-  session_start();
+// Sets up the session.
+// If create is true, the session will be created even if there is no cookie yet.
+// If create is false, the session will only be set up in PHP if they already have a session cookie.
+function session_setup($create=false) {
+  if($create || isset($_COOKIE[session_name()])) {
+    session_set_cookie_params(86400*30);
+    session_start();
+  }
 }
 
 function is_logged_in() {
@@ -43,6 +48,14 @@ function is_logged_in() {
 
 function domains_are_equal($a, $b) {
   return parse_url($a, PHP_URL_HOST) == parse_url($b, PHP_URL_HOST);
+}
+
+function display_url($url) {
+  # remove scheme
+  $url = preg_replace('/^https?:\/\//', '', $url);
+  # if the remaining string has no path components but has a trailing slash, remove the trailing slash
+  $url = preg_replace('/^([^\/]+)\/$/', '$1', $url);
+  return $url;
 }
 
 function isPublicAddress($ip) {

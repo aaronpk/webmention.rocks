@@ -9,6 +9,8 @@ use Rocks\ReceiverTestData;
 class Controller {
 
   public function index(ServerRequestInterface $request, ResponseInterface $response) {
+    session_setup();
+    
     $response->getBody()->write(view('index', [
       'title' => 'Webmention Rocks!',
       'discoveryTestData' => DiscoveryTestData::data(),
@@ -20,6 +22,7 @@ class Controller {
   }
 
   public function discovery(ServerRequestInterface $request, ResponseInterface $response) {
+    session_setup();
 
     $ids = Rocks\Redis::getAllResponses();
     $responses = [];

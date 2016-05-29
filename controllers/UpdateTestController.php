@@ -6,6 +6,8 @@ use Rocks\UpdateTestData;
 class UpdateTestController extends Controller {
 
   public function view(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    session_setup();
+
     $num = $args['test'];
 
     if(!UpdateTestData::exists($num)) {
@@ -42,6 +44,8 @@ class UpdateTestController extends Controller {
   }
 
   public function step(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    session_setup();
+
     $num = $args['test'];
     $step = $args['step'];
 

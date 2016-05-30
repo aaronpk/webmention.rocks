@@ -298,3 +298,13 @@
   font-weight: bold;
   color: #17B108;
 }
+
+#progress li.head {
+  list-style-type: none;
+}
+#progress li.head span {
+  font-weight: bold;  
+}
+#progress li.head a {
+  font-size: 0.8em;
+}

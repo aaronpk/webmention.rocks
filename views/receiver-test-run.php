@@ -29,12 +29,14 @@
   </div>
 </div>
 
-<?php if(is_logged_in()): ?>
+<?php if(is_logged_in() && $user == $_SESSION['me']): ?>
 <div class="single-column">
   <div class="test-runner">
     <?php $this->insert('receiver/test-'.$num, [
       'source' => $source,
       'target' => $target,
+      'code' => $code,
+      'last_result' => $last_result
     ]); ?>    
   </div>
 </div>
@@ -49,3 +51,4 @@
 <div id="test-num" data-num="<?= $num ?>"></div>
 <input type="hidden" id="source" value="<?= $source ?>">
 <input type="hidden" id="target" value="<?= $target ?>">
+<input type="hidden" id="code" value="<?= $code ?>">

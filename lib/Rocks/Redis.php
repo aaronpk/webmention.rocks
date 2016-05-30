@@ -21,11 +21,12 @@ class Redis {
    ** For sending webmentions
    **/
 
-  // Generates a new code that will be used as the source URL for sending to the specified target
+  // Generates a new code that will be used as the source URL for sending to the specified target.
+  // The code is based off the test number and target URL so if the test is run again later the same code will be returned.
   public static function generateCodeForTarget($target, $num, $user) {
-    $code = md5($target.'::'.time());
+    $code = md5('target::'.$num.'::'.$target);
     $key = Config::$base . 'receive/' . $code . '/target';
-    redis()->setex($key, 360*72, json_encode([
+    redis()->setex($key, 3600*72, json_encode([
       'target' => $target, 
       'num' => $num,
       'published' => date('Y-m-d H:i:s'),
@@ -36,6 +37,21 @@ class Redis {
 
   public static function getTargetDataFromCode($code) {
     $key = Config::$base . 'receive/' . $code . '/target';
+    $data = redis()->get($key);
+    if($data) {
+      return json_decode($data);
+    } else {
+      return null;
+    }
+  }
+
+  public static function saveReceiverTestResult($code, $result) {
+    $key = Config::$base . 'receive/' . $code . '/target/results';
+    redis()->setex($key, 3600*72, json_encode($result));
+  }
+
+  public static function getReceiverTestResult($code) {
+    $key = Config::$base . 'receive/' . $code . '/target/results';
     $data = redis()->get($key);
     if($data) {
       return json_decode($data);

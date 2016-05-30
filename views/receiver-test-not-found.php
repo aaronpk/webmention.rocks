@@ -12,5 +12,7 @@
       <p><?= $this->e($description) ?></p>
     <?php endif; ?>
 
+    <p><a href="/receive/<?= $num ?>">Return to Test #<?= $num ?></a></p>
+
   </section>
 </div>

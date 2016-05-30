@@ -5,11 +5,6 @@ use Config;
 class ReceiverTestData extends TestData {
 
   protected static function _testData() {
-    static $key;
-
-    if(!isset($key))
-      $key = Redis::createOneTimeKey();
-
     return [
       1 => [
         'published' => '2016-05-28T15:00:00-07:00',

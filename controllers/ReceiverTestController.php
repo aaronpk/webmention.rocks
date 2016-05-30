@@ -43,7 +43,7 @@ class ReceiverTestController extends Controller {
     }
 
     // Store the URL and generate a hash for it
-    $code = Rocks\Redis::generateCodeForTarget($params['url'], $num);
+    $code = Rocks\Redis::generateCodeForTarget($params['url'], $num, $_SESSION['me']);
 
     return $response->withHeader('Location', '/receive/'.$num.'/'.$code);
   }
@@ -79,11 +79,64 @@ class ReceiverTestController extends Controller {
     $response->getBody()->write(view('receiver-test-run', [
       'title' => 'Webmention Rocks!',
       'num' => $num,
+      'code' => $code,
       'test' => ReceiverTestData::data($num),
       'published' => $published,
       'num_responses' => 0,
+      'source' => Config::$base.'receive/'.$num.'/'.$code,
       'target' => $data->target
     ]));
+    return $response;
+  }
+
+  public function discover(ServerRequestInterface $request, ResponseInterface $response) {
+    session_setup();
+
+    $post = $request->getParsedBody();
+
+    if(!array_key_exists('target', $post)) {
+      return;
+    }
+
+    # TODO: Check that this user created the hash
+
+    $client = new IndieWeb\MentionClient();
+    $endpoint = $client->discoverWebmentionEndpoint($post['target']);
+
+    $data = [
+      'endpoint' => $endpoint
+    ];
+
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-type', 'application/json');
+  }
+
+  public function send_webmention(ServerRequestInterface $request, ResponseInterface $response) {
+    # TODO: require login
+
+    $post = $request->getParsedBody();
+
+    if(!array_key_exists('target', $post) || !array_key_exists('source', $post) || !array_key_exists('endpoint', $post)) {
+      return $response;
+    }
+
+    $client = new IndieWeb\MentionClient();
+
+    $result = IndieWeb\MentionClient::sendWebmentionToEndpoint($post['endpoint'], $post['source'], $post['target']);
+
+    try {
+      $json = @json_decode($result['body']);
+      if($json) {
+        $result['body'] = json_encode($json, JSON_PRETTY_PRINT);
+      }
+    } catch(Exception $e) {}
+
+    $data = [
+      'result' => $result
+    ];
+
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-type', 'application/json');
   }
 
 }

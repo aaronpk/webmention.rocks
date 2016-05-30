@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "68a10474c217beb82e22ef73f874b36c",
-    "content-hash": "eac171e9ab946e71b6f09a21d89c9951",
+    "hash": "1196f441139c3af146166fc6817965b0",
+    "content-hash": "855b1714557f3bb939ea0f4e4b9e552a",
     "packages": [
         {
             "name": "barnabywalters/mf-cleaner",
@@ -376,20 +376,24 @@
         },
         {
             "name": "indieweb/mention-client",
-            "version": "0.4.1",
+            "version": "1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indieweb/mention-client-php.git",
-                "reference": "dc88d797a54c0f138ab202acfeb4a1fb9aa38fff"
+                "reference": "eed3468f2237e9a03543a8edf14d83d4c2904667"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/mention-client-php/zipball/dc88d797a54c0f138ab202acfeb4a1fb9aa38fff",
-                "reference": "dc88d797a54c0f138ab202acfeb4a1fb9aa38fff",
+                "url": "https://api.github.com/repos/indieweb/mention-client-php/zipball/eed3468f2237e9a03543a8edf14d83d4c2904667",
+                "reference": "eed3468f2237e9a03543a8edf14d83d4c2904667",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3"
+                "mf2/mf2": ">=0.2",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8.13"
             },
             "type": "library",
             "autoload": {
@@ -410,7 +414,7 @@
             ],
             "description": "Client library for sending webmention and pingback notifications",
             "homepage": "https://github.com/indieweb/mention-client-php",
-            "time": "2013-09-14 20:30:04"
+            "time": "2016-04-15 08:11:41"
         },
         {
             "name": "league/container",

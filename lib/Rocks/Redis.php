@@ -22,13 +22,14 @@ class Redis {
    **/
 
   // Generates a new code that will be used as the source URL for sending to the specified target
-  public static function generateCodeForTarget($target, $num) {
+  public static function generateCodeForTarget($target, $num, $user) {
     $code = md5($target.'::'.time());
     $key = Config::$base . 'receive/' . $code . '/target';
     redis()->setex($key, 360*72, json_encode([
       'target' => $target, 
       'num' => $num,
-      'published' => date('Y-m-d H:i:s')
+      'published' => date('Y-m-d H:i:s'),
+      'user' => $user
     ]));
     return $code;
   }

@@ -27,15 +27,25 @@
       </div>
     </div>
   </div>
+</div>
+
+<?php if(is_logged_in()): ?>
+<div class="single-column">
+  <div class="test-runner">
+    <?php $this->insert('receiver/test-'.$num, [
+      'source' => $source,
+      'target' => $target,
+    ]); ?>    
+  </div>
+</div>
+<?php endif; ?>
+
+<div class="single-column">
   <div class="post-footer">
     <p>This post will only exist for 48 hours.</p>
   </div>
 </div>
 
-<?php if(is_logged_in()): ?>
-<div class="single-column">
-  
-</div>
-<?php endif; ?>
-
 <div id="test-num" data-num="<?= $num ?>"></div>
+<input type="hidden" id="source" value="<?= $source ?>">
+<input type="hidden" id="target" value="<?= $target ?>">

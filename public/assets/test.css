@@ -259,3 +259,42 @@
   position: relative;
   bottom: 1px;
 }
+
+
+
+.test-runner {
+  border-radius: .28571429rem;
+  border: 1px #abcce9 solid;
+
+  background: #f9f9f9;
+  padding: 12px;
+}
+
+.test-runner ul {
+  padding: 0;
+  margin: 0;
+  padding-left: 1em;
+}
+
+.test-runner pre {
+  font-size: 12px;
+  margin-top: 2px;
+  border-radius: .28571429rem;
+  border: 1px #C7DFF5 solid;
+  background: #fff;
+  padding: 4px;
+}
+
+.test-runner pre.hidden {
+  display: none;
+}
+
+#progress .error .header {
+  font-weight: bold;
+  color: #CA0E0E;
+}
+
+#progress .success .header {
+  font-weight: bold;
+  color: #17B108;
+}

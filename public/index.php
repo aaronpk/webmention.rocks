@@ -41,6 +41,8 @@ $route->map('GET', '/delete/{test}', 'DeleteTestController::view');
 $route->map('GET', '/delete/{test}/webmention', 'DeleteWebmention::get');
 $route->map('POST', '/delete/{test}/webmention', 'DeleteWebmention::handle');
 
+$route->map('POST', '/receive/discover', 'ReceiverTestController::discover');
+$route->map('POST', '/receive/send-webmention', 'ReceiverTestController::send_webmention');
 $route->map('GET', '/receive/{test}', 'ReceiverTestController::view');
 $route->map('GET', '/receive/{test}/start', 'ReceiverTestController::start');
 $route->map('GET', '/receive/{test}/{code}', 'ReceiverTestController::process');

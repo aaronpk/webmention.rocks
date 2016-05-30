@@ -8,7 +8,7 @@
     "ezyang/htmlpurifier": "^4.7",
     "guzzlehttp/guzzle": "~6.0",
     "indieauth/client": "~0.1",
-    "indieweb/mention-client": "~1.*"
+    "indieweb/mention-client": "~1.1"
   },
   "autoload": {
     "psr-4": {

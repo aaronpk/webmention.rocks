@@ -58,8 +58,10 @@ function render_state() {
           }
           $("#progress .step-3 .results").html(result).removeClass('hidden');
 
-          if(state.result_3.result.code == 400) {
+          if(state.result_1.result.code == 400 && state.result_2.result.code == 400 && state.result_3.result.code == 400) {
             $("#progress").append('<li>'+green_check+' You passed the test!');
+          } else {
+            $("#progress").append('<li>'+red_x+' Your endpoint did not reject one or more of the requests!');
           }
 
           $("#progress").prepend('<li class="head"><span>Showing Previous Results</span> <a href="javascript:start_test();">Run Again</a>');

@@ -7,20 +7,20 @@ function start_test() {
   $("#progress").children().remove();
 
   $("#progress").append('<li>Sending Webmention <pre>source=<?= $source ?><br>target=<?= $target ?></pre></li>');
-  $("#progress").append('<li class="discover"><span class="ui active small inline loader"></span> Discovering Webmention endpoint <pre class="endpoint hidden"></pre></li>');
+  $("#progress").append('<li class="discover">'+loading_spinner+' Discovering Webmention endpoint <pre class="endpoint hidden"></pre></li>');
 
   $.post("/receive/discover", {
     target: $("#target").val(),
-    code: $("#code").val()
+    code: $("#code").val()+":endpoint"
   }, function(data) {
     $("#progress .discover .loader").remove();
     $("#progress .discover .endpoint").text(data.endpoint).removeClass('hidden');
-    $("#progress").append('<li class="send-webmention"><span class="ui active small inline loader"></span> Sending Webmention <div>Response Code: <code class="http-code"></code></div> <pre class="results hidden"></pre></li>');
+    $("#progress").append('<li class="send-webmention">'+loading_spinner+' Sending Webmention <div>Response Code: <code class="http-code"></code></div> <pre class="results hidden"></pre></li>');
     $.post("/receive/send-webmention", {
       source: $("#source").val(),
       target: $("#target").val(),
       endpoint: data.endpoint,
-      code: $("#code").val()
+      code: $("#code").val()+":1"
     }, function(data) {
       $("#progress .send-webmention .loader").remove();
       $("#progress .send-webmention .http-code").text(data.result.code);
@@ -42,17 +42,17 @@ function load_results() {
 
 function show_results(data) {
   if([200,201,202].indexOf(data.result.code) == -1) {
-    $("#progress").append('<li class="error"><span class="header">Failed!</span> Your Webmention endpoint did not return a valid HTTP status code. The raw response from your Webmention endpoint is displayed above.</li>');
+    $("#progress").append('<li class="error">'+red_x+' Your Webmention endpoint did not return a valid HTTP status code. The raw response from your Webmention endpoint is displayed above.</li>');
   } else {
     if(data.result.code == 201) {
       // If the endpoint returned 201, check that there is a 'location' header
       if(data.result.headers.Location) {
-        $("#progress").append('<li class="success"><span class="header">Success!</span> Your Webmention endpoint returned HTTP 201 and a Location header: <a href="'+data.result.headers.Location+'">'+data.result.headers.Location+'</a>.</li>');
+        $("#progress").append('<li class="success">'+green_check+' Your Webmention endpoint returned HTTP 201 and a Location header: <a href="'+data.result.headers.Location+'">'+data.result.headers.Location+'</a>.</li>');
       } else {
-        $("#progress").append('<li class="error"><span class="header">Error!</span> Your Webmention endpoint returned HTTP 201 but did not return a Location header.</li>');
+        $("#progress").append('<li class="error">'+red_x+' Your Webmention endpoint returned HTTP 201 but did not return a Location header.</li>');
       }
     } else {
-      $("#progress").append('<li class="success"><span class="header">Success!</span> Your Webmention endpoint returned HTTP '+data.result.code+' acknowledging the Webmention request.</li>');
+      $("#progress").append('<li class="success">'+green_check+' Your Webmention endpoint returned HTTP '+data.result.code+' acknowledging the Webmention request.</li>');
     }
   }
 }

@@ -285,7 +285,7 @@
   padding: 4px;
 }
 
-.test-runner pre.hidden {
+.test-runner .hidden {
   display: none;
 }
 
@@ -308,3 +308,15 @@
 #progress li.head a {
   font-size: 0.8em;
 }
+
+#progress li .block {
+  display: block;
+}
+
+#progress .results .circular.label {
+  font-size: 0.6em;
+}
+#progress li {
+  margin-bottom: 8px;
+}
+

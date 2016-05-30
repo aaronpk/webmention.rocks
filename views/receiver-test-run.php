@@ -30,6 +30,12 @@
 </div>
 
 <?php if(is_logged_in() && $user == $_SESSION['me']): ?>
+<script>
+var red_x = '<span class="ui red circular label">&#x2716;</span>';
+var green_check = '<span class="ui green circular label">&#x2714;</span>';
+var loading_spinner = '<span class="ui active small inline loader"></span>';
+
+</script>
 <div class="single-column">
   <div class="test-runner">
     <?php $this->insert('receiver/test-'.$num, [

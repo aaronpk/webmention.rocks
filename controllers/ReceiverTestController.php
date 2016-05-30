@@ -75,7 +75,19 @@ class ReceiverTestController extends Controller {
     # TODO: Set the timezone to match the timezone of the post this links to
     $published->setTimeZone(new DateTimeZone('America/Los_Angeles'));
 
-    $last_result = Rocks\Redis::getReceiverTestResult($code);
+    switch($num) {
+      case 1:
+        $last_result = Rocks\Redis::getReceiverTestResult($code);
+        break;
+      case 2:
+        $last_result = [
+          'endpoint' => Rocks\Redis::getReceiverTestResult($code.':endpoint'),
+          'result_1' => Rocks\Redis::getReceiverTestResult($code.':1'),
+          'result_2' => Rocks\Redis::getReceiverTestResult($code.':2'),
+          'result_3' => Rocks\Redis::getReceiverTestResult($code.':3'),
+        ];
+        break;
+    }
 
     $response->getBody()->write(view('receiver-test-run', [
       'title' => 'Webmention Rocks!',
@@ -108,6 +120,8 @@ class ReceiverTestController extends Controller {
     $data = [
       'endpoint' => $endpoint
     ];
+
+    Rocks\Redis::saveReceiverTestResult($post['code'], $endpoint);
 
     $response->getBody()->write(json_encode($data));
     return $response->withHeader('Content-type', 'application/json');

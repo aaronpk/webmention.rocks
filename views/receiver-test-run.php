@@ -18,7 +18,7 @@
       <h1 class="p-name"><a href="/receive/<?= $num ?>">Receiver Test #<?= $num ?></a></h1>
       <div class="e-content"><?= $test['description'] ?></div>
       <div class="meta">
-        <a href="/test/<?= $num ?>" class="u-url">
+        <a href="/receive/<?= $num ?>" class="u-url">
           Published:
           <time class="dt-published" datetime="<?= $published->format('c') ?>">
             <?= $published->format('l F j, Y g:ia P') ?>

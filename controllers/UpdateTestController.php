@@ -17,7 +17,7 @@ class UpdateTestController extends Controller {
 
     if($inProgress = Rocks\Redis::getInProgressResponses($num, 'update')) {
       $inProgress = array_map(function($item){
-        return Rocks\Redis::getResponse($item);
+        return Rocks\Redis::getSource($item);
       }, $inProgress);
     } else {
       $inProgress = [];
@@ -25,7 +25,7 @@ class UpdateTestController extends Controller {
 
     if($responses = Rocks\Redis::getResponsesForTest($num, 'update')) {
       $responses = array_map(function($item){
-        return Rocks\Redis::getResponse($item);
+        return Rocks\Redis::getSource($item);
       }, $responses);
     } else {
       $responses = [];

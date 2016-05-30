@@ -111,7 +111,7 @@ class AuthController extends Controller {
     unset($_SESSION['auth_state']);
     unset($_SESSION['authorization_endpoint']);
 
-    $auth = IndieAuth\Client::verifyIndieAuthCode($authorizationEndpoint, $params['code'], $params['me'], Config::$base.'auth/callback', Config::$base, null);
+    $auth = IndieAuth\Client::verifyIndieAuthCode($authorizationEndpoint, $params['code'], $params['me'], Config::$base.'auth/callback', Config::$base, $params['state']);
 
     if(!$auth || !is_array($auth) || !array_key_exists('me', $auth)) {
       $response->getBody()->write(view('auth-error', [

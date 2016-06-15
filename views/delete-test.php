@@ -1,5 +1,6 @@
 <?php $this->layout('layout', [
                       'title' => $title,
+                      'link_tag' => (isset($test['link_tag']) ? $test['link_tag'] : ''),
                     ]); ?>
 
 <div class="post-container h-entry">

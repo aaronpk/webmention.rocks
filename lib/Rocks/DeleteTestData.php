@@ -14,6 +14,7 @@ class DeleteTestData extends TestData {
       1 => [
         'published' => '2016-04-24T19:05:00-07:00',
         'name' => 'Simple delete',
+        'link_tag' => '<link rel="webmention" href="/delete/1/webmention?key='.$key.'">',
         'description' => '<p>This test verifies that you properly send Webmentions when you <a href="https://www.w3.org/TR/webmention/#sending-webmentions-for-deleted-posts">delete a post</a>. You will pass this test when you send a Webmention to a URL that you had previously mentioned in a post.</p>
         <p>
           <ol>
@@ -24,7 +25,6 @@ class DeleteTestData extends TestData {
             <li>You should see your post listed here in the green "Successful Tests" section when complete.</li>
           </ol>
         </p>
-        <link rel="webmention" href="/delete/1/webmention?key='.$key.'">
         ',
         'checkboxes' => 2,
       ],

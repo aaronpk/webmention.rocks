@@ -185,7 +185,15 @@ class DiscoveryTestData extends TestData {
         'description' => 'This post\'s Webmention endpoint has query string parameters. Your Webmention client must preserve the query string parameters, and not send them in the post body.',
         'error_description' => 'The Webmention endpoint has a query string, but you either left it out, or sent the values as POST body parameters instead. Make sure you do not modify the URL discovered other than resolving it to an absolute URL.'
       ],
-
+      22 => [
+        'published' => '2017-01-23T09:30:00-08:00',
+        'link_header' => '',
+        'link_tag' => '<link rel="webmention" href="22/webmention">',
+        'name' => 'Webmention endpoint is relative to the path',
+        'description' => 'This post\'s Webmention endpoint is relative to the page rather than relative to the host.',
+        'error_description' => 'The Webmention endpoint is relative to the path, so ensure your URL resolving code handles this properly.'
+      ],
+      
       // rel=webmention on a non-hyperlink tag
       // x => [
       //   'published' => '',

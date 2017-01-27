@@ -60,7 +60,7 @@ class DiscoveryTestController extends Controller {
 
     if(Redis::useOneTimeKey($key)) {
       $newKey = Redis::createOneTimeKey();
-      $response->getBody()->write('<a rel="webmention" href="webmention/'.$newKey.'">webmention endpoint</a>');
+      $response->getBody()->write('<div class="h-entry"><h2 class="p-name">Discovery Test #23</h2><p><a href="/test/23/page" class="u-url">permalink</a></p><p><a rel="webmention" href="webmention/'.$newKey.'">webmention endpoint</a></p></div>');
       return $response->withHeader('Link', '<page/webmention/'.$newKey.'>; rel=webmention');
     } else {
       $response->getBody()->write('Code expired'."\n");

@@ -43,12 +43,12 @@ class DiscoveryTestController extends Controller {
   public function redirect23(ServerRequestInterface $request, ResponseInterface $response, $args) {
     $key = $args['key'];
 
-    if(Redis::useOneTimeKey($key)) {
+    // if(Redis::useOneTimeKey($key)) {
       $newKey = Redis::createOneTimeKey();
       return $response->withHeader('Location', 'page/'.$newKey)->withStatus(302);
-    } else {
-      return $response->withHeader('Location', '/test/23?expired')->withStatus(302);
-    }
+    // } else {
+    //   return $response->withHeader('Location', '/test/23?expired')->withStatus(302);
+    // }
   }
 
   public function page23(ServerRequestInterface $request, ResponseInterface $response, $args) {

@@ -37,14 +37,14 @@
     <h4>HTML</h4>
     <textarea style="width: 100%;" rows="4"><?php 
       foreach($discoveryTestData as $i=>$data):
-        echo '<a href="' . Config::$base . 'test/' . $i . '">Test ' . $i . '</a>'."\n";
+        echo '<a href="' . Config::$base . (isset($data['target']) ? $data['target'] : 'test/' . $i) . '">Test ' . $i . '</a>'."\n";
       endforeach;
     ?></textarea>
 
     <h4>Text</h4>
     <textarea style="width: 100%;" rows="4"><?php 
       foreach($discoveryTestData as $i=>$data):
-        echo Config::$base . 'test/' . $i . "\n";
+        echo Config::$base . (isset($data['target']) ? $data['target'] : 'test/' . $i) . "\n";
       endforeach;
     ?></textarea>
   </section>

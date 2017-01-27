@@ -202,6 +202,7 @@ class DiscoveryTestData extends TestData {
         'published' => '2017-01-27T10:00:00-08:00',
         'link_header' => '',
         'link_tag' => '',
+        'target' => 'test/23/page',
         'name' => 'Webmention target is a redirect and the endpoint is relative',
         'description' => 'To pass this test, send a Webmention to the URL below. That URL is a redirect to the actual Webmention page which advertises the Webmention endpoint. This will test that your endpoint follows redirects on the target and resolves the relative URL relative to the resulting URL rather than the original URL.<br><br>'.Config::$base.'test/23/page',
         'error_description' => 'In order to find the Webmention endpoint, you\'ll need to make sure you pass the resulting URL after following the redirect to your relative URL resolver. Each URL in this step only allows one request before it expires. Make sure you don\'t have any cases where you are requesting a URL twice.'

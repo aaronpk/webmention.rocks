@@ -5,6 +5,11 @@ use Config;
 class DiscoveryTestData extends TestData {
 
   protected static function _testData($head) {
+    static $key;
+
+    if(!isset($key))
+      $key = Redis::createOneTimeKey();
+
     $params = $head ? '?head=true' : '';
 
     return [
@@ -193,7 +198,15 @@ class DiscoveryTestData extends TestData {
         'description' => 'This post\'s Webmention endpoint is relative to the page rather than relative to the host.',
         'error_description' => 'The Webmention endpoint is relative to the path, so ensure your URL resolving code handles this properly.'
       ],
-      
+      23 => [
+        'published' => '2017-01-27T10:00:00-08:00',
+        'link_header' => '',
+        'link_tag' => '',
+        'name' => 'Webmention target is a redirect and the endpoint is relative',
+        'description' => 'To pass this test, send a Webmention to the URL below (but don\'t click it first!). That URL is a redirect to the actual Webmention page which advertises the Webmention endpoint. This will test that your endpoint follows redirects on the target and resolves the relative URL relative to the resulting URL rather than the original URL.<br><br>'.Config::$base.'test/23/'.$key,
+        'error_description' => 'In order to find the Webmention endpoint, you\'ll need to make sure you pass the resulting URL after following the redirect to your relative URL resolver. Each URL in this step only allows one request before it expires. Make sure you don\'t have any cases where you are requesting a URL twice.'
+      ]
+
       // rel=webmention on a non-hyperlink tag
       // x => [
       //   'published' => '',

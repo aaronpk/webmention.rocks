@@ -68,6 +68,20 @@ class DiscoveryWebmention extends Webmention {
       array_key_exists('error_description', $testData) ? $testData['error_description'] : 'There was an error.');
   }
 
+  public function test23(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $num = 23;
+    $key = $args['key'];
+
+    if(Rocks\Redis::useOneTimeKey($key)) {
+      return $this->handle($request, $response, [
+        'num' => $num
+      ]);
+    } else {
+      $response->getBody()->write('Code expired'."\n");
+      return $response->withStatus(400);
+    }
+  }
+
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $num = $this->_test_num($request, $args);
 

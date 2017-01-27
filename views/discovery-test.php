@@ -4,6 +4,11 @@
                     ]); ?>
 
 <div class="post-container h-entry">
+  <?php if(isset($expired) && $expired): ?>
+    <div class="ui warning message">
+      You followed a link that has expired. You'll need to start over.
+    </div>
+  <?php endif; ?>
   <div class="post-main <?= $num_responses > 0 ? 'has-responses' : '' ?>">
     <div class="left p-author h-card">
       <a href="/">

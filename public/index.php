@@ -27,8 +27,15 @@ $route->map('GET', '/test/{num}', 'DiscoveryTestController::view');
 $route->map('GET', '/test/{num}/webmention', 'DiscoveryWebmention::get');
 $route->map('POST', '/test/{num}/webmention', 'DiscoveryWebmention::handle');
 $route->map('POST', '/test/{num}/webmention/{mode}', 'DiscoveryWebmention::handle');
-$route->map('POST', '/test/15', 'DiscoveryWebmention::handle'); // in test #15 the page is its own webmention handler
-$route->map('POST', '/test/20', 'DiscoveryWebmention::handle_error'); // for #20, the webmention sent to itself is wrong
+// in test #15 the page is its own webmention handler
+$route->map('POST', '/test/15', 'DiscoveryWebmention::handle'); 
+// for #20, the webmention sent to itself is wrong
+$route->map('POST', '/test/20', 'DiscoveryWebmention::handle_error'); 
+// for #23, the webmention target redirects to the page that advertises the endpoint
+$route->map('GET', '/test/23/{key}', 'DiscoveryTestController::redirect23');
+$route->map('GET', '/test/23/page/{key}', 'DiscoveryTestController::page23');
+$route->map('POST', '/test/23/page/webmention/{key}', 'DiscoveryWebmention::test23');
+
 
 $route->map('GET', '/update/{test}', 'UpdateTestController::view');
 $route->map('GET', '/update/{test}/step/{step}', 'UpdateTestController::step');

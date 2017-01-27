@@ -152,7 +152,8 @@ class Webmention {
         );
     }
 
-    if(!preg_match('/^\/(test|update|delete)\/\d+(\/(?:step|part)\/\d+)?$/', $path)) {
+    if(!preg_match('/^\/(test|update|delete)\/\d+(\/(?:step|part)\/\d+)?$/', $path)
+      && !preg_match('/^\/test\/23\/[a-zA-Z0-9]+$/', $path)) {
       return $this->_error($request, $response,
         'invalid_target',
         'The target provided does not accept webmentions.'
@@ -160,8 +161,7 @@ class Webmention {
     }
 
     // Check that the target matches the test number of the webmention endpoint
-    $path = parse_url($targetURL, PHP_URL_PATH);
-    preg_match('/^\/([a-z]+)\/(\d+)(?:\/(?:step|part)\/\d+)?$/', $path, $match);
+    preg_match('/^\/([a-z]+)\/(\d+)(?:\/(?:step|part|page)\/\d+)?/', $path, $match);
     if($match[1] != $type || $match[2] != $num) {
       return $this->_error($request, $response, 
         'invalid_target', 

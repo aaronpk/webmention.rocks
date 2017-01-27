@@ -379,7 +379,7 @@ class Mf2 {
     ];
 
     // Author Discovery
-    // http://indiewebcamp.com/authorship
+    // https://indieweb.org/authorship
 
     $authorPage = false;
     if(array_key_exists('author', $item['properties'])) {

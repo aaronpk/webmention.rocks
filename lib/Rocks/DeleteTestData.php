@@ -20,7 +20,7 @@ class DeleteTestData extends TestData {
           <ol>
             <li>Write a post that links to <a href="/delete/1">this page</a>, and send Webmentions for your post.<br>
             Verify you see your post as "pending" on this page.</li>
-            <li>Delete your post, and ensure that the post\'s URL is now returning HTTP 410 (or a <a href="http://indiewebcamp.com/meta_http-equiv_status">meta http-equiv 410 status</a>).</li>
+            <li>Delete your post, and ensure that the post\'s URL is now returning HTTP 410 (or a <a href="https://indieweb.org/meta_http-equiv_status">meta http-equiv 410 status</a>).</li>
             <li>Send a Webmention to this page again.</li>
             <li>You should see your post listed here in the green "Successful Tests" section when complete.</li>
           </ol>

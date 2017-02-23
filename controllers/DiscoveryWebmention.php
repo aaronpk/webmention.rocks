@@ -82,6 +82,11 @@ class DiscoveryWebmention extends Webmention {
     }
   }
 
+  public function test23_get(ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $response->getBody()->write('This is the correct endpoint.'."\n");
+    return $response->withStatus(200);
+  }
+
   public function handle(ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $num = $this->_test_num($request, $args);
 

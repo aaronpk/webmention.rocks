@@ -34,7 +34,8 @@ $route->map('POST', '/test/20', 'DiscoveryWebmention::handle_error');
 // for #23, the webmention target redirects to the page that advertises the endpoint
 $route->map('GET', '/test/23/{key}', 'DiscoveryTestController::redirect23');
 $route->map('GET', '/test/23/page/{key}', 'DiscoveryTestController::page23');
-$route->map('POST', '/test/23/page/webmention/{key}', 'DiscoveryWebmention::test23');
+$route->map('GET', '/test/23/page/webmention-endpoint/{key}', 'DiscoveryWebmention::test23_get');
+$route->map('POST', '/test/23/page/webmention-endpoint/{key}', 'DiscoveryWebmention::test23');
 
 
 $route->map('GET', '/update/{test}', 'UpdateTestController::view');

@@ -174,7 +174,7 @@ class Response {
   }
 
   public function isTypeOf($property) {
-    return array_key_exists($property, $this->_comment)
+    return is_array($property) && array_key_exists($property, $this->_comment)
       && in_array($this->_data['target'], $this->_comment[$property]);
   }
 

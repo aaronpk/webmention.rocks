@@ -9,6 +9,9 @@ class HTTP {
   public function get($url) {
     $ch = curl_init($url);
     $this->_set_curlopts($ch, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+      'Accept: text/html'
+    ]);
     $response = curl_exec($ch);
     $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
     return array(
@@ -23,6 +26,7 @@ class HTTP {
   }
 
   public function post($url, $body, $headers=array()) {
+    $headers[] = 'Accept: text/html';
     $ch = curl_init($url);
     $this->_set_curlopts($ch, $url);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -45,6 +49,9 @@ class HTTP {
     $ch = curl_init($url);
     $this->_set_curlopts($ch, $url);
     curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+      'Accept: text/html'
+    ]);
     $response = curl_exec($ch);
     return array(
       'code' => curl_getinfo($ch, CURLINFO_HTTP_CODE),

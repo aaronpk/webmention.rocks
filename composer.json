@@ -7,7 +7,7 @@
     "mf2/mf2": "~0.3",
     "ezyang/htmlpurifier": "^4.7",
     "guzzlehttp/guzzle": "~6.0",
-    "indieauth/client": "~0.1",
+    "indieauth/client": "~0.4",
     "indieweb/mention-client": "~1.1"
   },
   "autoload": {

@@ -4,62 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1196f441139c3af146166fc6817965b0",
-    "content-hash": "855b1714557f3bb939ea0f4e4b9e552a",
+    "content-hash": "424cb1376ed1a24402ca1a67ac9a9d0e",
     "packages": [
         {
-            "name": "barnabywalters/mf-cleaner",
-            "version": "v0.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barnabywalters/php-mf-cleaner.git",
-                "reference": "ef6a16628db6e8aee2b4f8bb8093d18c24b74cd4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barnabywalters/php-mf-cleaner/zipball/ef6a16628db6e8aee2b4f8bb8093d18c24b74cd4",
-                "reference": "ef6a16628db6e8aee2b4f8bb8093d18c24b74cd4",
-                "shasum": ""
-            },
-            "require-dev": {
-                "php": ">=5.3",
-                "phpunit/phpunit": "*"
-            },
-            "suggest": {
-                "mf2/mf2": "To parse microformats2 structures from (X)HTML"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/BarnabyWalters/Mf2/Functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barnaby Walters",
-                    "email": "barnaby@waterpigs.co.uk"
-                }
-            ],
-            "description": "Cleans up microformats2 array structures",
-            "time": "2014-10-06 23:11:15"
-        },
-        {
             "name": "container-interop/container-interop",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/container-interop/container-interop.git",
-                "reference": "fc08354828f8fd3245f77a66b9e23a6bca48297e"
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/fc08354828f8fd3245f77a66b9e23a6bca48297e",
-                "reference": "fc08354828f8fd3245f77a66b9e23a6bca48297e",
+                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
                 "shasum": ""
+            },
+            "require": {
+                "psr/container": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -72,24 +34,28 @@
                 "MIT"
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "time": "2014-12-30 15:22:37"
+            "homepage": "https://github.com/container-interop/container-interop",
+            "time": "2017-02-14T19:40:03+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.7.0",
+            "version": "v4.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "ae1828d955112356f7677c465f94f7deb7d27a40"
+                "reference": "d85d39da4576a6934b72480be6978fb10c860021"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/ae1828d955112356f7677c465f94f7deb7d27a40",
-                "reference": "ae1828d955112356f7677c465f94f7deb7d27a40",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d85d39da4576a6934b72480be6978fb10c860021",
+                "reference": "d85d39da4576a6934b72480be6978fb10c860021",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "^1.1"
             },
             "type": "library",
             "autoload": {
@@ -116,36 +82,39 @@
             "keywords": [
                 "html"
             ],
-            "time": "2015-08-05 01:03:42"
+            "time": "2018-02-23T01:58:20+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.0",
+            "version": "6.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "d094e337976dff9d8e2424e8485872194e768662"
+                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d094e337976dff9d8e2424e8485872194e768662",
-                "reference": "d094e337976dff9d8e2424e8485872194e768662",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/407b0cb880ace85c9b63c5f9551db498cb2d50ba",
+                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/promises": "~1.0",
-                "guzzlehttp/psr7": "~1.1",
-                "php": ">=5.5.0"
+                "guzzlehttp/promises": "^1.0",
+                "guzzlehttp/psr7": "^1.4",
+                "php": ">=5.5"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "~4.0",
-                "psr/log": "~1.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.2-dev"
+                    "dev-master": "6.3-dev"
                 }
             },
             "autoload": {
@@ -178,32 +147,32 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-03-21 20:02:09"
+            "time": "2018-04-22T15:46:56+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.2.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579"
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/c10d860e2a9595f8883527fa0021c7da9e65f579",
-                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -229,20 +198,20 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-05-18 16:56:05"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.3.0",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "31382fef2889136415751badebbd1cb022a4ed72"
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/31382fef2889136415751badebbd1cb022a4ed72",
-                "reference": "31382fef2889136415751badebbd1cb022a4ed72",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
                 "shasum": ""
             },
             "require": {
@@ -258,7 +227,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -278,36 +247,46 @@
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Tobias Schultze",
+                    "homepage": "https://github.com/Tobion"
                 }
             ],
-            "description": "PSR-7 message implementation",
+            "description": "PSR-7 message implementation that also provides common utility methods",
             "keywords": [
                 "http",
                 "message",
+                "request",
+                "response",
                 "stream",
-                "uri"
+                "uri",
+                "url"
             ],
-            "time": "2016-04-13 19:56:01"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "indieauth/client",
-            "version": "0.1.16",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indieweb/indieauth-client-php.git",
-                "reference": "81e425892c00afef1b6bf9fe16e771b4503bbb8a"
+                "reference": "3e47004ccfccddc5760639f4faf9ed5ceadb460e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/indieauth-client-php/zipball/81e425892c00afef1b6bf9fe16e771b4503bbb8a",
-                "reference": "81e425892c00afef1b6bf9fe16e771b4503bbb8a",
+                "url": "https://api.github.com/repos/indieweb/indieauth-client-php/zipball/3e47004ccfccddc5760639f4faf9ed5ceadb460e",
+                "reference": "3e47004ccfccddc5760639f4faf9ed5ceadb460e",
                 "shasum": ""
             },
             "require": {
-                "barnabywalters/mf-cleaner": "0.*",
-                "indieweb/link-rel-parser": "0.1.*",
-                "mf2/mf2": "~0.3",
+                "indieweb/representative-h-card": "^0.1.2",
+                "mf2/mf2": ">=0.3.2",
+                "p3k/http": ">=0.1.6",
                 "php": ">5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
             },
             "type": "library",
             "autoload": {
@@ -317,29 +296,29 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
                     "name": "Aaron Parecki",
-                    "homepage": "http://aaronparecki.com"
+                    "homepage": "https://aaronparecki.com"
                 }
             ],
             "description": "IndieAuth Client Library",
-            "time": "2016-05-21 16:43:04"
+            "time": "2018-03-13T23:39:55+00:00"
         },
         {
             "name": "indieweb/link-rel-parser",
-            "version": "0.1.2",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indieweb/link-rel-parser-php.git",
-                "reference": "7127a92f32cecbf8166fb3b34130a59ea63e2041"
+                "reference": "295420e4f16d9a9d262a3c25a7a583794428f055"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/link-rel-parser-php/zipball/7127a92f32cecbf8166fb3b34130a59ea63e2041",
-                "reference": "7127a92f32cecbf8166fb3b34130a59ea63e2041",
+                "url": "https://api.github.com/repos/indieweb/link-rel-parser-php/zipball/295420e4f16d9a9d262a3c25a7a583794428f055",
+                "reference": "295420e4f16d9a9d262a3c25a7a583794428f055",
                 "shasum": ""
             },
             "require": {
@@ -372,20 +351,20 @@
                 "indieweb",
                 "microformats2"
             ],
-            "time": "2016-04-13 17:48:59"
+            "time": "2017-01-11T17:14:49+00:00"
         },
         {
             "name": "indieweb/mention-client",
-            "version": "1.1.6",
+            "version": "1.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indieweb/mention-client-php.git",
-                "reference": "eed3468f2237e9a03543a8edf14d83d4c2904667"
+                "reference": "20852ee619e43ef0f0c0be49877c6251f3a2b402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/mention-client-php/zipball/eed3468f2237e9a03543a8edf14d83d4c2904667",
-                "reference": "eed3468f2237e9a03543a8edf14d83d4c2904667",
+                "url": "https://api.github.com/repos/indieweb/mention-client-php/zipball/20852ee619e43ef0f0c0be49877c6251f3a2b402",
+                "reference": "20852ee619e43ef0f0c0be49877c6251f3a2b402",
                 "shasum": ""
             },
             "require": {
@@ -414,28 +393,74 @@
             ],
             "description": "Client library for sending webmention and pingback notifications",
             "homepage": "https://github.com/indieweb/mention-client-php",
-            "time": "2016-04-15 08:11:41"
+            "time": "2018-04-16T13:26:38+00:00"
         },
         {
-            "name": "league/container",
-            "version": "2.2.0",
+            "name": "indieweb/representative-h-card",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/container.git",
-                "reference": "c0e7d947b690891f700dc4967ead7bdb3d6708c1"
+                "url": "https://github.com/indieweb/representative-h-card-php.git",
+                "reference": "b70b01bd0dd7f2a940602137335dbf46ab6e2e38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/container/zipball/c0e7d947b690891f700dc4967ead7bdb3d6708c1",
-                "reference": "c0e7d947b690891f700dc4967ead7bdb3d6708c1",
+                "url": "https://api.github.com/repos/indieweb/representative-h-card-php/zipball/b70b01bd0dd7f2a940602137335dbf46ab6e2e38",
+                "reference": "b70b01bd0dd7f2a940602137335dbf46ab6e2e38",
                 "shasum": ""
             },
             "require": {
-                "container-interop/container-interop": "^1.1",
-                "php": ">=5.4.0"
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "mf2/mf2": "0.2.*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/mf2/representative-h-card.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Parecki",
+                    "homepage": "http://aaronparecki.com"
+                }
+            ],
+            "keywords": [
+                "h-card",
+                "indieweb",
+                "mf2",
+                "microformats"
+            ],
+            "time": "2015-12-23T18:11:19+00:00"
+        },
+        {
+            "name": "league/container",
+            "version": "2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/container.git",
+                "reference": "43f35abd03a12977a60ffd7095efd6a7808488c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/container/zipball/43f35abd03a12977a60ffd7095efd6a7808488c0",
+                "reference": "43f35abd03a12977a60ffd7095efd6a7808488c0",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "^1.2",
+                "php": "^5.4.0 || ^7.0"
             },
             "provide": {
-                "container-interop/container-interop-implementation": "^1.1"
+                "container-interop/container-interop-implementation": "^1.2",
+                "psr/container-implementation": "^1.0"
             },
             "replace": {
                 "orno/di": "~2.0"
@@ -446,7 +471,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev",
+                    "dev-2.x": "2.x-dev",
                     "dev-1.x": "1.x-dev"
                 }
             },
@@ -478,24 +503,27 @@
                 "provider",
                 "service"
             ],
-            "time": "2016-03-17 11:07:59"
+            "time": "2017-05-10T09:20:27+00:00"
         },
         {
             "name": "league/plates",
-            "version": "3.1.1",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/plates.git",
-                "reference": "2d8569e9f140a70d6a05db38006926f7547cb802"
+                "reference": "b1684b6f127714497a0ef927ce42c0b44b45a8af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/plates/zipball/2d8569e9f140a70d6a05db38006926f7547cb802",
-                "reference": "2d8569e9f140a70d6a05db38006926f7547cb802",
+                "url": "https://api.github.com/repos/thephpleague/plates/zipball/b1684b6f127714497a0ef927ce42c0b44b45a8af",
+                "reference": "b1684b6f127714497a0ef927ce42c0b44b45a8af",
                 "shasum": ""
             },
+            "require": {
+                "php": "^5.3 | ^7.0"
+            },
             "require-dev": {
-                "mikey179/vfsstream": "~1.4.0",
+                "mikey179/vfsstream": "^1.4",
                 "phpunit/phpunit": "~4.0",
                 "squizlabs/php_codesniffer": "~1.5"
             },
@@ -530,20 +558,20 @@
                 "templating",
                 "views"
             ],
-            "time": "2015-07-09 02:14:40"
+            "time": "2016-12-28T00:14:17+00:00"
         },
         {
             "name": "league/route",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/route.git",
-                "reference": "421ea69727b95b4d72bb9de2e847fff98db4fd51"
+                "reference": "93142b0bab2b8ae2aebd7b159682b2604ef8026c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/route/zipball/421ea69727b95b4d72bb9de2e847fff98db4fd51",
-                "reference": "421ea69727b95b4d72bb9de2e847fff98db4fd51",
+                "url": "https://api.github.com/repos/thephpleague/route/zipball/93142b0bab2b8ae2aebd7b159682b2604ef8026c",
+                "reference": "93142b0bab2b8ae2aebd7b159682b2604ef8026c",
                 "shasum": ""
             },
             "require": {
@@ -562,7 +590,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev",
+                    "dev-master": "3.x-dev",
+                    "2.x": "2.x-dev",
                     "1.x": "1.x-dev"
                 }
             },
@@ -592,30 +621,33 @@
                 "psr7",
                 "route"
             ],
-            "time": "2016-03-11 13:53:55"
+            "time": "2016-11-14T11:05:38+00:00"
         },
         {
             "name": "mf2/mf2",
-            "version": "v0.3.0",
+            "version": "v0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indieweb/php-mf2.git",
-                "reference": "4fb2eb5365cbc0fd2e0c26ca748777d6c2539763"
+                "reference": "5c056e81f48b71130dab98de755683bb2b7e7615"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indieweb/php-mf2/zipball/4fb2eb5365cbc0fd2e0c26ca748777d6c2539763",
-                "reference": "4fb2eb5365cbc0fd2e0c26ca748777d6c2539763",
+                "url": "https://api.github.com/repos/indieweb/php-mf2/zipball/5c056e81f48b71130dab98de755683bb2b7e7615",
+                "reference": "5c056e81f48b71130dab98de755683bb2b7e7615",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "mf2/tests": "@dev",
+                "phpdocumentor/phpdocumentor": "v2.8.4",
+                "phpunit/phpunit": "4.8.*"
             },
             "suggest": {
-                "barnabywalters/mf-cleaner": "To more easily handle the canonical data php-mf2 gives you"
+                "barnabywalters/mf-cleaner": "To more easily handle the canonical data php-mf2 gives you",
+                "masterminds/html5": "Alternative HTML parser for PHP, for better HTML5 support."
             },
             "bin": [
                 "bin/fetch-mf2",
@@ -629,7 +661,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "CC0"
+                "CC0-1.0"
             ],
             "authors": [
                 {
@@ -645,7 +677,7 @@
                 "parser",
                 "semantic"
             ],
-            "time": "2016-03-14 12:13:34"
+            "time": "2018-03-29T17:54:32+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -688,27 +720,65 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-12-20 19:50:12"
+            "time": "2015-12-20T19:50:12+00:00"
         },
         {
-            "name": "predis/predis",
-            "version": "v1.0.3",
+            "name": "p3k/http",
+            "version": "0.1.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nrk/predis.git",
-                "reference": "84060b9034d756b4d79641667d7f9efe1aeb8e04"
+                "url": "https://github.com/aaronpk/p3k-http.git",
+                "reference": "1826647c4902a18dea5ec532f21509ba4d51210b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/84060b9034d756b4d79641667d7f9efe1aeb8e04",
-                "reference": "84060b9034d756b4d79641667d7f9efe1aeb8e04",
+                "url": "https://api.github.com/repos/aaronpk/p3k-http/zipball/1826647c4902a18dea5ec532f21509ba4d51210b",
+                "reference": "1826647c4902a18dea5ec532f21509ba4d51210b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "indieweb/link-rel-parser": "0.1.*",
+                "mf2/mf2": ">=0.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "p3k\\": "src/p3k"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Parecki",
+                    "homepage": "https://aaronparecki.com"
+                }
+            ],
+            "description": "A simple wrapper API around the PHP curl functions",
+            "homepage": "https://github.com/aaronpk/p3k-http",
+            "time": "2018-03-04T15:21:58+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.8"
             },
             "suggest": {
                 "ext-curl": "Allows access to Webdis when paired with phpiredis",
@@ -731,27 +801,76 @@
                     "homepage": "http://clorophilla.net"
                 }
             ],
-            "description": "Flexible and feature-complete PHP client library for Redis",
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
             "homepage": "http://github.com/nrk/predis",
             "keywords": [
                 "nosql",
                 "predis",
                 "redis"
             ],
-            "time": "2015-07-30 18:34:15"
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
-            "name": "psr/http-message",
-            "version": "1.0",
+            "name": "psr/container",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
+        },
+        {
+            "name": "psr/http-message",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "shasum": ""
             },
             "require": {
@@ -779,6 +898,7 @@
                 }
             ],
             "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
             "keywords": [
                 "http",
                 "http-message",
@@ -787,38 +907,40 @@
                 "request",
                 "response"
             ],
-            "time": "2015-05-04 20:22:00"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.3.5",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "b1d59735b672865dbeb930805029c24f226e3e77"
+                "reference": "bf26aff803a11c5cc8eb7c4878a702c403ec67f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/b1d59735b672865dbeb930805029c24f226e3e77",
-                "reference": "b1d59735b672865dbeb930805029c24f226e3e77",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/bf26aff803a11c5cc8eb7c4878a702c403ec67f1",
+                "reference": "bf26aff803a11c5cc8eb7c4878a702c403ec67f1",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0",
-                "psr/http-message": "~1.0"
+                "php": "^5.6 || ^7.0",
+                "psr/http-message": "^1.0"
             },
             "provide": {
-                "psr/http-message-implementation": "~1.0.0"
+                "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.6",
-                "squizlabs/php_codesniffer": "^2.3.1"
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "phpunit/phpunit": "^5.7.16 || ^6.0.8",
+                "zendframework/zend-coding-standard": "~1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev",
-                    "dev-develop": "1.4-dev"
+                    "dev-master": "1.7.x-dev",
+                    "dev-develop": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -837,7 +959,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2016-03-17 18:02:05"
+            "time": "2018-02-26T15:44:50+00:00"
         }
     ],
     "packages-dev": [],

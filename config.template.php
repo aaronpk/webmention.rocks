@@ -7,6 +7,9 @@ class Config {
   // Only webmentions with a target matching a hostname in this list will be accepted.
   public static $hostnames = ['webmention-rocks.dev'];
 
+  // Logins are handled by an external service such as indielogin.com
+  public static $indieLoginServer = 'https://indielogin.com.dev/';
+
   // You might need to allow source URLs to resolve to localhost for development
   // In production, there is almost never a valid reason to allow localhost sources
   public static $allowLocalhostSource = false;

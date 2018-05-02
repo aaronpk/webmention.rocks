@@ -50,6 +50,14 @@ function domains_are_equal($a, $b) {
   return parse_url($a, PHP_URL_HOST) == parse_url($b, PHP_URL_HOST);
 }
 
+function is_subdomain_of($check, $against) {
+  $checkhost = parse_url($check, PHP_URL_HOST);
+  $againsthost = parse_url($against, PHP_URL_HOST);
+
+  if($checkhost == $againsthost) return true;
+  return strpos($checkhost, '.'.$againsthost);
+}
+
 function display_url($url) {
   # remove scheme
   $url = preg_replace('/^https?:\/\//', '', $url);

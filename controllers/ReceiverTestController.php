@@ -37,7 +37,7 @@ class ReceiverTestController extends Controller {
     }
 
     // Check that the URL entered is on the same domain as the user's website
-    if(!domains_are_equal($_SESSION['me'], $params['url'])) {
+    if(!domains_are_equal($_SESSION['me'], $params['url']) && !is_subdomain_of($params['url'], $_SESSION['me'])) {
       $_SESSION['error'] = 'host-mismatch';
       return $response->withHeader('Location', '/receive/'.$num)->withStatus(302);
     }

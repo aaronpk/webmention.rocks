@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => $title]); ?>
+<?php $this->layout('layout', ['title' => $title, 'link_tag' => isset($link_tag) ? $link_tag : '']); ?>
 
 <div class="single-column">
   <div id="header-graphic"><img src="/assets/webmention-rocks.png"></div>
@@ -16,7 +16,7 @@
   <section class="content">
     <h3>Webmention Endpoint Discovery</h3>
 
-    <p>The test posts below advertise their Webmention endpoints in a variety of ways, 
+    <p>The test posts below advertise their Webmention endpoints in a variety of ways,
       to help you test your <a href="https://www.w3.org/TR/webmention/#sender-discovers-receiver-webmention-endpoint">Webmention endpoint discovery</a> implementation.</p>
     <p>You should be able to write a post that links to each post below, and have your
       comment show up on each of them.</p>
@@ -35,14 +35,14 @@
     <p>If you want a quick bit of text to copy+paste into a post, you can use the HTML or plaintext below, which link to all the tests.</p>
 
     <h4>HTML</h4>
-    <textarea style="width: 100%;" rows="4"><?php 
+    <textarea style="width: 100%;" rows="4"><?php
       foreach($discoveryTestData as $i=>$data):
         echo '<a href="' . Config::$base . (isset($data['target']) ? $data['target'] : 'test/' . $i) . '">Test ' . $i . '</a>'."\n";
       endforeach;
     ?></textarea>
 
     <h4>Text</h4>
-    <textarea style="width: 100%;" rows="4"><?php 
+    <textarea style="width: 100%;" rows="4"><?php
       foreach($discoveryTestData as $i=>$data):
         echo Config::$base . (isset($data['target']) ? $data['target'] : 'test/' . $i) . "\n";
       endforeach;
@@ -104,4 +104,10 @@
     <p>This code is <a href="https://github.com/aaronpk/webmention.rocks">open source</a>. Feel free to <a href="https://github.com/aaronpk/webmention.rocks/issues">file an issue</a> if you notice any errors.</p>
   </section>
 
+</div>
+
+<div style="display: none;" class="h-app">
+  <a href="/" class="u-url p-name">Webmention.rocks!</a>
+  <img src="/assets/webmention-rocks-icon.png" class="u-logo">
+  <a href="<?= Config::$indieLoginServer ?>redirect/indieauth" class="u-redirect-uri"></a>
 </div>

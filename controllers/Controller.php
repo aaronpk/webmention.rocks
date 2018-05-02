@@ -10,13 +10,14 @@ class Controller {
 
   public function index(ServerRequestInterface $request, ResponseInterface $response) {
     session_setup();
-    
+
     $response->getBody()->write(view('index', [
       'title' => 'Webmention Rocks!',
       'discoveryTestData' => DiscoveryTestData::data(),
       'updateTestData' => UpdateTestData::data(),
       'deleteTestData' => DeleteTestData::data(),
       'receiverTestData' => ReceiverTestData::data(),
+      'link_tag' => '<link rel="redirect_uri" href="'.Config::$indieLoginServer.'redirect/indieauth">',
     ]));
     return $response;
   }
@@ -86,7 +87,7 @@ class Controller {
       return count($responseTypes['reacji'][$a]) < count($responseTypes['reacji'][$b]);
     });
 
-    return [$responseTypes, $numResponses]; 
+    return [$responseTypes, $numResponses];
   }
 
 }

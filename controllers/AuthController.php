@@ -76,7 +76,7 @@ class AuthController extends Controller {
     unset($_SESSION['auth_state']);
     unset($_SESSION['authorization_endpoint']);
 
-    $auth = IndieAuth\Client::verifyIndieAuthCode(Config::$indieLoginServer,
+    $auth = IndieAuth\Client::verifyIndieAuthCode(Config::$indieLoginServer.'auth',
       $params['code'], null, Config::$base.'auth/callback', Config::$base, $params['state']);
 
     if(!$auth || !is_array($auth) || !isset($auth['auth']['me'])) {

@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <?php if(array_key_exists('error', $_SESSION)): ?>
+  <?php if(isset($_SESSION['error'])): ?>
     <div class="ui error message">
     <?php
     switch($_SESSION['error']) {

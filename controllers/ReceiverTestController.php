@@ -23,12 +23,12 @@ class ReceiverTestController extends Controller {
       'num_responses' => 0
     ]));
     return $response;
-  }  
+  }
 
   public function start(ServerRequestInterface $request, ResponseInterface $response, $args) {
     session_setup();
     $params = $request->getQueryParams();
-    
+
     $num = $args['test'];
 
     if(!ReceiverTestData::exists($num)) {
@@ -51,7 +51,7 @@ class ReceiverTestController extends Controller {
   public function process(ServerRequestInterface $request, ResponseInterface $response, $args) {
     session_setup();
     $params = $request->getQueryParams();
-    
+
     $num = $args['test'];
 
     if(!ReceiverTestData::exists($num)) {
@@ -132,8 +132,8 @@ class ReceiverTestController extends Controller {
 
     $post = $request->getParsedBody();
 
-    if(!array_key_exists('target', $post) 
-      || !array_key_exists('source', $post) 
+    if(!array_key_exists('target', $post)
+      || !array_key_exists('source', $post)
       || !array_key_exists('endpoint', $post)
       || !array_key_exists('code', $post)) {
       return $response;

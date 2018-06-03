@@ -5,7 +5,7 @@
 <div class="post-container h-entry">
 
   <div class="post-main" style="margin-bottom: 12px;">
-    <a href="<?= $target ?>"><?= $target ?></a>
+    <a href="<?= $target ?>" class="u-in-reply-to"><?= $target ?></a>
   </div>
 
   <div class="post-main">
@@ -43,7 +43,7 @@ var loading_spinner = '<span class="ui active small inline loader"></span>';
       'target' => $target,
       'code' => $code,
       'last_result' => $last_result
-    ]); ?>    
+    ]); ?>
   </div>
 </div>
 <?php endif; ?>

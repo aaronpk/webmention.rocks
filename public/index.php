@@ -61,6 +61,8 @@ $templates = new League\Plates\Engine(dirname(__FILE__).'/../views');
 
 try {
   $response = $route->dispatch($container->get('request'), $container->get('response'));
+  $response = $response->withHeader('Access-Control-Allow-Origin', '*')
+    ->withHeader('Access-Control-Allow-Methods', 'GET, POST');
   $container->get('emitter')->emit($response);
 } catch(League\Route\Http\Exception\NotFoundException $e) {
   $response = $container->get('response');

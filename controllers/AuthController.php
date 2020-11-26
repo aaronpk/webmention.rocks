@@ -4,6 +4,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AuthController extends Controller {
 
+  private function _indieLoginSetup() {
+    IndieLogin\Client::$server = Config::$indieLoginServer;
+    IndieLogin\Client::$clientID = Config::$base;
+    IndieLogin\Client::$redirectURL = Config::$base.'auth/callback';
+  }
+
   public function start(ServerRequestInterface $request, ResponseInterface $response) {
     $params = $request->getQueryParams();
     session_setup(true);
@@ -21,16 +27,8 @@ class AuthController extends Controller {
       $_SESSION['return-to'] = $params['return-to'];
     }
 
-    $state = IndieAuth\Client::generateStateParameter();
-    $_SESSION['auth_state'] = $state;
-
-    $query = [
-      'client_id' => Config::$base,
-      'redirect_uri' => Config::$base.'auth/callback',
-      'state' => $state,
-      'me' => $me,
-    ];
-    $authorizationURL = Config::$indieLoginServer.'auth?'.http_build_query($query);
+    $this->_indieLoginSetup();
+    list($authorizationURL, $error) = IndieLogin\Client::begin($params['url']);
 
     return $response->withHeader('Location', $authorizationURL)->withStatus(302);
   }
@@ -39,55 +37,20 @@ class AuthController extends Controller {
     $params = $request->getQueryParams();
     session_setup(true);
 
-    // If there is no state in the session, start the login again
-    if(empty($_SESSION['auth_state'])) {
-      return $response->withHeader('Location', '/?error=missing_state')->withStatus(302);
-    }
+    $this->_indieLoginSetup();
 
-    // Check that there is a code in the response
-    if(!array_key_exists('code', $params) || !$params['code']) {
+    list($user, $error) = IndieLogin\Client::complete($_GET);
+
+    if($error) {
       $response->getBody()->write(view('auth-error', [
         'title' => 'Error - Webmention Rocks!',
-        'error' => 'Missing Authorization Code',
-        'error_description' => 'No authorization code was present in the request.'
+        'error' => $error['error'],
+        'error_description' => $error['error_description'],
       ]));
       return $response->withStatus(400);
     }
 
-    // Verify the response included the state and that it matches the state we saved in the session
-    if(!array_key_exists('state', $params) || !$params['state']) {
-      $response->getBody()->write(view('auth-error', [
-        'title' => 'Error - Webmention Rocks!',
-        'error' => 'Missing State',
-        'error_description' => 'No state parameter was present in the request. Check that you have cookies enabled.'
-      ]));
-      return $response->withStatus(400);
-    }
-
-    if($params['state'] != $_SESSION['auth_state']) {
-      $response->getBody()->write(view('auth-error', [
-        'title' => 'Error - Webmention Rocks!',
-        'error' => 'Invalid State',
-        'error_description' => 'The state parameter provided did not match the state at the start of authorization. You will need to start the login process again.'
-      ]));
-      return $response->withStatus(400);
-    }
-
-    unset($_SESSION['auth_state']);
-    unset($_SESSION['authorization_endpoint']);
-
-    $auth = IndieAuth\Client::verifyIndieAuthCode(Config::$indieLoginServer.'auth',
-      $params['code'], null, Config::$base.'auth/callback', Config::$base, $params['state']);
-
-    if(!$auth || !is_array($auth) || !isset($auth['auth']['me'])) {
-      $response->getBody()->write(view('auth-error', [
-        'title' => 'Error - Webmention Rocks!',
-        'error' => 'Invalid State',
-        'error_description' => 'The login could not be validated. Please try again.'
-      ]));
-      return $response->withStatus(400);
-    }
-    $_SESSION['me'] = $auth['auth']['me'];
+    $_SESSION['me'] = $user['me'];
     Rocks\Redis::haveSeenUserRecently($_SESSION['me'], true);
 
     if(array_key_exists('return-to', $_SESSION)) {

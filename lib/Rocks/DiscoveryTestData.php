@@ -164,14 +164,14 @@ class DiscoveryTestData extends TestData {
         ],
         'link_tag' => '',
         'name' => 'Multiple HTTP Link headers',
-        'description' => 'This post returns two HTTP Link headers, the first with a different rel value. This ensures your code correcly parses the HTTP response when multiple Link headers are returned.',
+        'description' => 'This post returns two HTTP Link headers, the first with a different rel value. This ensures your code correctly parses the HTTP response when multiple Link headers are returned.',
       ],
       19 => [
         'published' => '2016-04-15T08:27:15+02:00',
         'link_header' => '<'.Config::$base.'test/19/webmention/error>; rel="other", <'.Config::$base.'test/19/webmention'.$params.'>; rel="webmention"',
         'link_tag' => '',
         'name' => 'Single HTTP Link header with multiple values',
-        'description' => 'This post returns one HTTP Link header with multiple values separated by a comma. This ensures your code correcly parses the HTTP headers.',
+        'description' => 'This post returns one HTTP Link header with multiple values separated by a comma. This ensures your code correctly parses the HTTP headers.',
       ],
       // Webmention rel with no href
       20 => [
